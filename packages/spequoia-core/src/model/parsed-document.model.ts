@@ -20,8 +20,7 @@ export interface ParsedExample {
 }
 
 export interface ParsedStep {
-  operation: string;
-  params: Record<string, unknown>;
+  raw: string;
   fragments: ParsedStepFragment[];
 }
 

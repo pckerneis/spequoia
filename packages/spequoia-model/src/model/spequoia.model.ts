@@ -16,5 +16,5 @@ export interface SpequoiaExample {
   id: string;
   name: string;
   description?: string;
-  steps?: Array<string | Record<string, unknown>>;
+  steps?: Array<string>;
 }

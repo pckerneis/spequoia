@@ -11,7 +11,13 @@
         <ul>
           @for(step of example.steps; track $index) {
             <li>
-              {{ step }}
+              @for (fragment of step.fragments; track $index) {
+                @if (fragment.type == 'variable') {
+                  <b>&#64;{{ fragment.value }} </b>
+                } @else {
+                  <span>{{ fragment.value }} </span>
+                }
+              }
             </li>
           }
         </ul>

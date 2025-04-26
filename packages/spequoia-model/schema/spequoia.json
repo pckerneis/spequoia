@@ -36,15 +36,7 @@
         },
         "steps": {
           "items": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "additionalProperties": {},
-                "type": "object"
-              }
-            ]
+            "type": "string"
           },
           "type": "array"
         }
