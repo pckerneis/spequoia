@@ -2,7 +2,7 @@ import { parse } from "yaml";
 import { ParsedDocument } from "./model/parsed-document.model";
 import Ajv from "ajv";
 import schema from "spequoia-model/schema/spequoia.json";
-import {SpequoiaDocument} from 'spequoia-model/src/model/spequoia.model';
+import { SpequoiaDocument } from "spequoia-model/src/model/spequoia.model";
 
 export function parseSpec(yamlText: string): ParseResult {
   const rawDocument = parse(yamlText) as SpequoiaDocument;
