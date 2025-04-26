@@ -4,8 +4,13 @@
   "description": "Core parser, linter and spec model",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsup src/index.ts --dts --format cjs,esm",
+    "lint": "eslint src/**/*.ts",
+    "test": "vitest"
   },
   "author": "pckerneis",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "yaml": "^2.7.1"
+  }
 }

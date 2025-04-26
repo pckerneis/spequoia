@@ -3,12 +3,34 @@
   "version": "1.0.0",
   "description": "Spequoia is a spec-as-code toolkit that transforms readable specifications into documentation, wireframe previews, automated tests, and interactive demos.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run build --workspaces",
+    "clean": "rimraf packages/**/dist",
+    "lint": "npm run lint:code && npm run lint:specs",
+    "lint:code": "eslint packages/**/*.ts",
+    "lint:specs": "markdownlint \"packages/**/*.md\" && yaml-lint packages/**/*.yaml",
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit --skipLibCheck",
+    "test": "vitest run --coverage",
+    "dev": "vitest watch"
   },
   "author": "pckerneis",
   "license": "MIT",
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.31.0",
+    "@typescript-eslint/parser": "^8.31.0",
+    "@vitest/coverage-v8": "^3.1.2",
+    "eslint": "^9.25.1",
+    "markdownlint-cli2": "^0.17.2",
+    "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.2",
+    "yaml-lint": "^1.7.0"
+  }
 }
