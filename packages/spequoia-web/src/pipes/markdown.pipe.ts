@@ -5,7 +5,7 @@ import * as commonmark from 'commonmark';
   name: 'markdown',
 })
 export class MarkdownPipe implements PipeTransform {
-  transform(value: unknown, ...args: unknown[]): unknown {
+  transform(value: unknown): unknown {
     if (typeof value !== 'string') {
       return value;
     }

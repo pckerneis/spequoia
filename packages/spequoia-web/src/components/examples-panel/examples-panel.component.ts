@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import {
   ParsedExample,
-  ParsedFeature,
 } from 'spequoia-core/dist/model/parsed-document.model';
 
 @Component({

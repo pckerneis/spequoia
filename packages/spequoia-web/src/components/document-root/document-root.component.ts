@@ -1,4 +1,14 @@
-import { AfterViewInit, Component, computed, ElementRef, Input, NgZone, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  computed,
+  ElementRef,
+  Input,
+  NgZone,
+  OnDestroy,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { FeaturePanelComponent } from '../feature-panel/feature-panel.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ProcessedDocument } from '../../models/processed-document.model';
@@ -10,7 +20,7 @@ import { debounceTime } from 'rxjs/operators';
   standalone: true,
   imports: [FeaturePanelComponent],
   templateUrl: './document-root.component.html',
-  styleUrls: ['./document-root.component.scss']
+  styleUrls: ['./document-root.component.scss'],
 })
 export class DocumentRootComponent implements AfterViewInit, OnDestroy {
   @Input() processedDocument!: ProcessedDocument | null;
@@ -22,7 +32,7 @@ export class DocumentRootComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private readonly domSanitizer: DomSanitizer,
-    private readonly ngZone: NgZone
+    private readonly ngZone: NgZone,
   ) {}
 
   activeHeadingId = signal('');
@@ -52,14 +62,17 @@ export class DocumentRootComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    const headingElement = this.mainContainer.nativeElement.querySelector(`#${hash}`);
+    const headingElement = this.mainContainer.nativeElement.querySelector(
+      `#${hash}`,
+    );
     if (headingElement) {
       this.activeHeadingId.set(hash);
 
       const container = this.mainContainer.nativeElement;
       const containerRect = container.getBoundingClientRect();
       const headingRect = headingElement.getBoundingClientRect();
-      const scrollTop = headingRect.top - containerRect.top + container.scrollTop - 10;
+      const scrollTop =
+        headingRect.top - containerRect.top + container.scrollTop - 10;
 
       container.scrollTo({
         top: scrollTop,
@@ -73,7 +86,10 @@ export class DocumentRootComponent implements AfterViewInit, OnDestroy {
     }
 
     this.scrollSubscription?.unsubscribe();
-    this.scrollSubscription = fromEvent(this.mainContainer.nativeElement, 'scroll')
+    this.scrollSubscription = fromEvent(
+      this.mainContainer.nativeElement,
+      'scroll',
+    )
       .pipe(debounceTime(10))
       .subscribe(() => {
         this.ngZone.run(() => {
@@ -85,13 +101,17 @@ export class DocumentRootComponent implements AfterViewInit, OnDestroy {
   }
 
   private updateActiveHeading(): void {
-    if (!this.mainContainer?.nativeElement || !this.processedDocument?.headings.length) {
+    if (
+      !this.mainContainer?.nativeElement ||
+      !this.processedDocument?.headings.length
+    ) {
       return;
     }
 
     const container = this.mainContainer.nativeElement;
-    const headings = Array.from(container.querySelectorAll('[id]'))
-      .filter(el => this.processedDocument?.headings.some(h => h.id === el.id));
+    const headings = Array.from(container.querySelectorAll('[id]')).filter(
+      (el) => this.processedDocument?.headings.some((h) => h.id === el.id),
+    );
 
     if (!headings.length) {
       return;
@@ -137,11 +157,12 @@ export class DocumentRootComponent implements AfterViewInit, OnDestroy {
       const container = this.mainContainer.nativeElement;
       const containerRect = container.getBoundingClientRect();
       const headingRect = headingElement.getBoundingClientRect();
-      const scrollTop = headingRect.top - containerRect.top + container.scrollTop - 20;
+      const scrollTop =
+        headingRect.top - containerRect.top + container.scrollTop - 20;
 
       container.scrollTo({
         top: scrollTop,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
     }
   }

@@ -1,5 +1,9 @@
 import { parse } from "yaml";
-import {ParsedDocument, ParsedStep, ParsedViewNode} from './model/parsed-document.model';
+import {
+  ParsedDocument,
+  ParsedStep,
+  ParsedViewNode,
+} from "./model/parsed-document.model";
 import Ajv from "ajv";
 import schema from "spequoia-model/schema/spequoia.json";
 import { SpequoiaDocument } from "spequoia-model/src/model/spequoia.model";
@@ -91,28 +95,32 @@ function parseViews(views: Record<string, any> | undefined): ParsedViewNode[] {
     return [];
   }
 
-  return Object.entries(views).map(([name, rawNode]) => parseViewNode(rawNode, name));
+  return Object.entries(views).map(([name, rawNode]) =>
+    parseViewNode(rawNode, name),
+  );
 }
 
 function parseViewNode(rawNode: any, name: string): ParsedViewNode {
-  if (typeof rawNode === 'string') {
+  if (typeof rawNode === "string") {
     return {
       name,
-      selector: rawNode
+      selector: rawNode,
     };
-  } else if (typeof rawNode === 'object') {
-    const selector = rawNode['$selector'];
-    const direction = rawNode['$direction'];
-    const text = rawNode['$text'];
+  } else if (typeof rawNode === "object") {
+    const selector = rawNode["$selector"];
+    const direction = rawNode["$direction"];
+    const text = rawNode["$text"];
 
     return {
       name,
       selector,
       direction,
       text,
-      children: Object.entries(rawNode).filter(([key]) => !key.startsWith('$')).map(([key, value]) => {
-        return parseViewNode(value, key);
-      }),
+      children: Object.entries(rawNode)
+        .filter(([key]) => !key.startsWith("$"))
+        .map(([key, value]) => {
+          return parseViewNode(value, key);
+        }),
     };
   }
 
