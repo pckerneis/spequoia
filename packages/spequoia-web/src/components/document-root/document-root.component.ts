@@ -38,8 +38,8 @@ export class DocumentRootComponent implements AfterViewInit, OnDestroy {
   });
 
   ngAfterViewInit(): void {
-    this.setupScrollListener();
     this.scrollToHashHeading();
+    this.setupScrollListener();
   }
 
   private scrollToHashHeading(): void {
@@ -107,6 +107,7 @@ export class DocumentRootComponent implements AfterViewInit, OnDestroy {
 
       if (headingTop >= -buffer && headingTop <= containerHeight / 2) {
         this.activeHeadingId.set(heading.id);
+        window.history.replaceState(null, '', `#${heading.id}`);
         return;
       }
     }
@@ -124,6 +125,7 @@ export class DocumentRootComponent implements AfterViewInit, OnDestroy {
       }
     }
 
+    window.history.replaceState(null, '', `#${lastHeadingBeforeViewport.id}`);
     this.activeHeadingId.set(lastHeadingBeforeViewport.id);
   }
 
