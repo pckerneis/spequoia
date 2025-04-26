@@ -1,8 +1,12 @@
 @if (feature) {
-  <h3>{{ feature.name }}</h3>
+  <h3>
+    <b>{{ feature.id }}</b>
+    <span> - {{ feature.name }}</span>
+  </h3>
 
   @if(feature.tags && feature.tags.length > 0) {
-    <label>Tags:
+    <label class="tags">
+      <span>Tags:</span>
       <ul>
         @for (tag of feature.tags; track tag) {
           <li class="tag">{{ tag }}</li>
@@ -12,7 +16,7 @@
   }
 
   @if (feature.description) {
-    <p [innerHTML]="feature.description | markdown"></p>
+    <div [innerHTML]="feature.description | markdown"></div>
   }
 
   @if (feature.examples) {

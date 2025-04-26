@@ -10,10 +10,25 @@ body, html {
   --main-bg-color: #ffffff;
   --main-text-color: #333;
   --main-border-color: #c3c3c3;
-  --header-bg-color: #bafbab;
-  --examples-bg-color: #bafbab;
+  --header-bg-color: #86f178;
+  --title-color: #383c38;
+  --examples-bg-color: #e5f6e2;
+  --tag-bg: linear-gradient(#ddf4dd, #c5e8bb);
+  --tag-text-color: #333;
+  --heading-color: #3f423e;
 }
 
 * {
   box-sizing: border-box;
+}
+
+p {
+  margin-block-start: 0.5em;
+  margin-block-end: 1em;
+}
+
+h1, h2, h3, h4, h5, h6, h7 {
+  margin: 0;
+  padding: 0;
+  color: var(--heading-color);
 }

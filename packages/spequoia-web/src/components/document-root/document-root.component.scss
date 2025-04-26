@@ -16,6 +16,7 @@ header {
   h1 {
     margin: 0;
     font-size: 1.5rem;
+    color: var(--title-color);
   }
 }
 
@@ -24,4 +25,11 @@ main {
   flex: 1;
   overflow: hidden;
   max-width: 800px;
+}
+
+input[type="search"] {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--main-border-color);
+  border-radius: 5px;
 }

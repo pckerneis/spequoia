@@ -78,6 +78,10 @@ description: |
 features:
   - id: FEAT-001
     name: The web app shows a header with the app title "My TODO"
+    description: |
+      The web app title "*My TODO*" is displayed in the header. It's shown in the header element
+      in a `h1` tag.
+    tags: [ui, header]
     examples:
       - id: EX-001
         name: The web app shows a header with the app title "My TODO"
@@ -85,12 +89,14 @@ features:
           - app title has text "My TODO"
   - id: FEAT-002
     name: The web app shows a placeholder when todo list is empty
+    tags: [ui, task-list]
     examples:
       - id: EX-002
         steps:
           - task list placeholder has text "No tasks"
   - id: FEAT-003
     name: The app allows creating tasks
+    tags: [ui, task-creation]
     examples:
       - id: EX-003
         steps:
@@ -103,6 +109,7 @@ features:
           - task 1 is not done
   - id: FEAT-004
     name: The web app shows a list of tasks
+    tags: [ui, task-list]
     examples:
       - id: EX-004
         preconditions:
@@ -121,6 +128,7 @@ features:
           - second task is done
   - id: FEAT-005
     name: The app allows marking tasks as done
+    tags: [ui, task-list]
     examples:
       - id: EX-005a
         name: The app allows marking tasks as done
@@ -147,6 +155,7 @@ features:
           - first task is marked as done
   - id: FEAT-006
     name: The app allows marking tasks as not done
+    tags: [ui, task-list]
     examples:
       - id: EX-006
         preconditions:
@@ -156,6 +165,7 @@ features:
           - first task is marked as not done
   - id: FEAT-007
     name: The app allows deleting tasks
+    tags: [ui, task-list]
     examples:
       - id: EX-007
         preconditions:
@@ -166,6 +176,7 @@ features:
           - task list has 0 task elements
   - id: FEAT-008
     name: The app state is persisted in local storage
+    tags: [ui, state]
     examples:
       - id: EX-008
         steps:
@@ -177,6 +188,7 @@ features:
           - first task is done
   - id: FEAT-009
     name: Marking a task as done moves it to the end of the list with an animation
+    tags: [ui, task-list]
     examples:
       - id: EX-009
         preconditions:
