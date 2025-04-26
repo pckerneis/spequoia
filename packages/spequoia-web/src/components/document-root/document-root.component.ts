@@ -39,6 +39,36 @@ export class DocumentRootComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.setupScrollListener();
+    this.scrollToHashHeading();
+  }
+
+  private scrollToHashHeading(): void {
+    if (!this.mainContainer?.nativeElement || !this.processedDocument) {
+      return;
+    }
+
+    const hash = window.location.hash.slice(1); // Remove the # symbol
+    if (!hash) {
+      return;
+    }
+
+    // Find the heading with matching ID
+    const headingElement = this.mainContainer.nativeElement.querySelector(`#${hash}`);
+    if (headingElement) {
+      // Set active heading
+      this.activeHeadingId.set(hash);
+
+      // Scroll the heading into view with a small offset
+      const container = this.mainContainer.nativeElement;
+      const containerRect = container.getBoundingClientRect();
+      const headingRect = headingElement.getBoundingClientRect();
+      const scrollTop = headingRect.top - containerRect.top + container.scrollTop - 20;
+
+      container.scrollTo({
+        top: scrollTop,
+        behavior: 'smooth'
+      });
+    }
   }
 
   private setupScrollListener(): void {
