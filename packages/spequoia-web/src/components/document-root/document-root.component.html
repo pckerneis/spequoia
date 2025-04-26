@@ -10,12 +10,14 @@
       </div>
     </header>
 
-    <p [innerHTML]="document.description | markdown"></p>
+    <main>
+      <p [innerHTML]="document.description | markdown"></p>
 
-    <h2>Features</h2>
+      <h2>Features</h2>
 
-    @for(feature of document.features; track feature.id) {
-      <app-feature-panel [feature]="feature"/>
-    }
+      @for(feature of document.features; track feature.id) {
+        <app-feature-panel [feature]="feature"/>
+      }
+    </main>
   </div>
 }

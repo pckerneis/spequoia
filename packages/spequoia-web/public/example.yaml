@@ -1,6 +1,7 @@
 version: 1.0.0-it1
 title: TODO app
 description: |
+  # TODO app
   This application is a web application in vanilla JS that
   allows you to create, read, update, and delete tasks.
 

@@ -1,5 +1,5 @@
 @if (feature) {
-  <h3 [innerHTML]="feature.name | markdown"></h3>
+  <h3>{{ feature.name }}</h3>
 
   @if(feature.tags && feature.tags.length > 0) {
     <label>Tags:

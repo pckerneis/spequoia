@@ -1,5 +1,19 @@
-html {
+body, html {
   font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-  Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-  "Segoe UI Symbol";
+    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  margin: 0;
+  padding: 0;
+  background-color: var(--main-bg-color);
+
+  // Variables
+  --main-bg-color: #ffffff;
+  --main-text-color: #333;
+  --main-border-color: #c3c3c3;
+  --header-bg-color: #bafbab;
+  --examples-bg-color: #bafbab;
+}
+
+* {
+  box-sizing: border-box;
 }
