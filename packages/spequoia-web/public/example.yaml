@@ -1,53 +1,185 @@
-version: 1.0
-
-title: Spequoia Mockup
+version: 1.0.0-it1
+title: TODO app
 description: |
-  The **Spequoia Mockup** component allows to design features and preview them as wireframe mockups.
+  This application is a web application in vanilla JS that
+  allows you to create, read, update, and delete tasks.
 
-views:
-  main_page:
-    title:
-      $selector: h1
-      $text: spequoia-mockup
-    toolbar:
-      $selector: .toolbar
-      $direction: row
-      file_selector: input[type="file"]
-      button: button[type="submit"]
-      example_selector: select
-    main:
-      $selector: main
-      $direction: row
-      example_panel: .example-panel
-      viewport: .viewport
-    footer:
-      $direction: row
-      previous:
-        $selector: button.previous
-        $text: Previous
-      next:
-        $selector: button.next
-        $text: Next
+  The tasks are stored in local storage as a JSON object.
+
+  ## Local storage
+
+  The local storage is a JSON object with a list of tasks (`tasks`).
+
+  Each task has a UUID, a title, a creation date, and a boolean `done` property.
+
+  Example:
+
+  ```json
+  {
+    "tasks": [
+      {
+        "id": "12345678-1234-1234-1234-123456789012",
+        "title": "Task 1",
+        "createdAt": "2025-04-12T18:34:06.000Z",
+        "done": false
+      },
+      {
+        "id": "12345678-1234-1234-1234-123456789012",
+        "title": "Task 2",
+        "createdAt": "2025-04-12T18:34:56.000Z",
+        "done": true
+      }
+    ]
+  }
+  ```
+
+  ## Technologies
+
+  - HTML
+  - CSS
+  - JavaScript
+  - Playwright
+
+  ## Testing
+
+  The application is tested using Playwright.
+
+  ## Project structure
+
+  - package.json: NPM package configuration
+  - package-lock.json: NPM package lock
+  - index.html: application root
+  - style.css: CSS styles
+  - script.js: JavaScript application
+  - README.md: project documentation
+  - .gitignore: git ignore file
+  - spequoia.yaml: Spequoia configuration file
+
+  ## UI
+
+  The web-app displays as a minimalistic HTML page that consists
+  of a header with the app title "My TODO".
+
+  The main section displays a task creation form and the list of tasks.
+
+  The task creation form consists of a text input for the task name
+  and a "Add" button.
+
+  Tasks are displayed in a list with the following properties:
+
+  - title: the task title, striked through when task is completed
+  - done: a checkbox that marks the task as done
+
+  Tasks are ordered by descending creation date. Done tasks are displayed last.
+
+  Clicking the done checkbox updates the done status of a task.
 
 features:
   - id: FEAT-001
-    name: Main page display
-    tags: [display]
-    description: The main page should display the title, toolbar, and main content area.
+    name: The web app shows a header with the app title "My TODO"
     examples:
       - id: EX-001
-        name: Main page elements
+        name: The web app shows a header with the app title "My TODO"
         steps:
-          - visit $main_page
-          - $title should be visible
-          - $title should have text "spequoia-mockup"
-          - $toolbar should be visible
-          - $file_selector should be visible
-          - $button should be visible
-          - $example_selector should be visible
-          - $main should be visible
-          - $main $viewport should be visible
-          - $footer $previous should be visible
-          - $footer $previous should be disabled
-          - $footer $next should be visible
-          - $footer $next should be enabled
+          - app title has text "My TODO"
+  - id: FEAT-002
+    name: The web app shows a placeholder when todo list is empty
+    examples:
+      - id: EX-002
+        steps:
+          - task list placeholder has text "No tasks"
+  - id: FEAT-003
+    name: The app allows creating tasks
+    examples:
+      - id: EX-003
+        steps:
+          - task creation form has text input for task name
+          - task creation form has button with text "Add"
+          - user types "New task" in task name input
+          - user clicks "Add" button
+          - task list has 1 task element
+          - task 1 has title "New task"
+          - task 1 is not done
+  - id: FEAT-004
+    name: The web app shows a list of tasks
+    examples:
+      - id: EX-004
+        preconditions:
+          - task list has a pending task named "Task 1"
+          - task list has a completed task named "Task 2"
+        steps:
+          - task list has 2 task elements
+          - task with title "Task 1" is displayed first
+          - first task has title "Task 1"
+          - first task has checkbox
+          - first task has delete button
+          - first task is not done
+          - second task has title "Task 2"
+          - second task has checkbox
+          - second task has delete button
+          - second task is done
+  - id: FEAT-005
+    name: The app allows marking tasks as done
+    examples:
+      - id: EX-005a
+        preconditions:
+          - task list has a pending task named "Task 1"
+        steps:
+          - user clicks checkbox for first task
+          - first task is marked as done
+      - id: EX-005b
+        preconditions:
+          - task list has two pending tasks named "Task 1" and "Task 2"
+        steps:
+          - user clicks checkbox for first task
+          - first task is marked as done
+          - second task is not affected
+      - id: EX-005c
+        preconditions:
+          - task list has a pending task named "Task 1"
+        steps:
+          - user clicks task title area for first task
+          - first task is marked as done
+  - id: FEAT-006
+    name: The app allows marking tasks as not done
+    examples:
+      - id: EX-006
+        preconditions:
+          - task list has a completed task named "Task 1"
+        steps:
+          - user clicks checkbox for first task
+          - first task is marked as not done
+  - id: FEAT-007
+    name: The app allows deleting tasks
+    examples:
+      - id: EX-007
+        preconditions:
+          - task list has a pending task named "Task 1"
+        steps:
+          - user clicks delete button for first task
+          - first task is removed from the list
+          - task list has 0 task elements
+  - id: FEAT-008
+    name: The app state is persisted in local storage
+    examples:
+      - id: EX-008
+        steps:
+          - user creates a task named "Task 1"
+          - user marks "Task 1" as done
+          - user refreshes the page
+          - task list has 1 task element
+          - first task has title "Task 1"
+          - first task is done
+  - id: FEAT-009
+    name: Marking a task as done moves it to the end of the list with an animation
+    examples:
+      - id: EX-009
+        preconditions:
+          - task list has a pending task named "Task 1"
+          - task list has a pending task named "Task 2"
+        steps:
+          - user marks "Task 1" as done
+          - animation is triggered
+          - first task has title "Task 2"
+          - second task has title "Task 1"
+          - second task is done

@@ -14,7 +14,7 @@ export interface SpequoiaFeature {
 
 export interface SpequoiaExample {
   id: string;
-  name: string;
+  name?: string;
   description?: string;
   steps?: Array<string>;
 }

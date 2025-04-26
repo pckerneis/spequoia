@@ -14,7 +14,7 @@ export interface ParsedFeature {
 
 export interface ParsedExample {
   id: string;
-  name: string;
+  name?: string;
   description?: string;
   steps?: ParsedStep[];
 }

@@ -5,7 +5,12 @@
     <li>
       <details>
         <summary>
-          {{ example.name }}
+          <b>{{ example.id }}</b>
+
+          @if(example.name) {
+            <span> - </span>
+            {{ example.name }}
+          }
         </summary>
 
         <ul>
