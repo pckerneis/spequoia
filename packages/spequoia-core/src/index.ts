@@ -1,37 +1,38 @@
-import { parse } from 'yaml';
+import { parse } from "yaml";
+import { ParsedDocument } from "./model/parsed-document.model";
+import Ajv from "ajv";
+import schema from "spequoia-model/schema/spequoia.json";
+import {SpequoiaDocument} from 'spequoia-model/src/model/spequoia.model';
 
-export interface SpecFeature {
-  id: string;
-  description: string;
-  examples?: SpecExample[];
-}
+export function parseSpec(yamlText: string): ParseResult {
+  const rawDocument = parse(yamlText) as SpequoiaDocument;
+  const ajv = new Ajv();
+  const validateFn = ajv.compile(schema);
+  const valid = validateFn(rawDocument);
 
-export interface SpecExample {
-  id: string;
-  description: string;
-  operations?: Array<string | Record<string, any>>;
-}
+  if (!valid) {
+    const errors =
+      validateFn.errors?.map((error) => {
+        return error.message ?? `Unknown error: ${JSON.stringify(error)}`;
+      }) || [];
 
-export interface SpecDocument {
-  features: SpecFeature[];
-}
-
-/**
- * Parses a YAML spec string into a typed SpecDocument.
- * @param yamlText The YAML string to parse.
- * @returns A structured SpecDocument object.
- * @throws Error if the YAML is invalid or does not match expected shape.
- */
-export function parseSpec(yamlText: string): SpecDocument {
-  const parsed = parse(yamlText);
-
-  if (typeof parsed !== 'object' || parsed === null) {
-    throw new Error('Invalid spec format: Root is not an object.');
+    return {
+      valid: false,
+      rawDocument,
+      errors: errors,
+    };
   }
 
-  if (!('features' in parsed) || !Array.isArray((parsed as any).features)) {
-    throw new Error('Invalid spec format: Missing "features" array.');
-  }
+  return {
+    valid: true,
+    rawDocument,
+    parsedDocument: rawDocument as unknown as ParsedDocument,
+  };
+}
 
-  return parsed as SpecDocument;
+interface ParseResult {
+  valid: boolean;
+  errors?: string[];
+  rawDocument: SpequoiaDocument;
+  parsedDocument?: ParsedDocument;
 }

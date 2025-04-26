@@ -16,11 +16,11 @@ export interface ParsedExample {
 
 export interface ParsedStep {
   operation: string;
-  params: Record<string, any>;
+  params: Record<string, unknown>;
   fragments: ParsedStepFragment[];
 }
 
-export type ParsedStepFragmentType = 'text' | 'variable';
+export type ParsedStepFragmentType = "text" | "variable";
 
 export interface ParsedStepFragment {
   type: ParsedStepFragmentType;

@@ -8,6 +8,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": true,
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "@spequoia/*": ["packages/*/src"]

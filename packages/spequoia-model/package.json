@@ -4,8 +4,8 @@
   "description": "Spequoia models as TypeScript interfaces and JSON schemas",
   "main": "index.js",
   "scripts": {
-    "clean": "rimraf schemas",
-    "generate-schema": "npx ts-json-schema-generator --path './src/model/spequoia.model.ts' --type SpequoiaDocument --out schemas/spequoia.json"
+    "clean": "rimraf schema",
+    "build": "npx ts-json-schema-generator --path src/model/spequoia.model.ts --type SpequoiaDocument --out schema/spequoia.json"
   },
   "author": "pckerneis",
   "license": "MIT",

@@ -11,5 +11,5 @@ export interface SpequoiaFeature {
 export interface SpequoiaExample {
   id: string;
   description: string;
-  steps?: Array<string | Record<string, any>>;
+  steps?: Array<string | Record<string, unknown>>;
 }

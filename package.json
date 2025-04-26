@@ -6,10 +6,8 @@
   "type": "module",
   "scripts": {
     "build": "npm run build --workspaces",
-    "clean": "rimraf packages/**/dist",
-    "lint": "npm run lint:code && npm run lint:specs",
-    "lint:code": "eslint packages/**/*.ts",
-    "lint:specs": "markdownlint \"packages/**/*.md\" && yaml-lint packages/**/*.yaml",
+    "clean": "npm run clean --workspaces",
+    "lint": "eslint packages/**/*.ts",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "test": "vitest run --coverage",
@@ -18,14 +16,18 @@
   "author": "pckerneis",
   "license": "MIT",
   "workspaces": [
-    "packages/*"
+    "packages/spequoia-model",
+    "packages/spequoia-core"
   ],
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.25.1",
     "@typescript-eslint/eslint-plugin": "^8.31.0",
     "@typescript-eslint/parser": "^8.31.0",
     "@vitest/coverage-v8": "^3.1.2",
-    "eslint": "^9.25.1",
-    "markdownlint-cli2": "^0.17.2",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^10.1.2",
+    "globals": "^16.0.0",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "tsup": "^8.4.0",
