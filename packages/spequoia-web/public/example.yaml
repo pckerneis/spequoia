@@ -123,12 +123,14 @@ features:
     name: The app allows marking tasks as done
     examples:
       - id: EX-005a
+        name: The app allows marking tasks as done
         preconditions:
           - task list has a pending task named "Task 1"
         steps:
           - user clicks checkbox for first task
           - first task is marked as done
       - id: EX-005b
+        name: Marking a task as done does not affect other tasks
         preconditions:
           - task list has two pending tasks named "Task 1" and "Task 2"
         steps:
@@ -136,6 +138,8 @@ features:
           - first task is marked as done
           - second task is not affected
       - id: EX-005c
+        name: Clicking the task title area marks the task as done
+        description: You can also click the task title area to mark the task as done
         preconditions:
           - task list has a pending task named "Task 1"
         steps:

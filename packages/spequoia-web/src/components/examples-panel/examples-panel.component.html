@@ -13,6 +13,10 @@
           }
         </summary>
 
+        @if (example.description) {
+        <p [innerHTML]="example.description"></p>
+        }
+
         <ul>
           @for(step of example.steps; track $index) {
             <li>
