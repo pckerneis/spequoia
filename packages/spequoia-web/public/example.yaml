@@ -32,6 +32,7 @@ views:
 features:
   - id: FEAT-001
     name: Main page display
+    tags: [display]
     description: The main page should display the title, toolbar, and main content area.
     examples:
       - id: EX-001

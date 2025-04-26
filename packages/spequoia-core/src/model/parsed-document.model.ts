@@ -6,14 +6,17 @@ export interface ParsedDocument {
 
 export interface ParsedFeature {
   id: string;
-  description: string;
+  name: string;
+  description?: string;
   examples?: ParsedExample[];
+  tags?: string[];
 }
 
 export interface ParsedExample {
   id: string;
-  description: string;
-  steps: ParsedStep[];
+  name: string;
+  description?: string;
+  steps?: ParsedStep[];
 }
 
 export interface ParsedStep {

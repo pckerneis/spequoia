@@ -9,6 +9,7 @@ export interface SpequoiaFeature {
   name: string;
   description?: string;
   examples?: SpequoiaExample[];
+  tags?: string[];
 }
 
 export interface SpequoiaExample {

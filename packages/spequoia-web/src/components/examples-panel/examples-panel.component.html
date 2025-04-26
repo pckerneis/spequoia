@@ -1,0 +1,21 @@
+<h3>Examples</h3>
+
+<ul>
+  @for(example of examples; track $index) {
+    <li>
+      <details>
+        <summary>
+          {{ example.name }}
+        </summary>
+
+        <ul>
+          @for(step of example.steps; track $index) {
+            <li>
+              {{ step }}
+            </li>
+          }
+        </ul>
+      </details>
+    </li>
+  }
+</ul>

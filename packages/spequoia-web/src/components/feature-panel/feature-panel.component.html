@@ -1,0 +1,21 @@
+@if (feature) {
+  <h2 [innerHTML]="feature.name | markdown"></h2>
+
+  @if(feature.tags && feature.tags.length > 0) {
+    <label>Tags:
+      <ul>
+        @for (tag of feature.tags; track tag) {
+          <li class="tag">{{ tag }}</li>
+        }
+      </ul>
+    </label>
+  }
+
+  @if (feature.description) {
+    <p [innerHTML]="feature.description | markdown"></p>
+  }
+
+  @if (feature.examples) {
+    <app-examples-panel [examples]="feature.examples"/>
+  }
+}

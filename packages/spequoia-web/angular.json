@@ -34,7 +34,10 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "ajv", "mdurl/encode.js", "entities"
+            ]
           },
           "configurations": {
             "production": {
