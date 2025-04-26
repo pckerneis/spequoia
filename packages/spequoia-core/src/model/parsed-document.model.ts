@@ -1,4 +1,6 @@
 export interface ParsedDocument {
+  title: string;
+  description?: string;
   features: ParsedFeature[];
 }
 

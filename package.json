@@ -16,7 +16,8 @@
   "license": "MIT",
   "workspaces": [
     "packages/spequoia-model",
-    "packages/spequoia-core"
+    "packages/spequoia-core",
+    "packages/spequoia-web"
   ],
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.31.0",

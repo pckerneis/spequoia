@@ -1,0 +1,52 @@
+version: 1.0
+
+title: Spequoia Mockup
+description: |
+  The *Spequoia Mockup* component allows to design features and preview them as wireframe mockups.
+
+views:
+  main_page:
+    title:
+      $selector: h1
+      $text: spequoia-mockup
+    toolbar:
+      $selector: .toolbar
+      $direction: row
+      file_selector: input[type="file"]
+      button: button[type="submit"]
+      example_selector: select
+    main:
+      $selector: main
+      $direction: row
+      example_panel: .example-panel
+      viewport: .viewport
+    footer:
+      $direction: row
+      previous:
+        $selector: button.previous
+        $text: Previous
+      next:
+        $selector: button.next
+        $text: Next
+
+features:
+  - id: FEAT-001
+    name: Main page display
+    description: The main page should display the title, toolbar, and main content area.
+    examples:
+      - id: EX-001
+        name: Main page elements
+        steps:
+          - visit $main_page
+          - $title should be visible
+          - $title should have text "spequoia-mockup"
+          - $toolbar should be visible
+          - $file_selector should be visible
+          - $button should be visible
+          - $example_selector should be visible
+          - $main should be visible
+          - $main $viewport should be visible
+          - $footer $previous should be visible
+          - $footer $previous should be disabled
+          - $footer $next should be visible
+          - $footer $next should be enabled

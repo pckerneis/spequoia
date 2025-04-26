@@ -3,27 +3,35 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "SpequoiaDocument": {
-      "additionalProperties": false,
       "properties": {
+        "description": {
+          "type": "string"
+        },
         "features": {
           "items": {
             "$ref": "#/definitions/SpequoiaFeature"
           },
           "type": "array"
+        },
+        "title": {
+          "type": "string"
         }
       },
       "required": [
+        "title",
         "features"
       ],
       "type": "object"
     },
     "SpequoiaExample": {
-      "additionalProperties": false,
       "properties": {
         "description": {
           "type": "string"
         },
         "id": {
+          "type": "string"
+        },
+        "name": {
           "type": "string"
         },
         "steps": {
@@ -43,12 +51,11 @@
       },
       "required": [
         "id",
-        "description"
+        "name"
       ],
       "type": "object"
     },
     "SpequoiaFeature": {
-      "additionalProperties": false,
       "properties": {
         "description": {
           "type": "string"
@@ -61,11 +68,14 @@
         },
         "id": {
           "type": "string"
+        },
+        "name": {
+          "type": "string"
         }
       },
       "required": [
         "id",
-        "description"
+        "name"
       ],
       "type": "object"
     }

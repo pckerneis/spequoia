@@ -11,9 +11,12 @@ export function parseSpec(yamlText: string): ParseResult {
   const valid = validateFn(rawDocument);
 
   if (!valid) {
-    const errors =
+    const errors: ParseError[] =
       validateFn.errors?.map((error) => {
-        return error.message ?? `Unknown error: ${JSON.stringify(error)}`;
+        return {
+          message: error.message ?? `Unknown error: ${JSON.stringify(error)}`,
+          schemaPath: error.schemaPath
+        } satisfies ParseError;
       }) || [];
 
     return {
@@ -30,9 +33,14 @@ export function parseSpec(yamlText: string): ParseResult {
   };
 }
 
-interface ParseResult {
+export interface ParseError {
+  message: string;
+  schemaPath?: string;
+}
+
+export interface ParseResult {
   valid: boolean;
-  errors?: string[];
+  errors?: ParseError[];
   rawDocument: SpequoiaDocument;
   parsedDocument?: ParsedDocument;
 }

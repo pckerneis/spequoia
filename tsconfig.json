@@ -11,7 +11,8 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@spequoia/*": ["packages/*/src"]
+      "@spequoia/core": ["packages/spequoia-core/dist"],
+      "@spequoia/model": ["packages/spequoia-model/dist"]
     }
   },
   "include": ["packages"]

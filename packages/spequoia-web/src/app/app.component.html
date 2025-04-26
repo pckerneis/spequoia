@@ -1,0 +1,15 @@
+@if ($parseResult(); as parseResult) {
+  @if (parseResult.valid) {
+    <app-document-root [document]="parseResult.parsedDocument"/>
+  } @else {
+    <div class="errors">
+      <h2>Parsing Errors</h2>
+      <p>There were parsing errors:</p>
+      <ul>
+        @for (error of parseResult.errors; track $index) {
+          <li>{{ error.message }} at {{ error.schemaPath }}</li>
+        }
+      </ul>
+    </div>
+  }
+}
