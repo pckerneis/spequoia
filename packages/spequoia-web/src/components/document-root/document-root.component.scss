@@ -38,9 +38,10 @@ nav {
   display: flex;
   flex-direction: column;
   overflow: auto;
+  font-size: 14px;
 
   .link {
-    padding: 0.5rem 1rem;
+    padding: 0.3rem 1rem;
     text-decoration: none;
     color: var(--main-text-color);
 
