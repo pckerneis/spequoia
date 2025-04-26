@@ -27,6 +27,8 @@ export class AppComponent {
         this.$parseResult.set(parseResult);
 
         if (parseResult.parsedDocument) {
+
+          console.log("Parsed Document:", parseResult.parsedDocument);
           this.$processedDocument.set(
             this.processDocument(parseResult.parsedDocument),
           );

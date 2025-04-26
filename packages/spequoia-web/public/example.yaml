@@ -75,7 +75,6 @@ description: |
 
   Clicking the done checkbox updates the done status of a task.
 
-
 views:
   main_page:
     title:

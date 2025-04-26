@@ -2,6 +2,7 @@ export interface SpequoiaDocument {
   title: string;
   description?: string;
   features: SpequoiaFeature[];
+  views?: Record<string, any>;
 }
 
 export interface SpequoiaFeature {
