@@ -75,6 +75,30 @@ description: |
 
   Clicking the done checkbox updates the done status of a task.
 
+
+views:
+  main_page:
+    title:
+      $selector: h1
+      $text: My TODO
+    create_task_row:
+      $direction: row
+      create_task_input: input[type="text"]
+      create_task_button:
+        $selector: button[type="submit"]
+        $text: Add
+    task_list:
+      $selector: .task_list
+      task_list_empty:
+        $selector: .task_list_empty
+        $text: No tasks
+      task_row(n):
+        $selector: '[data-test-id="task-row-${n}"]'
+        $direction: row
+        task_done: input[type="checkbox"]
+        task_title: .Task_title
+        task_delete: button[type="button"]
+
 features:
   - id: FEAT-001
     name: The web app shows a header with the app title "My TODO"
@@ -85,20 +109,37 @@ features:
     examples:
       - id: EX-001
         name: The web app shows a header with the app title "My TODO"
+        description: |
+          The app title is prominently displayed in the header, making the purpose
+          of the application immediately clear to users.
         steps:
           - app title has text "My TODO"
   - id: FEAT-002
     name: The web app shows a placeholder when todo list is empty
+    description: |
+      When there are no tasks in the list, a placeholder text "No tasks" is displayed
+      to inform the user that the list is empty. This provides better UX by giving
+      clear feedback about the current state.
     tags: [ui, task-list]
     examples:
       - id: EX-002
+        description: |
+          When starting fresh or after deleting all tasks, the app shows a clear
+          "No tasks" message instead of an empty space.
         steps:
           - task list placeholder has text "No tasks"
   - id: FEAT-003
     name: The app allows creating tasks
+    description: |
+      Users can create new tasks using a form with a text input field and an "Add" button.
+      The form is always visible and accessible, making task creation straightforward.
+      New tasks are added to the list immediately and start in a 'not done' state.
     tags: [ui, task-creation]
     examples:
       - id: EX-003
+        description: |
+          Users can easily add new tasks through a simple form interface that
+          includes a text input for the task name and an Add button.
         steps:
           - task creation form has text input for task name
           - task creation form has button with text "Add"
@@ -109,9 +150,20 @@ features:
           - task 1 is not done
   - id: FEAT-004
     name: The web app shows a list of tasks
+    description: |
+      The app displays all tasks in a vertical list format. Each task item shows:
+      - A checkbox to mark the task as done/not done
+      - The task title
+      - A delete button to remove the task
+
+      Tasks maintain their visual state (done/not done) and the list preserves the order
+      with completed tasks moving to the end.
     tags: [ui, task-list]
     examples:
       - id: EX-004
+        description: |
+          The task list displays both pending and completed tasks with all necessary
+          controls for managing each task's state.
         preconditions:
           - task list has a pending task named "Task 1"
           - task list has a completed task named "Task 2"
@@ -128,10 +180,20 @@ features:
           - second task is done
   - id: FEAT-005
     name: The app allows marking tasks as done
+    description: |
+      Users can mark tasks as complete in two ways:
+      1. Clicking the checkbox next to the task
+      2. Clicking the task title area
+
+      When marked as done, the task is visually updated to show its completed state
+      and moves to the end of the list with a smooth animation.
     tags: [ui, task-list]
     examples:
       - id: EX-005a
         name: The app allows marking tasks as done
+        description: |
+          Users can mark a task as complete by clicking its checkbox, providing a
+          familiar interaction pattern.
         preconditions:
           - task list has a pending task named "Task 1"
         steps:
@@ -139,6 +201,9 @@ features:
           - first task is marked as done
       - id: EX-005b
         name: Marking a task as done does not affect other tasks
+        description: |
+          When marking a task as complete, other tasks remain unchanged, ensuring
+          that each task's state is managed independently.
         preconditions:
           - task list has two pending tasks named "Task 1" and "Task 2"
         steps:
@@ -147,7 +212,8 @@ features:
           - second task is not affected
       - id: EX-005c
         name: Clicking the task title area marks the task as done
-        description: You can also click the task title area to mark the task as done
+        description: |
+          You can also click the task title area to mark the task as done
         preconditions:
           - task list has a pending task named "Task 1"
         steps:
@@ -155,9 +221,16 @@ features:
           - first task is marked as done
   - id: FEAT-006
     name: The app allows marking tasks as not done
+    description: |
+      Completed tasks can be marked as not done by clicking their checkbox again.
+      This allows users to reactivate tasks they previously completed, useful for
+      recurring tasks or correcting accidental completions.
     tags: [ui, task-list]
     examples:
       - id: EX-006
+        description: |
+          Completed tasks can be reactivated by toggling their checkbox, allowing
+          users to easily manage recurring or mistakenly completed tasks.
         preconditions:
           - task list has a completed task named "Task 1"
         steps:
@@ -165,9 +238,16 @@ features:
           - first task is marked as not done
   - id: FEAT-007
     name: The app allows deleting tasks
+    description: |
+      Each task has a delete button that allows users to permanently remove the task
+      from the list. This action is immediate and cannot be undone, helping users
+      maintain a clean and relevant task list.
     tags: [ui, task-list]
     examples:
       - id: EX-007
+        description: |
+          Tasks can be permanently removed from the list using the delete button,
+          helping users maintain a clean task list.
         preconditions:
           - task list has a pending task named "Task 1"
         steps:
@@ -176,9 +256,20 @@ features:
           - task list has 0 task elements
   - id: FEAT-008
     name: The app state is persisted in local storage
+    description: |
+      The application uses browser's local storage to persist the entire task list state.
+      This means that tasks, their completion status, and order are preserved even when:
+      - The page is refreshed
+      - The browser is closed and reopened
+      - The user navigates away and returns
+
+      This ensures users don't lose their task data between sessions.
     tags: [ui, state]
     examples:
       - id: EX-008
+        description: |
+          The app automatically saves all changes to local storage, ensuring that
+          task data persists between page refreshes and browser sessions.
         steps:
           - user creates a task named "Task 1"
           - user marks "Task 1" as done
@@ -188,9 +279,19 @@ features:
           - first task is done
   - id: FEAT-009
     name: Marking a task as done moves it to the end of the list with an animation
+    description: |
+      When a task is marked as complete, it smoothly animates to the end of the list.
+      This provides several benefits:
+      - Visual feedback that the action was successful
+      - Clear indication of where completed tasks go
+      - Maintains a natural separation between pending and completed tasks
+      - Enhances the user experience with smooth transitions
     tags: [ui, task-list]
     examples:
       - id: EX-009
+        description: |
+          When a task is completed, it smoothly animates to the end of the list,
+          providing clear visual feedback and maintaining a logical task order.
         preconditions:
           - task list has a pending task named "Task 1"
           - task list has a pending task named "Task 2"
