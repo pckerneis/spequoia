@@ -2,7 +2,7 @@ version: 1.0
 
 title: Spequoia Mockup
 description: |
-  The *Spequoia Mockup* component allows to design features and preview them as wireframe mockups.
+  The **Spequoia Mockup** component allows to design features and preview them as wireframe mockups.
 
 views:
   main_page:

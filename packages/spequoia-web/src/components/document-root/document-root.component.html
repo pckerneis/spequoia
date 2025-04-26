@@ -1,6 +1,6 @@
 @if(document) {
   <div class="document-root">
-    <h1>{{ document.title }}</h1>
-    <p>{{ document.description }}</p>
+    <h1 [innerHTML]="document.title | markdown"></h1>
+    <p [innerHTML]="document.description | markdown"></p>
   </div>
 }
