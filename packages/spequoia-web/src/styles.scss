@@ -27,6 +27,7 @@ html {
   --tag-text-color: #333;
   --heading-color: #3f423e;
   --nav-bg-color: #efefef;
+  --active-nav-item-bg-color: #d3f2d0;
 }
 
 * {
@@ -48,4 +49,5 @@ h7 {
   margin: 0;
   padding: 0;
   color: var(--heading-color);
+  scroll-margin: 10px;
 }

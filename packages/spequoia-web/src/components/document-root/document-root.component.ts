@@ -52,21 +52,17 @@ export class DocumentRootComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    // Find the heading with matching ID
     const headingElement = this.mainContainer.nativeElement.querySelector(`#${hash}`);
     if (headingElement) {
-      // Set active heading
       this.activeHeadingId.set(hash);
 
-      // Scroll the heading into view with a small offset
       const container = this.mainContainer.nativeElement;
       const containerRect = container.getBoundingClientRect();
       const headingRect = headingElement.getBoundingClientRect();
-      const scrollTop = headingRect.top - containerRect.top + container.scrollTop - 20;
+      const scrollTop = headingRect.top - containerRect.top + container.scrollTop - 10;
 
       container.scrollTo({
         top: scrollTop,
-        behavior: 'smooth'
       });
     }
   }
@@ -89,7 +85,7 @@ export class DocumentRootComponent implements AfterViewInit, OnDestroy {
   }
 
   private updateActiveHeading(): void {
-    if (!this.mainContainer || !this.processedDocument?.headings.length) {
+    if (!this.mainContainer?.nativeElement || !this.processedDocument?.headings.length) {
       return;
     }
 
@@ -133,6 +129,19 @@ export class DocumentRootComponent implements AfterViewInit, OnDestroy {
 
   public onHeadingClick(id: string): void {
     this.activeHeadingId.set(id);
+    const headingElement = document.getElementById(id);
+
+    if (headingElement && this.mainContainer?.nativeElement) {
+      const container = this.mainContainer.nativeElement;
+      const containerRect = container.getBoundingClientRect();
+      const headingRect = headingElement.getBoundingClientRect();
+      const scrollTop = headingRect.top - containerRect.top + container.scrollTop - 20;
+
+      container.scrollTo({
+        top: scrollTop,
+        behavior: 'smooth'
+      });
+    }
   }
 
   ngOnDestroy(): void {

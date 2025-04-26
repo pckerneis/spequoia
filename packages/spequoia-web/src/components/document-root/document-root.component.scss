@@ -45,7 +45,7 @@ nav {
     color: var(--main-text-color);
 
     &.active {
-      font-weight: bold;
+      background-color: var(--active-nav-item-bg-color);
     }
   }
 }
@@ -61,7 +61,6 @@ nav {
   justify-content: center;
   flex: 1;
   overflow: auto;
-  scroll-behavior: smooth;
 }
 
 main {
