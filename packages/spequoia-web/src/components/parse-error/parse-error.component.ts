@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-parse-error',
   imports: [],
   templateUrl: './parse-error.component.html',
-  styleUrl: './parse-error.component.scss'
+  styleUrl: './parse-error.component.scss',
 })
-export class ParseErrorComponent {
-
-}
+export class ParseErrorComponent {}

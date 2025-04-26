@@ -4,7 +4,7 @@
     <span> - {{ feature.name }}</span>
   </h3>
 
-  @if(feature.tags && feature.tags.length > 0) {
+  @if (feature.tags && feature.tags.length > 0) {
     <label class="tags">
       <span>Tags:</span>
       <ul>
@@ -20,6 +20,6 @@
   }
 
   @if (feature.examples) {
-    <app-examples-panel [examples]="feature.examples"/>
+    <app-examples-panel [examples]="feature.examples" />
   }
 }

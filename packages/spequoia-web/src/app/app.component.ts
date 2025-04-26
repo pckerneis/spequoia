@@ -1,17 +1,17 @@
-import {Component, signal} from '@angular/core';
-import {DocumentRootComponent} from '../components/document-root/document-root.component';
-import {HttpClient} from '@angular/common/http';
-import {ParseResult, parseSpec} from '@spequoia/core';
-import {ParsedDocument} from 'spequoia-core/dist/model/parsed-document.model';
+import { Component, signal } from '@angular/core';
+import { DocumentRootComponent } from '../components/document-root/document-root.component';
+import { HttpClient } from '@angular/common/http';
+import { ParseResult, parseSpec } from '@spequoia/core';
+import { ParsedDocument } from 'spequoia-core/dist/model/parsed-document.model';
 import * as commonmark from 'commonmark';
-import {Heading} from '../models/heading.model';
-import {ProcessedDocument} from '../models/processed-document.model';
+import { Heading } from '../models/heading.model';
+import { ProcessedDocument } from '../models/processed-document.model';
 
 @Component({
   selector: 'app-root',
   imports: [DocumentRootComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'spequoia-web';
@@ -20,14 +20,18 @@ export class AppComponent {
   $processedDocument = signal(null as ProcessedDocument | null);
 
   constructor(public readonly http: HttpClient) {
-    this.http.get('example.yaml', {responseType: 'text'}).subscribe((data) => {
-      const parseResult = parseSpec(data);
-      this.$parseResult.set(parseResult);
+    this.http
+      .get('example.yaml', { responseType: 'text' })
+      .subscribe((data) => {
+        const parseResult = parseSpec(data);
+        this.$parseResult.set(parseResult);
 
-      if (parseResult.parsedDocument) {
-        this.$processedDocument.set(this.processDocument(parseResult.parsedDocument));
-      }
-    });
+        if (parseResult.parsedDocument) {
+          this.$processedDocument.set(
+            this.processDocument(parseResult.parsedDocument),
+          );
+        }
+      });
   }
 
   processDocument(parsedDocument: ParsedDocument): ProcessedDocument {
@@ -36,7 +40,10 @@ export class AppComponent {
     const knownHeadingIds = new Set<string>();
 
     const generateUniqueId = (text: string) => {
-      const baseId = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+      const baseId = text
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w-]/g, '');
       let uniqueId = baseId;
       let counter = 1;
 
@@ -55,10 +62,9 @@ export class AppComponent {
       const reader = new commonmark.Parser();
       const parsed = reader.parse(parsedDocument.description);
 
-
       class CustomHtmlRenderer extends commonmark.HtmlRenderer {
         heading(node: commonmark.Node, entering: boolean): void {
-          const tagname = "h" + node.level;
+          const tagname = 'h' + node.level;
           const self = this as any;
           const attrs = self.attrs(node);
 
@@ -67,15 +73,15 @@ export class AppComponent {
               const heading = {
                 level: node.level,
                 text: node.firstChild.literal,
-                id: generateUniqueId(node.firstChild.literal)
+                id: generateUniqueId(node.firstChild.literal),
               };
               headings.push(heading);
-              attrs.push(["id", heading.id]);
+              attrs.push(['id', heading.id]);
             }
             self.cr();
             self.tag(tagname, attrs);
           } else {
-            self.tag("/" + tagname);
+            self.tag('/' + tagname);
             self.cr();
           }
         }
@@ -88,7 +94,7 @@ export class AppComponent {
     headings.push({
       id: generateUniqueId('features'),
       text: 'Features',
-      level: 1
+      level: 1,
     });
 
     const processedFeatures = [];
@@ -98,14 +104,14 @@ export class AppComponent {
       const featureHeading = {
         id: featureAnchorId,
         text: feature.name,
-        level: 2
+        level: 2,
       };
 
       headings.push(featureHeading);
 
       processedFeatures.push({
         ...feature,
-        anchorId: featureAnchorId
+        anchorId: featureAnchorId,
       });
     }
 

@@ -8,9 +8,8 @@ describe('ParseErrorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ParseErrorComponent]
-    })
-    .compileComponents();
+      imports: [ParseErrorComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ParseErrorComponent);
     component = fixture.componentInstance;

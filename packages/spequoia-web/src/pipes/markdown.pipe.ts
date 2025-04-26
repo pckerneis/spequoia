@@ -2,10 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import * as commonmark from 'commonmark';
 
 @Pipe({
-  name: 'markdown'
+  name: 'markdown',
 })
 export class MarkdownPipe implements PipeTransform {
-
   transform(value: unknown, ...args: unknown[]): unknown {
     if (typeof value !== 'string') {
       return value;

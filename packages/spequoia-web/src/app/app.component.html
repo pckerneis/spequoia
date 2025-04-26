@@ -1,8 +1,6 @@
 @if ($parseResult(); as parseResult) {
   @if (parseResult.valid) {
-    <app-document-root
-      [processedDocument]="$processedDocument()"
-    />
+    <app-document-root [processedDocument]="$processedDocument()" />
   } @else {
     <div class="errors">
       <h2>Parsing Errors</h2>

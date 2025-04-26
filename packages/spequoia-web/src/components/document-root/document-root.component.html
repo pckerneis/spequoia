@@ -6,7 +6,7 @@
       </div>
 
       <div>
-        <input type="search" placeholder="Search..."/>
+        <input type="search" placeholder="Search..." />
       </div>
     </header>
 
@@ -32,8 +32,11 @@
 
           <h2>Features</h2>
 
-          @for (feature of processedDocument.processedFeatures; track feature.id) {
-            <app-feature-panel [feature]="feature"/>
+          @for (
+            feature of processedDocument.processedFeatures;
+            track feature.id
+          ) {
+            <app-feature-panel [feature]="feature" />
           }
         </main>
       </div>

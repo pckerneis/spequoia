@@ -1,27 +1,27 @@
 <h4>Examples</h4>
 
 <ul class="examples">
-  @for(example of examples; track $index) {
+  @for (example of examples; track $index) {
     <li>
       <details>
         <summary>
           <b>{{ example.id }}</b>
 
-          @if(example.name) {
+          @if (example.name) {
             <span> - </span>
             {{ example.name }}
           }
         </summary>
 
         @if (example.description) {
-        <p [innerHTML]="example.description"></p>
+          <p [innerHTML]="example.description"></p>
         }
 
         <ul>
-          @for(step of example.steps; track $index) {
+          @for (step of example.steps; track $index) {
             <li>
               @for (fragment of step.fragments; track $index) {
-                @if (fragment.type == 'variable') {
+                @if (fragment.type == "variable") {
                   <b>&#64;{{ fragment.value }} </b>
                 } @else {
                   <span>{{ fragment.value }} </span>
