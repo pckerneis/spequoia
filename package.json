@@ -1,0 +1,14 @@
+{
+  "name": "spequoia",
+  "version": "1.0.0",
+  "description": "Spequoia is a spec-as-code toolkit that transforms readable specifications into documentation, wireframe previews, automated tests, and interactive demos.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "pckerneis",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ]
+}
