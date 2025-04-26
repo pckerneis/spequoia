@@ -1,8 +1,8 @@
-@if(document) {
+@if (processedDocument) {
   <div class="document-root">
     <header>
       <div>
-        <h1>{{ document.title }}</h1>
+        <h1>{{ processedDocument.title }}</h1>
       </div>
 
       <div>
@@ -10,14 +10,33 @@
       </div>
     </header>
 
-    <main>
-      <p [innerHTML]="document.description | markdown"></p>
+    <div class="panels">
+      <nav>
+        @for (heading of processedDocument.headings; track $index) {
+          <a
+            href="#{{ heading.id }}"
+            [style.padding-left]="heading.level * 20 + 'px'"
+            class="link"
+            [class.active]="heading.id == activeHeadingId()"
+            (click)="onHeadingClick(heading.id)"
+          >
+            {{ heading.text }}
+          </a>
+        }
+      </nav>
+      <div class="main-container">
+        <main>
+          @if (safeProcessedDescription(); as descr) {
+            <p [innerHTML]="descr"></p>
+          }
 
-      <h2>Features</h2>
+          <h2>Features</h2>
 
-      @for(feature of document.features; track feature.id) {
-        <app-feature-panel [feature]="feature"/>
-      }
-    </main>
+          @for (feature of processedDocument.processedFeatures; track feature.id) {
+            <app-feature-panel [feature]="feature"/>
+          }
+        </main>
+      </div>
+    </div>
   </div>
 }

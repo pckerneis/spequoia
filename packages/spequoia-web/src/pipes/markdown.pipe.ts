@@ -7,7 +7,6 @@ import * as commonmark from 'commonmark';
 export class MarkdownPipe implements PipeTransform {
 
   transform(value: unknown, ...args: unknown[]): unknown {
-    console.log('>>> value', value)
     if (typeof value !== 'string') {
       return value;
     }

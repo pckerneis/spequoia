@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
-import {ParsedFeature} from 'spequoia-core/dist/model/parsed-document.model';
 import {MarkdownPipe} from '../../pipes/markdown.pipe';
 import {ExamplesPanelComponent} from '../examples-panel/examples-panel.component';
+import {ProcessedFeature} from '../../models/processed-document.model';
 
 @Component({
   selector: 'app-feature-panel',
@@ -13,6 +13,5 @@ import {ExamplesPanelComponent} from '../examples-panel/examples-panel.component
   styleUrl: './feature-panel.component.scss'
 })
 export class FeaturePanelComponent {
-  @Input() feature: ParsedFeature | undefined;
-
+  @Input() feature: ProcessedFeature | undefined;
 }
