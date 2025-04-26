@@ -1,5 +1,5 @@
 @if (feature) {
-  <h2 [innerHTML]="feature.name | markdown"></h2>
+  <h3 [innerHTML]="feature.name | markdown"></h3>
 
   @if(feature.tags && feature.tags.length > 0) {
     <label>Tags:
