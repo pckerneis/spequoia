@@ -122,6 +122,7 @@ features:
     tags: [ui, task-list]
     examples:
       - id: EX-002
+        name: Empty task list shows a placeholder message
         description: |
           When starting fresh or after deleting all tasks, the app shows a clear
           "No tasks" message instead of an empty space.
@@ -136,6 +137,7 @@ features:
     tags: [ui, task-creation]
     examples:
       - id: EX-003
+        name: Creating a new task using the form
         description: |
           Users can easily add new tasks through a simple form interface that
           includes a text input for the task name and an Add button.
@@ -160,6 +162,7 @@ features:
     tags: [ui, task-list]
     examples:
       - id: EX-004
+        name: Task list displays both pending and completed tasks
         description: |
           The task list displays both pending and completed tasks with all necessary
           controls for managing each task's state.
@@ -227,6 +230,7 @@ features:
     tags: [ui, task-list]
     examples:
       - id: EX-006
+        name: Reactivating a completed task
         description: |
           Completed tasks can be reactivated by toggling their checkbox, allowing
           users to easily manage recurring or mistakenly completed tasks.
@@ -244,6 +248,7 @@ features:
     tags: [ui, task-list]
     examples:
       - id: EX-007
+        name: Removing a task from the list
         description: |
           Tasks can be permanently removed from the list using the delete button,
           helping users maintain a clean task list.
@@ -266,6 +271,7 @@ features:
     tags: [ui, state]
     examples:
       - id: EX-008
+        name: Task state persists after page refresh
         description: |
           The app automatically saves all changes to local storage, ensuring that
           task data persists between page refreshes and browser sessions.
@@ -288,6 +294,7 @@ features:
     tags: [ui, task-list]
     examples:
       - id: EX-009
+        name: Completed tasks move to the end with animation
         description: |
           When a task is completed, it smoothly animates to the end of the list,
           providing clear visual feedback and maintaining a logical task order.
