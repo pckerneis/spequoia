@@ -24,7 +24,7 @@
           </a>
         }
       </nav>
-      <div class="main-container">
+      <div class="main-container" #mainContainer>
         <main>
           @if (safeProcessedDescription(); as descr) {
             <p [innerHTML]="descr"></p>
