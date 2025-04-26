@@ -1,0 +1,72 @@
+{
+  "$ref": "#/definitions/SpequoiaDocument",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "SpequoiaDocument": {
+      "additionalProperties": false,
+      "properties": {
+        "features": {
+          "items": {
+            "$ref": "#/definitions/SpequoiaFeature"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "features"
+      ],
+      "type": "object"
+    },
+    "SpequoiaExample": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "steps": {
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object"
+              }
+            ]
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "description"
+      ],
+      "type": "object"
+    },
+    "SpequoiaFeature": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "examples": {
+          "items": {
+            "$ref": "#/definitions/SpequoiaExample"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "description"
+      ],
+      "type": "object"
+    }
+  }
+}
