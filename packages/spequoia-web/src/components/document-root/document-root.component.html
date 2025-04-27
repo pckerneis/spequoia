@@ -30,7 +30,7 @@
             <p [innerHTML]="descr"></p>
           }
 
-          <h2>Features</h2>
+          <h2 id="features">Features</h2>
 
           @for (
             feature of processedDocument.processedFeatures;
@@ -40,7 +40,7 @@
           }
 
           @if(processedDocument.processedViews && processedDocument.processedViews.length) {
-            <h2>Views</h2>
+            <h2 id="views">Views</h2>
             @for (view of processedDocument.processedViews; track view.anchorId) {
               <app-view-panel [view]="view" />
             }

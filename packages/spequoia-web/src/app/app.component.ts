@@ -38,6 +38,8 @@ export class AppComponent {
     const headings: Heading[] = [];
 
     const knownHeadingIds = new Set<string>();
+    knownHeadingIds.add('features');
+    knownHeadingIds.add('views');
 
     const generateUniqueId = (text: string) => {
       const baseId = text
@@ -92,7 +94,7 @@ export class AppComponent {
     }
 
     headings.push({
-      id: generateUniqueId('features'),
+      id: 'features',
       text: 'Features',
       level: 1,
     });
@@ -119,7 +121,7 @@ export class AppComponent {
 
     if (parsedDocument.views) {
       headings.push({
-        id: generateUniqueId('views'),
+        id: 'views',
         text: 'Views',
         level: 1,
       });
