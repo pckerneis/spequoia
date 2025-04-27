@@ -47,14 +47,14 @@ description: |
 
   ## Project structure
 
-  - package.json: NPM package configuration
-  - package-lock.json: NPM package lock
-  - index.html: application root
-  - style.css: CSS styles
-  - script.js: JavaScript application
-  - README.md: project documentation
-  - .gitignore: git ignore file
-  - spequoia.yaml: Spequoia configuration file
+  - `spequoia.yaml`: Spequoia specification file
+  - `README.md`: project documentation
+  - `package.json`: NPM package configuration
+  - `package-lock.json`: NPM package lock
+  - `index.html`: application root
+  - `style.css`: CSS styles
+  - `script.js`: JavaScript application
+  - `.gitignore`: git ignore file
 
   ## UI
 

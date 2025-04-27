@@ -7,6 +7,12 @@
         "description": {
           "type": "string"
         },
+        "executors": {
+          "additionalProperties": {
+            "$ref": "#/definitions/SpequoiaExecutor"
+          },
+          "type": "object"
+        },
         "features": {
           "items": {
             "$ref": "#/definitions/SpequoiaFeature"
@@ -17,6 +23,19 @@
           "type": "string"
         },
         "views": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": {
+                  "$ref": "#/definitions/alias-1330566522-462-520-1330566522-0-742"
+                },
+                "type": "object"
+              }
+            ]
+          },
           "type": "object"
         }
       },
@@ -49,6 +68,34 @@
       ],
       "type": "object"
     },
+    "SpequoiaExecutor": {
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "params": {
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number",
+              "boolean"
+            ]
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "name",
+        "kind"
+      ],
+      "type": "object"
+    },
     "SpequoiaFeature": {
       "properties": {
         "description": {
@@ -78,6 +125,19 @@
         "name"
       ],
       "type": "object"
+    },
+    "alias-1330566522-462-520-1330566522-0-742": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "additionalProperties": {
+            "$ref": "#/definitions/alias-1330566522-462-520-1330566522-0-742"
+          },
+          "type": "object"
+        }
+      ]
     }
   }
 }

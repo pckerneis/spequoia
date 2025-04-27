@@ -2,7 +2,9 @@ export interface SpequoiaDocument {
   title: string;
   description?: string;
   features: SpequoiaFeature[];
-  views?: Record<string, any>;
+  views?: Record<string, SpequoiaViewNode>;
+  executors?: Record<string, SpequoiaExecutor>;
+  defaultExecutor?: string;
 }
 
 export interface SpequoiaFeature {
@@ -17,5 +19,19 @@ export interface SpequoiaExample {
   id: string;
   name?: string;
   description?: string;
-  steps?: Array<string>;
+  steps?: string[];
+  executors?: string[];
+}
+
+type SpequoiaViewNode = string | SpequoiaViewNodeObject;
+
+interface SpequoiaViewNodeObject {
+  [key: string]: SpequoiaViewNode;
+}
+
+export interface SpequoiaExecutor {
+  name: string;
+  kind: string;
+  description?: string;
+  params?: Record<string, string | number | boolean>;
 }
