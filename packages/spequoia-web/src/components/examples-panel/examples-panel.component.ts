@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
-import {
-  ParsedExample,
-} from 'spequoia-core/dist/model/parsed-document.model';
+import { ParsedExample } from 'spequoia-core/dist/model/parsed-document.model';
 
 @Component({
   selector: 'app-examples-panel',

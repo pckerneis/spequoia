@@ -1,6 +1,7 @@
 import {
   ParsedDocument,
-  ParsedFeature, ParsedViewNode,
+  ParsedFeature,
+  ParsedViewNode,
 } from 'spequoia-core/dist/model/parsed-document.model';
 import { Heading } from './heading.model';
 

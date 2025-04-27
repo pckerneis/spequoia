@@ -6,17 +6,15 @@
     }
   </legend>
 
-  @if(viewNode.text) {
+  @if (viewNode.text) {
     <div class="text">
       <span>{{ viewNode.text }}</span>
     </div>
   }
 
   <div [ngClass]="cssClass">
-    @for(child of viewNode.children; track $index) {
-      <app-view-node
-        [viewNode]="child"
-      ></app-view-node>
+    @for (child of viewNode.children; track $index) {
+      <app-view-node [viewNode]="child"></app-view-node>
     }
   </div>
 </fieldset>

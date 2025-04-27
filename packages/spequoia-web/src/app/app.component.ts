@@ -5,7 +5,10 @@ import { ParseResult, parseSpec } from '@spequoia/core';
 import { ParsedDocument } from 'spequoia-core/dist/model/parsed-document.model';
 import * as commonmark from 'commonmark';
 import { Heading } from '../models/heading.model';
-import {ProcessedDocument, ProcessedView} from '../models/processed-document.model';
+import {
+  ProcessedDocument,
+  ProcessedView,
+} from '../models/processed-document.model';
 
 @Component({
   selector: 'app-root',
@@ -67,6 +70,7 @@ export class AppComponent {
       class CustomHtmlRenderer extends commonmark.HtmlRenderer {
         heading(node: commonmark.Node, entering: boolean): void {
           const tagname = 'h' + node.level;
+          /* eslint-disable @typescript-eslint/no-explicit-any */
           const self = this as any;
           const attrs = self.attrs(node);
 

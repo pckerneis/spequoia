@@ -39,9 +39,15 @@
             <app-feature-panel [feature]="feature" />
           }
 
-          @if(processedDocument.processedViews && processedDocument.processedViews.length) {
+          @if (
+            processedDocument.processedViews &&
+            processedDocument.processedViews.length
+          ) {
             <h2 id="views">Views</h2>
-            @for (view of processedDocument.processedViews; track view.anchorId) {
+            @for (
+              view of processedDocument.processedViews;
+              track view.anchorId
+            ) {
               <app-view-panel [view]="view" />
             }
           }

@@ -8,9 +8,8 @@ describe('ViewPanelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ViewPanelComponent]
-    })
-    .compileComponents();
+      imports: [ViewPanelComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ViewPanelComponent);
     component = fixture.componentInstance;

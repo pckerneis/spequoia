@@ -6,7 +6,10 @@ import {
 } from "./model/parsed-document.model";
 import Ajv from "ajv";
 import schema from "spequoia-model/schema/spequoia.json";
-import { SpequoiaDocument } from "spequoia-model/src/model/spequoia.model";
+import {
+  SpequoiaDocument,
+  SpequoiaViewNode,
+} from "spequoia-model/src/model/spequoia.model";
 
 export function parseSpec(yamlText: string): ParseResult {
   const rawDocument = parse(yamlText) as SpequoiaDocument;
@@ -90,7 +93,9 @@ function parseRawStep(step: string): ParsedStep {
   };
 }
 
-function parseViews(views: Record<string, any> | undefined): ParsedViewNode[] {
+function parseViews(
+  views: Record<string, SpequoiaViewNode> | undefined,
+): ParsedViewNode[] {
   if (!views) {
     return [];
   }
@@ -100,7 +105,10 @@ function parseViews(views: Record<string, any> | undefined): ParsedViewNode[] {
   );
 }
 
-function parseViewNode(rawNode: any, name: string): ParsedViewNode {
+function parseViewNode(
+  rawNode: SpequoiaViewNode,
+  name: string,
+): ParsedViewNode {
   if (typeof rawNode === "string") {
     return {
       name,
@@ -110,6 +118,18 @@ function parseViewNode(rawNode: any, name: string): ParsedViewNode {
     const selector = rawNode["$selector"];
     const direction = rawNode["$direction"];
     const text = rawNode["$text"];
+
+    if (selector && typeof selector !== "string") {
+      throw new Error(`Invalid selector for node ${name}: ${selector}`);
+    }
+
+    if (direction && typeof direction !== "string") {
+      throw new Error(`Invalid direction for node ${name}: ${direction}`);
+    }
+
+    if (text && typeof text !== "string") {
+      throw new Error(`Invalid text for node ${name}: ${text}`);
+    }
 
     return {
       name,

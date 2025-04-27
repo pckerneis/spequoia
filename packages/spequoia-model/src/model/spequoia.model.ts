@@ -23,7 +23,7 @@ export interface SpequoiaExample {
   executors?: string[];
 }
 
-type SpequoiaViewNode = string | SpequoiaViewNodeObject;
+export type SpequoiaViewNode = string | SpequoiaViewNodeObject;
 
 interface SpequoiaViewNodeObject {
   [key: string]: SpequoiaViewNode;
