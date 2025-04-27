@@ -14,11 +14,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ProcessedDocument } from '../../models/processed-document.model';
 import { fromEvent, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import {ViewPanelComponent} from '../view-panel/view-panel.component';
 
 @Component({
   selector: 'app-document-root',
   standalone: true,
-  imports: [FeaturePanelComponent],
+  imports: [FeaturePanelComponent, ViewPanelComponent],
   templateUrl: './document-root.component.html',
   styleUrls: ['./document-root.component.scss'],
 })

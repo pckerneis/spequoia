@@ -5,7 +5,7 @@ import { ParseResult, parseSpec } from '@spequoia/core';
 import { ParsedDocument } from 'spequoia-core/dist/model/parsed-document.model';
 import * as commonmark from 'commonmark';
 import { Heading } from '../models/heading.model';
-import { ProcessedDocument } from '../models/processed-document.model';
+import {ProcessedDocument, ProcessedView} from '../models/processed-document.model';
 
 @Component({
   selector: 'app-root',
@@ -115,10 +115,37 @@ export class AppComponent {
       });
     }
 
+    const processedViews: ProcessedView[] = [];
+
+    if (parsedDocument.views) {
+      headings.push({
+        id: generateUniqueId('views'),
+        text: 'Views',
+        level: 1,
+      });
+
+      for (const view of parsedDocument.views ?? []) {
+        const viewAnchorId = generateUniqueId(view.name);
+        const viewHeading = {
+          id: viewAnchorId,
+          text: view.name,
+          level: 2,
+        };
+
+        headings.push(viewHeading);
+
+        processedViews.push({
+          ...view,
+          anchorId: viewAnchorId,
+        });
+      }
+    }
+
     return {
       ...parsedDocument,
       processedDescription,
       processedFeatures,
+      processedViews,
       headings,
     };
   }

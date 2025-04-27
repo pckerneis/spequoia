@@ -1,0 +1,50 @@
+.container {
+  font-family: "pangolin", cursive;
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  font-size: 16px;
+
+  &.target {
+    border-color: tomato;
+  }
+
+  border: 2px solid #95908c;
+  border-bottom-left-radius: 100px 2px;
+  border-bottom-right-radius: 2px 100px;
+  border-top-left-radius: 2px 100px;
+  border-top-right-radius: 100px 2px;
+}
+
+.selector {
+  color: #818181;
+  font-style: italic;
+}
+
+.text {
+  margin: 0.5rem;
+  font-size: 1rem;
+}
+
+label {
+  font-weight: bold;
+  padding: 0.1rem;
+}
+
+label, .selector {
+  display: inline-block;
+  font-size: 0.8rem;
+  margin-right: 0.5rem;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
