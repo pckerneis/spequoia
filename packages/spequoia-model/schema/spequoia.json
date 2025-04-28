@@ -3,39 +3,43 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "SpequoiaDocument": {
+      "description": "The Spequoia document model.\n\nThis model is used to define the structure of a Spequoia document.",
       "properties": {
+        "defaultExecutor": {
+          "description": "The default executor to be used for the feature examples.",
+          "type": "string"
+        },
         "description": {
+          "description": "Markdown description of the system.",
           "type": "string"
         },
         "executors": {
           "additionalProperties": {
             "$ref": "#/definitions/SpequoiaExecutor"
           },
+          "description": "Dictionary of configured executors for the feature examples.",
           "type": "object"
         },
         "features": {
+          "description": "List of features of the system.",
           "items": {
             "$ref": "#/definitions/SpequoiaFeature"
           },
           "type": "array"
         },
         "title": {
+          "description": "Name of the described system.",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version of the document.",
           "type": "string"
         },
         "views": {
           "additionalProperties": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "additionalProperties": {
-                  "$ref": "#/definitions/alias-1330566522-462-520-1330566522-0-742"
-                },
-                "type": "object"
-              }
-            ]
+            "$ref": "#/definitions/SpequoiaViewNode"
           },
+          "description": "Dictionary of views for the system.",
           "type": "object"
         }
       },
@@ -46,17 +50,29 @@
       "type": "object"
     },
     "SpequoiaExample": {
+      "description": "An example demonstrating a feature.",
       "properties": {
         "description": {
+          "description": "A markdown description of the example.",
           "type": "string"
         },
+        "executors": {
+          "description": "A list of executors to be used for the example.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
         "id": {
+          "description": "Unique identifier for the example.",
           "type": "string"
         },
         "name": {
+          "description": "The name of the example.",
           "type": "string"
         },
         "steps": {
+          "description": "A list of steps to execute the example.",
           "items": {
             "type": "string"
           },
@@ -69,14 +85,18 @@
       "type": "object"
     },
     "SpequoiaExecutor": {
+      "description": "An executor is a tool or library that can be used to execute the steps.",
       "properties": {
         "description": {
+          "description": "A markdown description of the executor.",
           "type": "string"
         },
         "kind": {
+          "description": "The type of the executor.",
           "type": "string"
         },
         "name": {
+          "description": "The name of the executor.",
           "type": "string"
         },
         "params": {
@@ -87,6 +107,7 @@
               "boolean"
             ]
           },
+          "description": "Additional parameters for the executor.",
           "type": "object"
         }
       },
@@ -97,23 +118,29 @@
       "type": "object"
     },
     "SpequoiaFeature": {
+      "description": "A feature of the system.",
       "properties": {
         "description": {
+          "description": "A markdown description of the feature.",
           "type": "string"
         },
         "examples": {
+          "description": "A list of examples demonstrating the feature.",
           "items": {
             "$ref": "#/definitions/SpequoiaExample"
           },
           "type": "array"
         },
         "id": {
+          "description": "Unique identifier for the feature.",
           "type": "string"
         },
         "name": {
+          "description": "The name of the feature.",
           "type": "string"
         },
         "tags": {
+          "description": "A list of tags associated with the feature.",
           "items": {
             "type": "string"
           },
@@ -126,18 +153,47 @@
       ],
       "type": "object"
     },
-    "alias-1330566522-462-520-1330566522-0-742": {
+    "SpequoiaViewNode": {
       "anyOf": [
         {
           "type": "string"
         },
         {
-          "additionalProperties": {
-            "$ref": "#/definitions/alias-1330566522-462-520-1330566522-0-742"
-          },
-          "type": "object"
+          "$ref": "#/definitions/SpequoiaViewNodeObject"
         }
-      ]
+      ],
+      "description": "Represents a node in a view, which can be either a string selector or a complex node object with nested structure."
+    },
+    "SpequoiaViewNodeObject": {
+      "additionalProperties": {
+        "$ref": "#/definitions/SpequoiaViewNode",
+        "description": "Additional properties representing nested view nodes. Keys are arbitrary strings except for the metadata properties that start with \"$\"."
+      },
+      "description": "A view node in the document. It can be a string (a selector) or an object that can contain other view nodes and metadata such as `$selector` (the CSS selector to be used to find the node in the DOM), `$direction` (the direction of the node, either \"row\" or \"column\") and `$text` (the text content of the node).",
+      "properties": {
+        "$direction": {
+          "description": "Direction of the node, either \"row\" or \"column\".",
+          "enum": [
+            "row",
+            "column"
+          ],
+          "type": "string"
+        },
+        "$selector": {
+          "description": "CSS selector used to find the node in the DOM.",
+          "type": "string"
+        },
+        "$text": {
+          "description": "Text content of the node.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "$direction",
+        "$selector",
+        "$text"
+      ],
+      "type": "object"
     }
   }
 }
