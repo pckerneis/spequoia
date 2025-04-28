@@ -76,27 +76,27 @@ description: |
   Clicking the done checkbox updates the done status of a task.
 
 views:
-  main_page:
+  main page:
     title:
       $selector: h1
       $text: My TODO
-    create_task_row:
+    create task form:
       $direction: row
-      create_task_input: input[type="text"]
-      create_task_button:
+      input: input[type="text"]
+      button:
         $selector: button[type="submit"]
         $text: Add
-    task_list:
+    task list:
       $selector: .task_list
-      task_list_empty:
+      task list placeholder:
         $selector: .task_list_empty
         $text: No tasks
-      task_row(n):
+      'task row (n)':
         $selector: '[data-test-id="task-row-${n}"]'
         $direction: row
-        task_done: input[type="checkbox"]
-        task_title: .Task_title
-        task_delete: button[type="button"]
+        done checkbox: input[type="checkbox"]
+        title: .Task_title
+        delete button: button[type="button"]
 
 features:
   - id: FEAT-001
@@ -107,12 +107,13 @@ features:
     tags: [ui, header]
     examples:
       - id: EX-001
+        executors: [spequoia-playwright]
         name: The web app shows a header with the app title "My TODO"
         description: |
           The app title is prominently displayed in the header, making the purpose
           of the application immediately clear to users.
         steps:
-          - app title has text "My TODO"
+          - title should have text "My TODO"
   - id: FEAT-002
     name: The web app shows a placeholder when todo list is empty
     description: |
@@ -122,12 +123,13 @@ features:
     tags: [ui, task-list]
     examples:
       - id: EX-002
+        executors: [spequoia-playwright]
         name: Empty task list shows a placeholder message
         description: |
           When starting fresh or after deleting all tasks, the app shows a clear
           "No tasks" message instead of an empty space.
         steps:
-          - task list placeholder has text "No tasks"
+          - task list placeholder should have text "No tasks"
   - id: FEAT-003
     name: The app allows creating tasks
     description: |
@@ -137,18 +139,20 @@ features:
     tags: [ui, task-creation]
     examples:
       - id: EX-003
+        executors: [spequoia-playwright]
         name: Creating a new task using the form
         description: |
           Users can easily add new tasks through a simple form interface that
           includes a text input for the task name and an Add button.
         steps:
-          - task creation form has text input for task name
-          - task creation form has button with text "Add"
-          - user types "New task" in task name input
-          - user clicks "Add" button
-          - task list has 1 task element
-          - task 1 has title "New task"
-          - task 1 is not done
+          - create task form input should be visible
+          - create task form button should have text "Add"
+          - click create task form input
+          - type "New task"
+          - click button
+          - task list should have one child element
+          - task row 1 title should have text "New task"
+          - task row 1 should have class "done"
   - id: FEAT-004
     name: The web app shows a list of tasks
     description: |

@@ -110,17 +110,17 @@ export interface SpequoiaViewNodeObjectMetadata {
   /**
    * CSS selector used to find the node in the DOM.
    */
-  $selector: string;
+  $selector?: string;
 
   /**
    * Direction of the node, either "row" or "column".
    */
-  $direction: "row" | "column";
+  $direction?: "row" | "column";
 
   /**
    * Text content of the node.
    */
-  $text: string;
+  $text?: string;
 }
 
 /**
@@ -136,7 +136,7 @@ export interface SpequoiaViewNodeObject extends SpequoiaViewNodeObjectMetadata {
    * Keys are arbitrary strings except for the metadata properties
    * that start with "$".
    */
-  [key: string]: SpequoiaViewNode;
+  [key: string]: SpequoiaViewNode | 'string' | undefined;
 }
 
 /**

@@ -166,7 +166,18 @@
     },
     "SpequoiaViewNodeObject": {
       "additionalProperties": {
-        "$ref": "#/definitions/SpequoiaViewNode",
+        "anyOf": [
+          {
+            "$ref": "#/definitions/SpequoiaViewNode"
+          },
+          {
+            "const": "string",
+            "type": "string"
+          },
+          {
+            "not": {}
+          }
+        ],
         "description": "Additional properties representing nested view nodes. Keys are arbitrary strings except for the metadata properties that start with \"$\"."
       },
       "description": "A view node in the document. It can be a string (a selector) or an object that can contain other view nodes and metadata such as `$selector` (the CSS selector to be used to find the node in the DOM), `$direction` (the direction of the node, either \"row\" or \"column\") and `$text` (the text content of the node).",
@@ -188,11 +199,6 @@
           "type": "string"
         }
       },
-      "required": [
-        "$direction",
-        "$selector",
-        "$text"
-      ],
       "type": "object"
     }
   }

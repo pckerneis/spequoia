@@ -139,7 +139,7 @@ function parseViewNode(
       children: Object.entries(rawNode)
         .filter(([key]) => !key.startsWith("$"))
         .map(([key, value]) => {
-          return parseViewNode(value, key);
+          return parseViewNode(value!, key);
         }),
     };
   }
