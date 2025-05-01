@@ -3,39 +3,7 @@
 <ul class="examples">
   @for (example of examples; track $index) {
     <li>
-      <details>
-        <summary>
-          @if (example.id) {
-            <b>{{ example.id }}</b>
-          }
-
-          @if (example.name) {
-            {{ example.name }}
-          }
-        </summary>
-
-        @if (example.description) {
-          <p [innerHTML]="example.description | markdown"></p>
-        }
-
-        <ul>
-          @for (step of example.steps; track $index) {
-            <li>
-              @for (fragment of step.fragments; track $index) {
-                @if (fragment.type == "keyword") {
-                  <b class="keyword">{{ fragment.value }} </b>
-                } @else if (fragment.type == "variable") {
-                  <b>&#64;{{ fragment.value }} </b>
-                } @else if (fragment.type == "quoted") {
-                  <span class="quoted">"{{ fragment.value }}"</span>
-                } @else {
-                  <span>{{ fragment.value }} </span>
-                }
-              }
-            </li>
-          }
-        </ul>
-      </details>
+      <app-example-panel [example]="example"/>
     </li>
   }
 </ul>
