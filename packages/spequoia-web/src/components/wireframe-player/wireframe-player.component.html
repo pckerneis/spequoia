@@ -1,7 +1,10 @@
-<div class="player-main">
+<div class="player-main" #wireframePlayer>
   <ul>
     @for (step of example?.steps; track $index) {
-      <li>
+      <li [class.active]="wireframePlayerService.currentStep() == $index"
+          (click)="wireframePlayerService.setStep($index)"
+          (keydown.enter)="wireframePlayerService.setStep($index)"
+          tabindex="0">
         {{ step.raw }}
       </li>
     }
@@ -20,9 +23,8 @@
       </div>
     </div>
   </div>
-
 </div>
 
 <div class="progress-bar">
-  <div #progress [style.width]="'0%'"></div>
+  <div class="progress" [style.width]="wireframePlayerService.progressPercent() + '%'"></div>
 </div>

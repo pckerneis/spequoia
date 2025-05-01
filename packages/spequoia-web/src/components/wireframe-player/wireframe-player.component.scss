@@ -19,11 +19,12 @@ ul {
   background-color: var(--player-step);
 
   li {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1rem 0.5rem calc(1rem - 4px);
     border-bottom: 1px solid var(--main-border-color);
     text-overflow: ellipsis;
     cursor: pointer;
     font-size: 0.8rem;
+    border-left: 4px solid transparent;
 
     &:last-child {
       border-bottom: none;
@@ -34,8 +35,8 @@ ul {
     }
 
     &.active {
-      background-color: rgb(234, 255, 242);
-      border-left: 4px solid #5ccf84;
+      background-color: var(--active-nav-item-bg-color);
+      border-left-color: var(--player-step-progress-color);
     }
   }
 }
@@ -51,3 +52,13 @@ ul {
   }
 }
 
+.progress-bar {
+  height: 6px;
+  background-color: var(--progress-bar-bg-color);
+
+  .progress {
+    height: 100%;
+    background-color: var(--player-step-progress-color);
+    transition: width 0.2s ease-in-out;
+  }
+}

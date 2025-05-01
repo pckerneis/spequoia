@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, Input, OnInit, signal, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, Input, signal, ViewChild} from '@angular/core';
 import {WireframePlayerService} from '../../services/wireframe-player.service';
 import {ParsedExample} from 'spequoia-core/dist/model/parsed-document.model';
 import {ViewNodeComponent} from '../view-node/view-node.component';
@@ -16,6 +16,9 @@ import {ViewNodeComponent} from '../view-node/view-node.component';
 })
 export class WireframePlayerComponent implements AfterViewInit {
   @Input() example: ParsedExample | undefined;
+
+  @ViewChild('wireframePlayer', {read: ElementRef, static: false})
+  playerRoot: ElementRef | null = null;
 
   @ViewChild('viewRoot', {read: ElementRef, static: false})
   viewRoot: ElementRef | null = null;
@@ -37,6 +40,23 @@ export class WireframePlayerComponent implements AfterViewInit {
       if (this.wireframePlayerService.currentView()) {
         setTimeout(() => this.updateTransform(), 100);
       }
+    }
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    const root = this.playerRoot?.nativeElement as HTMLElement;
+
+    if (!root.contains(event.target as Node)) {
+      return;
+    }
+
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+      this.wireframePlayerService.next();
+      event.preventDefault();
+    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+      this.wireframePlayerService.previous();
+      event.preventDefault();
     }
   }
 
