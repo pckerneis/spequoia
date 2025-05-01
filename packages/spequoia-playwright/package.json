@@ -1,0 +1,13 @@
+{
+  "name": "spequoia-playwright",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.15.3"
+  },
+  "scripts": {},
+  "author": "pckerneis",
+  "license": "MIT"
+}

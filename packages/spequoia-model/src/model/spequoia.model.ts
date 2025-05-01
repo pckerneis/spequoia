@@ -47,7 +47,7 @@ export interface SpequoiaFeature {
   /**
    * Unique identifier for the feature.
    */
-  id: string;
+  id?: string;
 
   /**
    * The name of the feature.

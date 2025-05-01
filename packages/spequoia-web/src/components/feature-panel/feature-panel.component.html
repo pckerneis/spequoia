@@ -1,7 +1,9 @@
 @if (feature) {
   <h3 [id]="feature.anchorId">
-    <b>{{ feature.id }}</b>
-    <span> - {{ feature.name }}</span>
+    @if (feature.id) {
+      <b>{{ feature.id }} - </b>
+    }
+    <span>{{ feature.name }}</span>
   </h3>
 
   @if (feature.tags && feature.tags.length > 0) {

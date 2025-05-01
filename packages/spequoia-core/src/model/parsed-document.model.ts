@@ -6,7 +6,7 @@ export interface ParsedDocument {
 }
 
 export interface ParsedFeature {
-  id: string;
+  id?: string;
   name: string;
   description?: string;
   examples?: ParsedExample[];
@@ -25,7 +25,7 @@ export interface ParsedStep {
   fragments: ParsedStepFragment[];
 }
 
-export type ParsedStepFragmentType = "text" | "variable";
+export type ParsedStepFragmentType = "text" | "variable" | "quoted" | "keyword";
 
 export interface ParsedStepFragment {
   type: ParsedStepFragmentType;

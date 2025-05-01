@@ -28,3 +28,13 @@ ul.examples {
     }
   }
 }
+
+.quoted {
+  font-style: italic;
+  color: var(--quoted-text-color);
+}
+
+.keyword {
+  color: var(--keyword-color);
+  font-weight: bold;
+}

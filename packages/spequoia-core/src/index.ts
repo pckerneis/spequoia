@@ -1,9 +1,9 @@
 import { parse } from "yaml";
 import {
   ParsedDocument,
-  ParsedStep,
+  ParsedStep, ParsedStepFragment, ParsedStepFragmentType,
   ParsedViewNode,
-} from "./model/parsed-document.model";
+} from './model/parsed-document.model';
 import Ajv from "ajv";
 import schema from "spequoia-model/schema/spequoia.json";
 import {
@@ -71,26 +71,160 @@ function parseRawSteps(steps: string[] | undefined): ParsedStep[] {
   return steps.map((step) => parseRawStep(step));
 }
 
+const keywords = [
+    'click',
+    'type',
+    'expect',
+    'wait',
+    'visit',
+];
+
+const actionOnElementPatterns = [
+  // action keyword (click) followed by a variable
+  /^(click)\s+([\w\s]+)/,
+];
+
+const actionWithQuotedTextPatterns = [
+  // action keyword (type) followed by quoted text
+  /^(type)\s+"([^"]+)"/,
+];
+
+const assertionPatterns = [
+    // "expect" keyword followed by a variable and "to have text" keyword
+  /expect\s+([\w\s]+)\s+(to have text)\s+"([^"]+)"/,
+  /expect\s+([\w\s]+)\s+(not to have text)\s+"([^"]+)"/,
+  /expect\s+([\w\s]+)\s+(to have class)\s+"([^"]+)"/,
+  /expect\s+([\w\s]+)\s+(not to have class)\s+"([^"]+)"/,
+  /expect\s+([\w\s]+)\s+(to be visible)/,
+  /expect\s+([\w\s]+)\s+(to be hidden)/,
+  /expect\s+([\w\s]+)\s+(to exist)/,
+  /expect\s+([\w\s]+)\s+(not to exist)/,
+  /expect\s+([\w\s]+)\s+(to be checked)/,
+  /expect\s+([\w\s]+)\s+(not to be checked)/,
+  /expect\s+([\w\s]+)\s+(to be disabled)/,
+  /expect\s+([\w\s]+)\s+(not to be disabled)/,
+  /expect\s+([\w\s]+)\s+(to be enabled)/,
+  /expect\s+([\w\s]+)\s+(not to be enabled)/,
+  /expect\s+([\w\s]+)\s+(to be empty)/,
+  /expect\s+([\w\s]+)\s+(not to be empty)/,
+  /expect\s+([\w\s]+)\s+(to have placeholder)\s+"([^"]+)"/,
+  /expect\s+([\w\s]+)\s+(not to have placeholder)\s+"([^"]+)"/,
+];
+
 function parseRawStep(step: string): ParsedStep {
   return {
     raw: step,
-    fragments: step
-      .split(" ")
-      .filter((step) => step.trim().length > 0)
-      .map((step) => {
-        if (step.startsWith("$")) {
-          return {
-            type: "variable",
-            value: step.substring(1),
-          };
-        } else {
-          return {
-            type: "text",
-            value: step,
-          };
-        }
-      }),
+    fragments: parseStepFragments(step),
   };
+}
+
+function parseStepFragments(step: string): ParsedStepFragment[] {
+    // Check for assertion patterns
+  const assertionPattern = assertionPatterns.find((pattern) =>
+    pattern.test(step),
+  );
+
+  if (assertionPattern) {
+    const matches = step.match(assertionPattern);
+    if (matches) {
+      const variable = matches[1];
+      const assertion = matches[2];
+      const value = matches[3];
+
+      const fragments: ParsedStepFragment[] = [
+        { type: "keyword", value: "expect" },
+        { type: "variable", value: variable },
+        { type: "keyword", value: assertion },
+      ];
+
+      if (value) {
+        fragments.push({ type: "quoted", value });
+      }
+
+      return fragments;
+    }
+  }
+
+  // Check for action on element patterns
+  const actionOnElementPattern = actionOnElementPatterns.find((pattern) =>
+    pattern.test(step),
+  );
+
+  if (actionOnElementPattern) {
+    const matches = step.match(actionOnElementPattern);
+    if (matches) {
+      const action = matches[1];
+      const variable = matches[2];
+
+      return [
+        { type: "keyword", value: action },
+        { type: "variable", value: variable },
+      ];
+    }
+  }
+
+  // Check for action with quoted text patterns
+  const actionWithQuotedTextPattern = actionWithQuotedTextPatterns.find((pattern) =>
+    pattern.test(step),
+  );
+
+  if (actionWithQuotedTextPattern) {
+    const matches = step.match(actionWithQuotedTextPattern);
+    if (matches) {
+      const action = matches[1];
+      const quotedText = matches[2];
+
+      return [
+        { type: "keyword", value: action },
+        { type: "quoted", value: quotedText },
+      ];
+    }
+  }
+
+  let fragments: ParsedStepFragment[] = [];
+  let currentValue = "";
+  let currentType: ParsedStepFragmentType = 'text';
+
+  // Check if the step starts with a keyword
+  const keyword = keywords.find((kw) => step.startsWith(kw));
+
+  if (keyword) {
+    fragments.push({ type: "keyword", value: keyword });
+  }
+
+  const startIndex = keyword ? keyword.length : 0;
+
+  for (let i = startIndex; i < step.length; i++) {
+    const char = step[i];
+
+    if (char === "$") {
+      if (currentValue) {
+        fragments.push({ type: currentType, value: currentValue });
+        currentValue = "";
+      }
+      currentType = "variable";
+    } else if (char === '"') {
+      if (currentType === "quoted") {
+        fragments.push({ type: currentType, value: currentValue });
+        currentValue = "";
+        currentType = "text";
+      } else {
+        if (currentValue) {
+          fragments.push({ type: currentType, value: currentValue });
+          currentValue = "";
+        }
+        currentType = "quoted";
+      }
+    } else {
+      currentValue += char;
+    }
+  }
+
+  if (currentValue) {
+    fragments.push({ type: currentType, value: currentValue });
+  }
+
+  return fragments;
 }
 
 function parseViews(

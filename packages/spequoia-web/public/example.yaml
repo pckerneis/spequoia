@@ -1,313 +1,82 @@
 version: 1.0.0-it1
 title: TODO app
 description: |
-  # TODO app
-  This application is a web application in vanilla JS that
-  allows you to create, read, update, and delete tasks.
+  # TodoMVC
 
-  The tasks are stored in local storage as a JSON object.
+  This document is an example **Spequoia** specification for a TODO app.
 
-  ## Local storage
+  It's based on the [TodoMVC](https://todomvc.com/) project, which provides a
+  consistent way to implement a simple TODO app using various JavaScript frameworks.
 
-  The local storage is a JSON object with a list of tasks (`tasks`).
+  The goal of this document is to show how to use **Spequoia** to specify the
+  behavior of a web application. It includes the following sections:
+  - **Views**: The user interface of the application, including the layout and
+      elements used.
+  - **Features**: The features of the application.
+  - **Examples**: The examples of the features, including the expected
+      behavior and the steps to reproduce it.
 
-  Each task has a UUID, a title, a creation date, and a boolean `done` property.
+  These sections are used to generate wireframes, test cases, and documentation.
 
-  Example:
-
-  ```json
-  {
-    "tasks": [
-      {
-        "id": "12345678-1234-1234-1234-123456789012",
-        "title": "Task 1",
-        "createdAt": "2025-04-12T18:34:06.000Z",
-        "done": false
-      },
-      {
-        "id": "12345678-1234-1234-1234-123456789012",
-        "title": "Task 2",
-        "createdAt": "2025-04-12T18:34:56.000Z",
-        "done": true
-      }
-    ]
-  }
-  ```
-
-  ## Technologies
-
-  - HTML
-  - CSS
-  - JavaScript
-  - Playwright
-
-  ## Testing
-
-  The application is tested using Playwright.
-
-  ## Project structure
-
-  - `spequoia.yaml`: Spequoia specification file
-  - `README.md`: project documentation
-  - `package.json`: NPM package configuration
-  - `package-lock.json`: NPM package lock
-  - `index.html`: application root
-  - `style.css`: CSS styles
-  - `script.js`: JavaScript application
-  - `.gitignore`: git ignore file
-
-  ## UI
-
-  The web-app displays as a minimalistic HTML page that consists
-  of a header with the app title "My TODO".
-
-  The main section displays a task creation form and the list of tasks.
-
-  The task creation form consists of a text input for the task name
-  and a "Add" button.
-
-  Tasks are displayed in a list with the following properties:
-
-  - title: the task title, striked through when task is completed
-  - done: a checkbox that marks the task as done
-
-  Tasks are ordered by descending creation date. Done tasks are displayed last.
-
-  Clicking the done checkbox updates the done status of a task.
 
 views:
   main page:
-    title:
-      $selector: h1
-      $text: My TODO
-    create task form:
-      $direction: row
-      input: input[type="text"]
-      button:
-        $selector: button[type="submit"]
-        $text: Add
-    task list:
-      $selector: .task_list
-      task list placeholder:
-        $selector: .task_list_empty
-        $text: No tasks
+    header:
+      title:
+        $selector: h1
+        $text: todos
+      input: input.new-todo
+    todo list:
+      $selector: .todo-list
       'task row (n)':
-        $selector: '[data-test-id="task-row-${n}"]'
+        $selector: '[data-id="${n}"]'
         $direction: row
         done checkbox: input[type="checkbox"]
-        title: .Task_title
-        delete button: button[type="button"]
+        title: label
+        delete button: button.destroy
+    footer:
+      $selector: .footer
+      $direction: row
+      todo count:
+        $selector: .todo-count
+        $text: 0 items left
+      filters:
+        $selector: .filters
+        $direction: row
+        all filter:
+          $selector: a[href="#/"]
+          $text: All
+        active filter:
+          $selector: a[href="#/active"]
+          $text: Active
+        completed filter:
+          $selector: a[href="#/completed"]
+          $text: Completed
+      clear completed button:
+        $selector: .clear-completed
+        $text: Clear completed
 
 features:
-  - id: FEAT-001
-    name: The web app shows a header with the app title "My TODO"
+  - name: Initial state of the app
     description: |
-      The web app title "*My TODO*" is displayed in the header. It's shown in the header element
+      The web app title "*todos*" is displayed in the header. It's shown in the header element
       in a `h1` tag.
+      The app starts with an empty task list, and the user is prompted to add tasks.
     tags: [ui, header]
     examples:
       - id: EX-001
         executors: [spequoia-playwright]
-        name: The web app shows a header with the app title "My TODO"
+        name: The web app shows a header with the app title "todos", a text input, and an empty task list
         description: |
           The app title is prominently displayed in the header, making the purpose
           of the application immediately clear to users.
-        steps:
-          - title should have text "My TODO"
-  - id: FEAT-002
-    name: The web app shows a placeholder when todo list is empty
-    description: |
-      When there are no tasks in the list, a placeholder text "No tasks" is displayed
-      to inform the user that the list is empty. This provides better UX by giving
-      clear feedback about the current state.
-    tags: [ui, task-list]
-    examples:
-      - id: EX-002
-        executors: [spequoia-playwright]
-        name: Empty task list shows a placeholder message
-        description: |
-          When starting fresh or after deleting all tasks, the app shows a clear
-          "No tasks" message instead of an empty space.
-        steps:
-          - task list placeholder should have text "No tasks"
-  - id: FEAT-003
-    name: The app allows creating tasks
-    description: |
-      Users can create new tasks using a form with a text input field and an "Add" button.
-      The form is always visible and accessible, making task creation straightforward.
-      New tasks are added to the list immediately and start in a 'not done' state.
-    tags: [ui, task-creation]
-    examples:
-      - id: EX-003
-        executors: [spequoia-playwright]
-        name: Creating a new task using the form
-        description: |
-          Users can easily add new tasks through a simple form interface that
-          includes a text input for the task name and an Add button.
-        steps:
-          - create task form input should be visible
-          - create task form button should have text "Add"
-          - click create task form input
-          - type "New task"
-          - click button
-          - task list should have one child element
-          - task row 1 title should have text "New task"
-          - task row 1 should have class "done"
-  - id: FEAT-004
-    name: The web app shows a list of tasks
-    description: |
-      The app displays all tasks in a vertical list format. Each task item shows:
-      - A checkbox to mark the task as done/not done
-      - The task title
-      - A delete button to remove the task
 
-      Tasks maintain their visual state (done/not done) and the list preserves the order
-      with completed tasks moving to the end.
-    tags: [ui, task-list]
-    examples:
-      - id: EX-004
-        name: Task list displays both pending and completed tasks
-        description: |
-          The task list displays both pending and completed tasks with all necessary
-          controls for managing each task's state.
-        preconditions:
-          - task list has a pending task named "Task 1"
-          - task list has a completed task named "Task 2"
-        steps:
-          - task list has 2 task elements
-          - task with title "Task 1" is displayed first
-          - first task has title "Task 1"
-          - first task has checkbox
-          - first task has delete button
-          - first task is not done
-          - second task has title "Task 2"
-          - second task has checkbox
-          - second task has delete button
-          - second task is done
-  - id: FEAT-005
-    name: The app allows marking tasks as done
-    description: |
-      Users can mark tasks as complete in two ways:
-      1. Clicking the checkbox next to the task
-      2. Clicking the task title area
+          The input field is always visible, allowing users to quickly add tasks. The input placeholder
+          is "What needs to be done?" to guide users on what to enter.
 
-      When marked as done, the task is visually updated to show its completed state
-      and moves to the end of the list with a smooth animation.
-    tags: [ui, task-list]
-    examples:
-      - id: EX-005a
-        name: The app allows marking tasks as done
-        description: |
-          Users can mark a task as complete by clicking its checkbox, providing a
-          familiar interaction pattern.
-        preconditions:
-          - task list has a pending task named "Task 1"
+          The task list is empty at the start, indicating that no tasks have been added yet.
         steps:
-          - user clicks checkbox for first task
-          - first task is marked as done
-      - id: EX-005b
-        name: Marking a task as done does not affect other tasks
-        description: |
-          When marking a task as complete, other tasks remain unchanged, ensuring
-          that each task's state is managed independently.
-        preconditions:
-          - task list has two pending tasks named "Task 1" and "Task 2"
-        steps:
-          - user clicks checkbox for first task
-          - first task is marked as done
-          - second task is not affected
-      - id: EX-005c
-        name: Clicking the task title area marks the task as done
-        description: |
-          You can also click the task title area to mark the task as done
-        preconditions:
-          - task list has a pending task named "Task 1"
-        steps:
-          - user clicks task title area for first task
-          - first task is marked as done
-  - id: FEAT-006
-    name: The app allows marking tasks as not done
-    description: |
-      Completed tasks can be marked as not done by clicking their checkbox again.
-      This allows users to reactivate tasks they previously completed, useful for
-      recurring tasks or correcting accidental completions.
-    tags: [ui, task-list]
-    examples:
-      - id: EX-006
-        name: Reactivating a completed task
-        description: |
-          Completed tasks can be reactivated by toggling their checkbox, allowing
-          users to easily manage recurring or mistakenly completed tasks.
-        preconditions:
-          - task list has a completed task named "Task 1"
-        steps:
-          - user clicks checkbox for first task
-          - first task is marked as not done
-  - id: FEAT-007
-    name: The app allows deleting tasks
-    description: |
-      Each task has a delete button that allows users to permanently remove the task
-      from the list. This action is immediate and cannot be undone, helping users
-      maintain a clean and relevant task list.
-    tags: [ui, task-list]
-    examples:
-      - id: EX-007
-        name: Removing a task from the list
-        description: |
-          Tasks can be permanently removed from the list using the delete button,
-          helping users maintain a clean task list.
-        preconditions:
-          - task list has a pending task named "Task 1"
-        steps:
-          - user clicks delete button for first task
-          - first task is removed from the list
-          - task list has 0 task elements
-  - id: FEAT-008
-    name: The app state is persisted in local storage
-    description: |
-      The application uses browser's local storage to persist the entire task list state.
-      This means that tasks, their completion status, and order are preserved even when:
-      - The page is refreshed
-      - The browser is closed and reopened
-      - The user navigates away and returns
-
-      This ensures users don't lose their task data between sessions.
-    tags: [ui, state]
-    examples:
-      - id: EX-008
-        name: Task state persists after page refresh
-        description: |
-          The app automatically saves all changes to local storage, ensuring that
-          task data persists between page refreshes and browser sessions.
-        steps:
-          - user creates a task named "Task 1"
-          - user marks "Task 1" as done
-          - user refreshes the page
-          - task list has 1 task element
-          - first task has title "Task 1"
-          - first task is done
-  - id: FEAT-009
-    name: Marking a task as done moves it to the end of the list with an animation
-    description: |
-      When a task is marked as complete, it smoothly animates to the end of the list.
-      This provides several benefits:
-      - Visual feedback that the action was successful
-      - Clear indication of where completed tasks go
-      - Maintains a natural separation between pending and completed tasks
-      - Enhances the user experience with smooth transitions
-    tags: [ui, task-list]
-    examples:
-      - id: EX-009
-        name: Completed tasks move to the end with animation
-        description: |
-          When a task is completed, it smoothly animates to the end of the list,
-          providing clear visual feedback and maintaining a logical task order.
-        preconditions:
-          - task list has a pending task named "Task 1"
-          - task list has a pending task named "Task 2"
-        steps:
-          - user marks "Task 1" as done
-          - animation is triggered
-          - first task has title "Task 2"
-          - second task has title "Task 1"
-          - second task is done
+          - expect title to have text "todos"
+          - expect input to be visible
+          - expect input to have placeholder "What needs to be done?"
+          - expect todo list to be empty
