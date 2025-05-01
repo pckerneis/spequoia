@@ -11,6 +11,7 @@ import { NgClass } from '@angular/common';
 export class ViewNodeComponent {
   @Input() name!: string;
   @Input() viewNode!: ParsedViewNode;
+  @Input() showSelector: boolean = false;
 
   get cssClass(): string {
     if (this.viewNode?.direction === 'row') {

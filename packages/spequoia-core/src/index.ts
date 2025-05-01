@@ -1,9 +1,11 @@
 import { parse } from "yaml";
 import {
   ParsedDocument,
-  ParsedStep, ParsedStepFragment, ParsedStepFragmentType,
+  ParsedStep,
+  ParsedStepFragment,
+  ParsedStepFragmentType,
   ParsedViewNode,
-} from './model/parsed-document.model';
+} from "./model/parsed-document.model";
 import Ajv from "ajv";
 import schema from "spequoia-model/schema/spequoia.json";
 import {
@@ -71,13 +73,7 @@ function parseRawSteps(steps: string[] | undefined): ParsedStep[] {
   return steps.map((step) => parseRawStep(step));
 }
 
-const keywords = [
-    'click',
-    'type',
-    'expect',
-    'wait',
-    'visit',
-];
+const keywords = ["click", "type", "expect", "wait", "visit"];
 
 const actionOnElementPatterns = [
   // action keyword (click) followed by a variable
@@ -90,7 +86,7 @@ const actionWithQuotedTextPatterns = [
 ];
 
 const assertionPatterns = [
-    // "expect" keyword followed by a variable and "to have text" keyword
+  // "expect" keyword followed by a variable and "to have text" keyword
   /expect\s+([\w\s]+)\s+(to have text)\s+"([^"]+)"/,
   /expect\s+([\w\s]+)\s+(not to have text)\s+"([^"]+)"/,
   /expect\s+([\w\s]+)\s+(to have class)\s+"([^"]+)"/,
@@ -119,7 +115,7 @@ function parseRawStep(step: string): ParsedStep {
 }
 
 function parseStepFragments(step: string): ParsedStepFragment[] {
-    // Check for assertion patterns
+  // Check for assertion patterns
   const assertionPattern = assertionPatterns.find((pattern) =>
     pattern.test(step),
   );
@@ -164,8 +160,8 @@ function parseStepFragments(step: string): ParsedStepFragment[] {
   }
 
   // Check for action with quoted text patterns
-  const actionWithQuotedTextPattern = actionWithQuotedTextPatterns.find((pattern) =>
-    pattern.test(step),
+  const actionWithQuotedTextPattern = actionWithQuotedTextPatterns.find(
+    (pattern) => pattern.test(step),
   );
 
   if (actionWithQuotedTextPattern) {
@@ -183,7 +179,7 @@ function parseStepFragments(step: string): ParsedStepFragment[] {
 
   let fragments: ParsedStepFragment[] = [];
   let currentValue = "";
-  let currentType: ParsedStepFragmentType = 'text';
+  let currentType: ParsedStepFragmentType = "text";
 
   // Check if the step starts with a keyword
   const keyword = keywords.find((kw) => step.startsWith(kw));

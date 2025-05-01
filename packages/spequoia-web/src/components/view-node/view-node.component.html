@@ -1,7 +1,7 @@
 <fieldset class="container" [class.target]="viewNode.target">
   <legend>
     <label>{{ viewNode.name }}</label>
-    @if (viewNode.selector) {
+    @if (showSelector && viewNode.selector) {
       <span class="selector">{{ viewNode.selector }}</span>
     }
   </legend>
