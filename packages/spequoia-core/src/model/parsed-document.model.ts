@@ -43,5 +43,4 @@ export interface ParsedViewNode {
   direction?: string;
   text?: string;
   children?: ParsedViewNode[];
-  target?: boolean;
 }

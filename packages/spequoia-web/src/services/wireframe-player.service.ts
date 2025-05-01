@@ -16,7 +16,23 @@ export class WireframePlayerService {
     }
 
     return ((this.currentStep() + 1) / example.steps.length) * 100;
-  })
+  });
+  readonly currentTargets = computed<string[]>(() => {
+    const example = this.example();
+
+    if (!example || !example.steps || example.steps.length === 0) {
+      return [];
+    }
+
+    const step = example.steps[this.currentStep()];
+
+    if (!step) {
+      return [];
+    }
+
+    return step.fragments.filter(fragment => fragment.type === "variable")
+      .map(fragment => fragment.value.trim());
+  });
 
   constructor(private readonly documentService: DocumentService) { }
 

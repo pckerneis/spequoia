@@ -1,4 +1,4 @@
-<fieldset class="container" [class.target]="viewNode.target">
+<fieldset class="container" [class.target]="active()">
   <legend>
     <label>{{ viewNode.name }}</label>
     @if (showSelector && viewNode.selector) {

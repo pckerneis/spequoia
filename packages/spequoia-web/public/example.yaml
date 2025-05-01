@@ -42,7 +42,7 @@ views:
         $selector: '[data-id="${n}"]'
         $direction: row
         done checkbox: input[type="checkbox"]
-        title: label
+        label: label
         delete button: button.destroy
     footer:
       $selector: .footer
@@ -90,3 +90,4 @@ features:
           - expect input to be visible
           - expect input to have placeholder "What needs to be done?"
           - expect todo list to be empty
+          - expect footer to be visible
