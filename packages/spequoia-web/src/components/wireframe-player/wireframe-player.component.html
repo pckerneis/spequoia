@@ -2,6 +2,7 @@
   <ul>
     @for (step of example?.steps; track $index) {
       <li
+        #step
         [class.active]="wireframePlayerService.currentStep() == $index"
         (click)="wireframePlayerService.setStep($index)"
         (keydown.enter)="wireframePlayerService.setStep($index)"

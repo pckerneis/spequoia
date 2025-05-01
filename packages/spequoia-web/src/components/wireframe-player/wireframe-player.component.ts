@@ -3,9 +3,9 @@ import {
   Component,
   ElementRef,
   HostListener,
-  Input,
+  Input, QueryList,
   signal,
-  ViewChild,
+  ViewChild, ViewChildren, viewChildren,
 } from '@angular/core';
 import { WireframePlayerService } from '../../services/wireframe-player.service';
 import { ParsedExample } from 'spequoia-core/dist/model/parsed-document.model';
@@ -27,6 +27,9 @@ export class WireframePlayerComponent implements AfterViewInit {
   @ViewChild('viewRoot', { read: ElementRef, static: false })
   viewRoot: ElementRef | null = null;
 
+  @ViewChildren('step')
+  stepButtons?: QueryList<ElementRef>;
+
   @ViewChild('viewContainer', { read: ElementRef, static: false })
   viewContainer: ElementRef | null = null;
 
@@ -47,6 +50,19 @@ export class WireframePlayerComponent implements AfterViewInit {
     }
 
     setTimeout(() => this.updateTransform(), 0);
+
+    this.wireframePlayerService.stepChanged$.subscribe(
+      () => {
+        if (!this.stepButtons) {
+          return;
+        }
+        this.stepButtons.forEach((el, index) => {
+          if (this.wireframePlayerService.currentStep() == index) {
+            el.nativeElement.focus();
+          }
+        })
+      }
+    )
   }
 
   @HostListener('window:keydown', ['$event'])

@@ -46,6 +46,7 @@ export class WireframePlayerService {
   });
 
   readonly computedViewChanged$ = new Subject<void>();
+  readonly stepChanged$ = new Subject<void>();
 
   constructor(private readonly documentService: DocumentService) {}
 
@@ -70,6 +71,7 @@ export class WireframePlayerService {
     }
 
     this.computeViewState();
+    this.stepChanged$.next();
   }
 
   previous(): void {
@@ -82,6 +84,7 @@ export class WireframePlayerService {
     }
 
     this.computeViewState();
+    this.stepChanged$.next();
   }
 
   setStep(index: number): void {
@@ -92,6 +95,7 @@ export class WireframePlayerService {
     }
 
     this.computeViewState();
+    this.stepChanged$.next();
   }
 
   private computeViewState() {
