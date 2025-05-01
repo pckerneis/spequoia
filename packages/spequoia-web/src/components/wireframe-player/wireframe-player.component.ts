@@ -37,13 +37,16 @@ export class WireframePlayerComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.example) {
-      console.log('initialize');
       this.wireframePlayerService.initialise(this.example);
 
-      if (this.wireframePlayerService.currentView()) {
-        setTimeout(() => this.updateTransform(), 100);
-      }
+      this.wireframePlayerService.computedViewChanged$.subscribe(
+        () => {
+          setTimeout(() => this.updateTransform(), 0);
+        }
+      )
     }
+
+    setTimeout(() => this.updateTransform(), 0);
   }
 
   @HostListener('window:keydown', ['$event'])
@@ -71,15 +74,17 @@ export class WireframePlayerComponent implements AfterViewInit {
       return;
     }
 
-    const viewHeight = view.getBoundingClientRect().height;
-    const viewWidth = view.getBoundingClientRect().width;
+    const viewHeight = view.offsetHeight;
+    const viewWidth = view.offsetWidth;
 
-    const containerHeight = viewContainer.clientHeight;
-    const containerWidth = viewContainer.clientWidth;
+    const containerHeight = viewContainer.offsetHeight;
+    const containerWidth = viewContainer.offsetWidth;
 
     const scaleX = containerWidth / viewWidth;
     const scaleY = containerHeight / viewHeight;
     const scale = Math.min(scaleX, scaleY);
+
+    console.log({ containerHeight, viewHeight })
 
     this.$viewTransform.set(`scale(${scale})`);
   }

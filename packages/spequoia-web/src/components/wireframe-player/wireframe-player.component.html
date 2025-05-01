@@ -22,10 +22,9 @@
     }
   </ul>
   <div class="view-container-wrapper">
-    <div>
+    <div class="view-container-viewport" #viewContainer>
       <div
-        class="view-container"
-        #viewContainer
+        class="view-scaler"
         [style.transform]="$viewTransform()"
         [style.height]="$viewHeight() + 20 + 'px'"
       >

@@ -91,6 +91,7 @@ const actionOnElementPatterns = [
 const actionWithQuotedTextPatterns = [
   // action keyword (type) followed by quoted text
   /^(type)\s+"([^"]+)"/,
+  /^(press key)\s+"([^"]+)"/,
 ];
 
 const assertionPatterns = [

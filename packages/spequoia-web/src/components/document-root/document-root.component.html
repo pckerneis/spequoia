@@ -34,7 +34,7 @@
 
           @for (
             feature of processedDocument.processedFeatures;
-            track feature.id
+            track $index
           ) {
             <app-feature-panel [feature]="feature" />
           }

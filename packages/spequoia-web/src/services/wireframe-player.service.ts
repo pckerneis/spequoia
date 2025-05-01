@@ -5,6 +5,7 @@ import {
   ParsedViewNode,
 } from 'spequoia-core/dist/model/parsed-document.model';
 import { DocumentService } from './document.service';
+import {Subject} from 'rxjs';
 
 @Injectable()
 export class WireframePlayerService {
@@ -43,6 +44,8 @@ export class WireframePlayerService {
       .filter((fragment) => fragment.type === 'variable')
       .map((fragment) => fragment.value.trim());
   });
+
+  readonly computedViewChanged$ = new Subject<void>();
 
   constructor(private readonly documentService: DocumentService) {}
 
@@ -160,7 +163,7 @@ export class WireframePlayerService {
           }
 
           computedNodeStates[nodeName] = computedNodeState;
-        } else {
+        } else if (i > this.currentStep()) {
           break;
         }
       }
@@ -168,6 +171,7 @@ export class WireframePlayerService {
 
     console.log('Computed node states:', computedNodeStates);
     this.computedNodeStates.set(computedNodeStates);
+    this.computedViewChanged$.next();
   }
 }
 

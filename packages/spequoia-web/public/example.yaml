@@ -72,7 +72,7 @@ features:
       The web app title "*todos*" is displayed in the header. It's shown in the header element
       in a `h1` tag.
       The app starts with an empty task list, and the user is prompted to add tasks.
-    tags: [ui, layout]
+    tags: [ ui, layout ]
     examples:
       - id: EX-001
         name: The web app shows a header with the app title "todos", a text input, and an empty task list
@@ -91,3 +91,27 @@ features:
           - expect input to have placeholder "What needs to be done?"
           - expect todo list to be empty
           - expect footer not to be visible
+
+  - name: Create new tasks
+    description: |
+      The text input allows to add new tasks by typing the task name and hitting `Enter`.
+
+      Newly created tasks are displayed in the task list as active.
+
+    examples:
+        - id: EX-002
+          name: Create a new task
+          steps:
+            - visit main page
+            - expect todo list to be empty
+            - expect footer not to be visible
+            - click input
+            - type "New task"
+            - press key "Enter"
+            - expect task row 1 to be visible
+            - expect label to have text "New task"
+            - expect task row 1 done checkbox to be visible
+            - expect footer to be visible
+            - expect todo count to have text "1 items left"
+            - expect clear completed button to be hidden
+

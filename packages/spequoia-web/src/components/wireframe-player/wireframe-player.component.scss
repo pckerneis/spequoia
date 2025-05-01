@@ -1,11 +1,16 @@
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   background-color: white;
   border: 1px solid var(--main-border-color);
+  max-height: 340px;
+  overflow: hidden;
 }
 
 .player-main {
   display: flex;
+  flex: 1;
+  overflow: hidden;
 }
 
 ul {
@@ -17,6 +22,7 @@ ul {
   display: flex;
   flex-direction: column;
   background-color: var(--player-step);
+  overflow-y: auto;
 
   li {
     padding: 0.5rem 1rem 0.5rem calc(1rem - 4px);
@@ -45,10 +51,18 @@ ul {
   padding: 1rem;
   flex: 1;
   overflow: hidden;
+  display: flex;
 
-  .view-container {
-    position: relative;
-    transform-origin: top left;
+  .view-container-viewport {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .view-scaler {
+      position: relative;
+      transform-origin: top left;
+    }
   }
 }
 
