@@ -1,11 +1,11 @@
 import { parse } from "yaml";
 import {
-  ParsedDocument,
+  ParsedDocument, ParsedExample,
   ParsedStep,
   ParsedStepFragment,
   ParsedStepFragmentType,
   ParsedViewNode,
-} from "./model/parsed-document.model";
+} from './model/parsed-document.model';
 import Ajv from "ajv";
 import schema from "spequoia-model/schema/spequoia.json";
 import {
@@ -58,10 +58,13 @@ function parseRawDocument(rawDocument: SpequoiaDocument): ParsedDocument {
           name: example.name,
           description: example.description,
           steps: parseRawSteps(example.steps),
-        })) ?? [],
+          executors: example.executors,
+        } satisfies ParsedExample)) ?? [],
       tags: feature.tags ?? [],
     })),
     views: parseViews(rawDocument.views),
+    executors: rawDocument.executors,
+    defaultExecutor: rawDocument.defaultExecutor,
   };
 }
 
@@ -78,6 +81,7 @@ const keywords = ["click", "type", "expect", "wait", "visit"];
 const actionOnElementPatterns = [
   // action keyword (click) followed by a variable
   /^(click)\s+([\w\s]+)/,
+  /^(visit)\s+([\w\s]+)/,
 ];
 
 const actionWithQuotedTextPatterns = [

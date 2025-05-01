@@ -5,7 +5,17 @@
           (click)="wireframePlayerService.setStep($index)"
           (keydown.enter)="wireframePlayerService.setStep($index)"
           tabindex="0">
-        {{ step.raw }}
+        @for (fragment of step.fragments; track $index) {
+          @if (fragment.type == "keyword") {
+            <b class="keyword">{{ fragment.value }} </b>
+          } @else if (fragment.type == "variable") {
+            <b>&#64;{{ fragment.value }} </b>
+          } @else if (fragment.type == "quoted") {
+            <span class="quoted">"{{ fragment.value }}"</span>
+          } @else {
+            <span>{{ fragment.value }} </span>
+          }
+        }
       </li>
     }
   </ul>

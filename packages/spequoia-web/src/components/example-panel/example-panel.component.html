@@ -14,24 +14,26 @@
       <p [innerHTML]="example.description | markdown"></p>
     }
 
+    @if (hasExecutor()) {
     <app-wireframe-player [example]="example"/>
-
-    <ul>
-      @for (step of example.steps; track $index) {
-        <li>
-          @for (fragment of step.fragments; track $index) {
-            @if (fragment.type == "keyword") {
-              <b class="keyword">{{ fragment.value }} </b>
-            } @else if (fragment.type == "variable") {
-              <b>&#64;{{ fragment.value }} </b>
-            } @else if (fragment.type == "quoted") {
-              <span class="quoted">"{{ fragment.value }}"</span>
-            } @else {
-              <span>{{ fragment.value }} </span>
+    } @else {
+      <ul>
+        @for (step of example.steps; track $index) {
+          <li>
+            @for (fragment of step.fragments; track $index) {
+              @if (fragment.type == "keyword") {
+                <b class="keyword">{{ fragment.value }} </b>
+              } @else if (fragment.type == "variable") {
+                <b>&#64;{{ fragment.value }} </b>
+              } @else if (fragment.type == "quoted") {
+                <span class="quoted">"{{ fragment.value }}"</span>
+              } @else {
+                <span>{{ fragment.value }} </span>
+              }
             }
-          }
-        </li>
-      }
-    </ul>
+          </li>
+        }
+      </ul>
+    }
   </details>
 }

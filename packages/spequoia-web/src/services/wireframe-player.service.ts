@@ -15,7 +15,7 @@ export class WireframePlayerService {
       return 0;
     }
 
-    return (this.currentStep() / (example.steps.length - 1)) * 100;
+    return ((this.currentStep() + 1) / example.steps.length) * 100;
   })
 
   constructor(private readonly documentService: DocumentService) { }

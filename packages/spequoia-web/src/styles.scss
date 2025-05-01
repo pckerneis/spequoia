@@ -59,3 +59,13 @@ h7 {
   color: var(--heading-color);
   scroll-margin: 10px;
 }
+
+.quoted {
+  font-style: italic;
+  color: var(--quoted-text-color);
+}
+
+.keyword {
+  color: var(--keyword-color);
+  font-weight: bold;
+}

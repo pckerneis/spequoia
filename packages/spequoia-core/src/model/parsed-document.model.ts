@@ -1,8 +1,12 @@
+import {SpequoiaExecutor} from 'spequoia-model/src/model/spequoia.model';
+
 export interface ParsedDocument {
   title: string;
   description?: string;
   features: ParsedFeature[];
   views?: ParsedViewNode[];
+  executors?: Record<string, SpequoiaExecutor>;
+  defaultExecutor?: string;
 }
 
 export interface ParsedFeature {
@@ -18,6 +22,7 @@ export interface ParsedExample {
   name?: string;
   description?: string;
   steps?: ParsedStep[];
+  executors?: string[];
 }
 
 export interface ParsedStep {
