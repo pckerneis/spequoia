@@ -1,0 +1,53 @@
+:host {
+  display: block;
+  background-color: white;
+  border: 1px solid var(--main-border-color);
+}
+
+.player-main {
+  display: flex;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  width: 300px;
+  min-width: 300px;
+  border-right: 1px solid var(--main-border-color);
+  display: flex;
+  flex-direction: column;
+  background-color: var(--player-step);
+
+  li {
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--main-border-color);
+    text-overflow: ellipsis;
+    cursor: pointer;
+    font-size: 0.8rem;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background-color: #e3e3e3;
+    }
+
+    &.active {
+      background-color: rgb(234, 255, 242);
+      border-left: 4px solid #5ccf84;
+    }
+  }
+}
+
+.view-container-wrapper {
+  padding: 1rem;
+  flex: 1;
+  overflow: hidden;
+
+  .view-container {
+    position: relative;
+    transform-origin: top left;
+  }
+}
+

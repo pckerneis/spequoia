@@ -14,6 +14,8 @@
       <p [innerHTML]="example.description | markdown"></p>
     }
 
+    <app-wireframe-player [example]="example"/>
+
     <ul>
       @for (step of example.steps; track $index) {
         <li>

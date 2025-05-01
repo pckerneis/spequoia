@@ -1,5 +1,5 @@
 version: 1.0.0-it1
-title: TODO app
+title: TodoMVC
 description: |
   # TodoMVC
 
@@ -72,7 +72,7 @@ features:
       The web app title "*todos*" is displayed in the header. It's shown in the header element
       in a `h1` tag.
       The app starts with an empty task list, and the user is prompted to add tasks.
-    tags: [ui, header]
+    tags: [ui, layout]
     examples:
       - id: EX-001
         name: The web app shows a header with the app title "todos", a text input, and an empty task list

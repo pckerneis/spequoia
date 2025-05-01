@@ -1,0 +1,28 @@
+<div class="player-main">
+  <ul>
+    @for (step of example?.steps; track $index) {
+      <li>
+        {{ step.raw }}
+      </li>
+    }
+  </ul>
+  <div class="view-container-wrapper">
+    <div>
+      <div class="view-container" #viewContainer [style.transform]="$viewTransform()"
+           [style.height]="$viewHeight() + 20 + 'px'">
+        @if (wireframePlayerService.currentView(); as view) {
+          <app-view-node #viewRoot [viewNode]="view"/>
+        } @else {
+          <div class="empty-view">
+            <p>Nothing to show</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="progress-bar">
+  <div #progress [style.width]="'0%'"></div>
+</div>
