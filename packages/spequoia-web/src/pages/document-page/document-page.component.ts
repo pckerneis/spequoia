@@ -9,21 +9,21 @@ import {
   signal,
   ViewChild,
 } from '@angular/core';
-import { FeaturePanelComponent } from '../feature-panel/feature-panel.component';
-import { DomSanitizer } from '@angular/platform-browser';
-import { ProcessedDocument } from '../../models/processed-document.model';
 import { fromEvent, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { ViewPanelComponent } from '../view-panel/view-panel.component';
+import {FeaturePanelComponent} from '../../components/feature-panel/feature-panel.component';
+import {ViewPanelComponent} from '../../components/view-panel/view-panel.component';
+import {ProcessedDocument} from '../../models/processed-document.model';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-document-root',
+  selector: 'app-document-page',
   standalone: true,
   imports: [FeaturePanelComponent, ViewPanelComponent],
-  templateUrl: './document-root.component.html',
-  styleUrls: ['./document-root.component.scss'],
+  templateUrl: './document-page.component.html',
+  styleUrls: ['./document-page.component.scss'],
 })
-export class DocumentRootComponent implements AfterViewInit, OnDestroy {
+export class DocumentPageComponent implements AfterViewInit, OnDestroy {
   @Input() processedDocument!: ProcessedDocument | null;
 
   @ViewChild('mainContainer')

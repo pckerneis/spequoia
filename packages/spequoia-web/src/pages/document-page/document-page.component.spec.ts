@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DocumentRootComponent } from './document-root.component';
+import { DocumentPageComponent } from './document-page.component';
 
 describe('DocumentRootComponent', () => {
-  let component: DocumentRootComponent;
-  let fixture: ComponentFixture<DocumentRootComponent>;
+  let component: DocumentPageComponent;
+  let fixture: ComponentFixture<DocumentPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DocumentRootComponent],
+      imports: [DocumentPageComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DocumentRootComponent);
+    fixture = TestBed.createComponent(DocumentPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
