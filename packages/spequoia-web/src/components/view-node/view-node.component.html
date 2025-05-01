@@ -1,20 +1,28 @@
-<fieldset class="container" [class.target]="active()">
-  <legend>
-    <label>{{ viewNode.name }}</label>
-    @if (showSelector && viewNode.selector) {
-      <span class="selector">{{ viewNode.selector }}</span>
-    }
-  </legend>
+@if (!computedHidden()) {
+  <fieldset class="container" [class.target]="active()">
+    <legend>
+      <label>{{ viewNode.name }}</label>
+      @if (showSelector && viewNode.selector) {
+        <span class="selector">{{ viewNode.selector }}</span>
+      }
+    </legend>
 
-  @if (viewNode.text) {
-    <div class="text">
-      <span>{{ viewNode.text }}</span>
-    </div>
-  }
-
-  <div [ngClass]="cssClass">
-    @for (child of viewNode.children; track $index) {
-      <app-view-node [viewNode]="child"></app-view-node>
+    @if (computedText(); as text) {
+      <div class="text">
+        <span>{{ text }}</span>
+      </div>
+    } @else if (computedPlaceholder()) {
+      <div class="text placeholder">
+        <span>{{ computedPlaceholder() }}</span>
+      </div>
     }
-  </div>
-</fieldset>
+
+    @if (!computedEmpty()) {
+      <div [ngClass]="cssClass">
+        @for (child of viewNode.children; track $index) {
+          <app-view-node [viewNode]="child"></app-view-node>
+        }
+      </div>
+    }
+  </fieldset>
+}

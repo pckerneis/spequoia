@@ -1,6 +1,7 @@
 import { computed, Injectable, signal } from '@angular/core';
 import {
   ParsedExample,
+  ParsedStep,
   ParsedViewNode,
 } from 'spequoia-core/dist/model/parsed-document.model';
 import { DocumentService } from './document.service';
@@ -10,6 +11,11 @@ export class WireframePlayerService {
   readonly currentView = signal<ParsedViewNode | undefined>(undefined);
   readonly currentStep = signal<number>(0);
   readonly example = signal<ParsedExample | null>(null);
+  readonly computedNodeStates = signal<Record<
+    string,
+    ComputedNodeState
+  > | null>(null);
+
   readonly progressPercent = computed(() => {
     const example = this.example();
 
@@ -19,6 +25,7 @@ export class WireframePlayerService {
 
     return ((this.currentStep() + 1) / example.steps.length) * 100;
   });
+
   readonly currentTargets = computed<string[]>(() => {
     const example = this.example();
 
@@ -47,23 +54,7 @@ export class WireframePlayerService {
       return;
     }
 
-    const document = this.documentService.document();
-
-    console.log(document);
-
-    for (let step of example.steps) {
-      if (
-        step.fragments[0].type === 'keyword' &&
-        step.fragments[0].value === 'visit'
-      ) {
-        const viewName = step.fragments[1].value.trim();
-        const view = document?.views?.find((view) => view.name === viewName);
-        this.currentView.set(view);
-
-        console.log(`Current view set to: ${viewName}`, view);
-        break;
-      }
-    }
+    this.computeViewState();
   }
 
   next(): void {
@@ -74,6 +65,8 @@ export class WireframePlayerService {
         this.currentStep.update((step) => step + 1);
       }
     }
+
+    this.computeViewState();
   }
 
   previous(): void {
@@ -84,6 +77,8 @@ export class WireframePlayerService {
         this.currentStep.update((step) => step - 1);
       }
     }
+
+    this.computeViewState();
   }
 
   setStep(index: number): void {
@@ -92,5 +87,93 @@ export class WireframePlayerService {
     if (example?.steps && index >= 0 && index < example.steps.length) {
       this.currentStep.set(index);
     }
+
+    this.computeViewState();
   }
+
+  private computeViewState() {
+    const example = this.example();
+    const document = this.documentService.document();
+
+    if (!example || !example.steps || example.steps.length === 0) {
+      return;
+    }
+
+    let currentViewStep = -1;
+
+    for (let i = 0; i <= this.currentStep(); i++) {
+      const step = example.steps[i];
+
+      if (
+        step.fragments[0].type === 'keyword' &&
+        step.fragments[0].value === 'visit'
+      ) {
+        const viewName = step.fragments[1].value.trim();
+        const view = document?.views?.find((view) => view.name === viewName);
+        this.currentView.set(view);
+        currentViewStep = i;
+        break;
+      }
+    }
+
+    const computedNodeStates: Record<string, ComputedNodeState> = {};
+
+    if (currentViewStep >= 0) {
+      for (let i = currentViewStep + 1; i < example?.steps.length; i++) {
+        const step = example.steps[i] as ParsedStep;
+
+        if (
+          step.fragments[0].type === 'keyword' &&
+          step.fragments[0].value === 'expect'
+        ) {
+          const nodeName = step.fragments[1].value;
+          const computedNodeState: ComputedNodeState =
+            computedNodeStates[nodeName] || {};
+
+          const assertion = step.fragments[2].value.trim();
+
+          switch (assertion) {
+            case 'to have text':
+              computedNodeState.text = step.fragments[3].value.trim();
+              break;
+            case 'to be empty':
+              computedNodeState.empty = true;
+              break;
+            case 'not to be empty':
+              computedNodeState.empty = false;
+              break;
+            case 'to be hidden':
+              computedNodeState.hidden = true;
+              break;
+            case 'to be visible':
+              computedNodeState.hidden = false;
+              break;
+            case 'not to be visible':
+              computedNodeState.hidden = true;
+              break;
+            case 'to have placeholder':
+              computedNodeState.placeholder = step.fragments[3].value.trim();
+              break;
+            case 'not to have text':
+              computedNodeState.text = '';
+              break;
+          }
+
+          computedNodeStates[nodeName] = computedNodeState;
+        } else {
+          break;
+        }
+      }
+    }
+
+    console.log('Computed node states:', computedNodeStates);
+    this.computedNodeStates.set(computedNodeStates);
+  }
+}
+
+export interface ComputedNodeState {
+  text?: string;
+  placeholder?: string;
+  hidden?: boolean;
+  empty?: boolean;
 }

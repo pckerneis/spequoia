@@ -95,24 +95,25 @@ const actionWithQuotedTextPatterns = [
 
 const assertionPatterns = [
   // "expect" keyword followed by a variable and "to have text" keyword
-  /expect\s+([\w\s]+)\s+(to have text)\s+"([^"]+)"/,
   /expect\s+([\w\s]+)\s+(not to have text)\s+"([^"]+)"/,
-  /expect\s+([\w\s]+)\s+(to have class)\s+"([^"]+)"/,
+  /expect\s+([\w\s]+)\s+(to have text)\s+"([^"]+)"/,
   /expect\s+([\w\s]+)\s+(not to have class)\s+"([^"]+)"/,
+  /expect\s+([\w\s]+)\s+(to have class)\s+"([^"]+)"/,
+  /expect\s+([\w\s]+)\s+(not to be visible)/,
   /expect\s+([\w\s]+)\s+(to be visible)/,
   /expect\s+([\w\s]+)\s+(to be hidden)/,
-  /expect\s+([\w\s]+)\s+(to exist)/,
   /expect\s+([\w\s]+)\s+(not to exist)/,
-  /expect\s+([\w\s]+)\s+(to be checked)/,
+  /expect\s+([\w\s]+)\s+(to exist)/,
   /expect\s+([\w\s]+)\s+(not to be checked)/,
-  /expect\s+([\w\s]+)\s+(to be disabled)/,
+  /expect\s+([\w\s]+)\s+(to be checked)/,
   /expect\s+([\w\s]+)\s+(not to be disabled)/,
-  /expect\s+([\w\s]+)\s+(to be enabled)/,
+  /expect\s+([\w\s]+)\s+(to be disabled)/,
   /expect\s+([\w\s]+)\s+(not to be enabled)/,
-  /expect\s+([\w\s]+)\s+(to be empty)/,
+  /expect\s+([\w\s]+)\s+(to be enabled)/,
   /expect\s+([\w\s]+)\s+(not to be empty)/,
-  /expect\s+([\w\s]+)\s+(to have placeholder)\s+"([^"]+)"/,
+  /expect\s+([\w\s]+)\s+(to be empty)/,
   /expect\s+([\w\s]+)\s+(not to have placeholder)\s+"([^"]+)"/,
+  /expect\s+([\w\s]+)\s+(to have placeholder)\s+"([^"]+)"/,
 ];
 
 function parseRawStep(step: string): ParsedStep {

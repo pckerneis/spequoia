@@ -90,4 +90,4 @@ features:
           - expect input to be visible
           - expect input to have placeholder "What needs to be done?"
           - expect todo list to be empty
-          - expect footer to be visible
+          - expect footer not to be visible
