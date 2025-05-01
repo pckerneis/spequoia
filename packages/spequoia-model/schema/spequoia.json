@@ -87,19 +87,7 @@
     "SpequoiaExecutor": {
       "description": "An executor is a tool or library that can be used to execute the steps.",
       "properties": {
-        "description": {
-          "description": "A markdown description of the executor.",
-          "type": "string"
-        },
-        "kind": {
-          "description": "The type of the executor.",
-          "type": "string"
-        },
-        "name": {
-          "description": "The name of the executor.",
-          "type": "string"
-        },
-        "params": {
+        "configuration": {
           "additionalProperties": {
             "type": [
               "string",
@@ -109,10 +97,17 @@
           },
           "description": "Additional parameters for the executor.",
           "type": "object"
+        },
+        "description": {
+          "description": "A markdown description of the executor.",
+          "type": "string"
+        },
+        "kind": {
+          "description": "The type of the executor.",
+          "type": "string"
         }
       },
       "required": [
-        "name",
         "kind"
       ],
       "type": "object"

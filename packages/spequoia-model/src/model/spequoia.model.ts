@@ -136,18 +136,13 @@ export interface SpequoiaViewNodeObject extends SpequoiaViewNodeObjectMetadata {
    * Keys are arbitrary strings except for the metadata properties
    * that start with "$".
    */
-  [key: string]: SpequoiaViewNode | 'string' | undefined;
+  [key: string]: SpequoiaViewNode | "string" | undefined;
 }
 
 /**
  * An executor is a tool or library that can be used to execute the steps.
  */
 export interface SpequoiaExecutor {
-  /**
-   * The name of the executor.
-   */
-  name: string;
-
   /**
    * The type of the executor.
    */
@@ -161,5 +156,5 @@ export interface SpequoiaExecutor {
   /**
    * Additional parameters for the executor.
    */
-  params?: Record<string, string | number | boolean>;
+  configuration?: Record<string, string | number | boolean>;
 }

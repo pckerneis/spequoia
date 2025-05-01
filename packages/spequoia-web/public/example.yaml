@@ -18,6 +18,16 @@ description: |
 
   These sections are used to generate wireframes, test cases, and documentation.
 
+executors:
+  default:
+    kind: spequoia-playwright
+    description: |
+      This executor uses Playwright to run the tests. It uses the Playwright
+      API to interact with the web application and verify the expected behavior.
+    configuration:
+      baseUrl: "https://https://todomvc.com/examples/javascript-es5/dist/"
+
+defaultExecutor: default
 
 views:
   main page:
@@ -28,7 +38,7 @@ views:
       input: input.new-todo
     todo list:
       $selector: .todo-list
-      'task row (n)':
+      "task row (n)":
         $selector: '[data-id="${n}"]'
         $direction: row
         done checkbox: input[type="checkbox"]
@@ -65,7 +75,6 @@ features:
     tags: [ui, header]
     examples:
       - id: EX-001
-        executors: [spequoia-playwright]
         name: The web app shows a header with the app title "todos", a text input, and an empty task list
         description: |
           The app title is prominently displayed in the header, making the purpose
@@ -76,6 +85,7 @@ features:
 
           The task list is empty at the start, indicating that no tasks have been added yet.
         steps:
+          - visit main page
           - expect title to have text "todos"
           - expect input to be visible
           - expect input to have placeholder "What needs to be done?"
