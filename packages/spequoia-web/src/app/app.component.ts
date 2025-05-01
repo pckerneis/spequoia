@@ -9,7 +9,7 @@ import {
   ProcessedDocument,
   ProcessedView,
 } from '../models/processed-document.model';
-import {DocumentService} from '../services/document.service';
+import { DocumentService } from '../services/document.service';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +23,10 @@ export class AppComponent {
   $parseResult = signal(null as ParseResult | null);
   $processedDocument = signal(null as ProcessedDocument | null);
 
-  constructor(public readonly http: HttpClient, private readonly documentService: DocumentService) {
+  constructor(
+    public readonly http: HttpClient,
+    private readonly documentService: DocumentService,
+  ) {
     this.http
       .get('example.yaml', { responseType: 'text' })
       .subscribe((data) => {

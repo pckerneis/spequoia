@@ -1,10 +1,12 @@
-import {computed, Injectable, signal} from '@angular/core';
-import {ParsedExample, ParsedViewNode} from 'spequoia-core/dist/model/parsed-document.model';
-import {DocumentService} from './document.service';
+import { computed, Injectable, signal } from '@angular/core';
+import {
+  ParsedExample,
+  ParsedViewNode,
+} from 'spequoia-core/dist/model/parsed-document.model';
+import { DocumentService } from './document.service';
 
 @Injectable()
 export class WireframePlayerService {
-
   readonly currentView = signal<ParsedViewNode | undefined>(undefined);
   readonly currentStep = signal<number>(0);
   readonly example = signal<ParsedExample | null>(null);
@@ -30,11 +32,12 @@ export class WireframePlayerService {
       return [];
     }
 
-    return step.fragments.filter(fragment => fragment.type === "variable")
-      .map(fragment => fragment.value.trim());
+    return step.fragments
+      .filter((fragment) => fragment.type === 'variable')
+      .map((fragment) => fragment.value.trim());
   });
 
-  constructor(private readonly documentService: DocumentService) { }
+  constructor(private readonly documentService: DocumentService) {}
 
   initialise(example: ParsedExample) {
     this.example.set(example);
@@ -49,9 +52,12 @@ export class WireframePlayerService {
     console.log(document);
 
     for (let step of example.steps) {
-      if (step.fragments[0].type === "keyword" && step.fragments[0].value === "visit") {
+      if (
+        step.fragments[0].type === 'keyword' &&
+        step.fragments[0].value === 'visit'
+      ) {
         const viewName = step.fragments[1].value.trim();
-        const view = document?.views?.find(view => view.name === viewName);
+        const view = document?.views?.find((view) => view.name === viewName);
         this.currentView.set(view);
 
         console.log(`Current view set to: ${viewName}`, view);
@@ -65,7 +71,7 @@ export class WireframePlayerService {
 
     if (example && example.steps) {
       if (this.currentStep() < example.steps.length - 1) {
-        this.currentStep.update(step => step + 1);
+        this.currentStep.update((step) => step + 1);
       }
     }
   }
@@ -75,7 +81,7 @@ export class WireframePlayerService {
 
     if (example && example.steps) {
       if (this.currentStep() > 0) {
-        this.currentStep.update(step => step - 1);
+        this.currentStep.update((step) => step - 1);
       }
     }
   }

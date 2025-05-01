@@ -8,9 +8,8 @@ describe('WireframePlayerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [WireframePlayerComponent]
-    })
-    .compileComponents();
+      imports: [WireframePlayerComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(WireframePlayerComponent);
     component = fixture.componentInstance;

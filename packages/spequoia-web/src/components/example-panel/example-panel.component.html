@@ -15,7 +15,7 @@
     }
 
     @if (hasExecutor()) {
-    <app-wireframe-player [example]="example"/>
+      <app-wireframe-player [example]="example" />
     } @else {
       <ul>
         @for (step of example.steps; track $index) {

@@ -1,7 +1,7 @@
-import {Component, computed, Input, Optional} from '@angular/core';
+import { Component, computed, Input, Optional } from '@angular/core';
 import { ParsedViewNode } from 'spequoia-core/dist/model/parsed-document.model';
 import { NgClass } from '@angular/common';
-import {WireframePlayerService} from '../../services/wireframe-player.service';
+import { WireframePlayerService } from '../../services/wireframe-player.service';
 
 @Component({
   selector: 'app-view-node',
@@ -18,14 +18,21 @@ export class ViewNodeComponent {
       return false;
     }
 
-    console.log('active', this.wireframePlayerService.currentTargets(), this.viewNode.name);
+    console.log(
+      'active',
+      this.wireframePlayerService.currentTargets(),
+      this.viewNode.name,
+    );
 
-    return this.wireframePlayerService.currentTargets()
+    return this.wireframePlayerService
+      .currentTargets()
       .includes(this.viewNode.name);
   });
 
-  constructor(@Optional() private readonly wireframePlayerService?: WireframePlayerService) {
-  }
+  constructor(
+    @Optional()
+    private readonly wireframePlayerService?: WireframePlayerService,
+  ) {}
 
   get cssClass(): string {
     if (this.viewNode?.direction === 'row') {

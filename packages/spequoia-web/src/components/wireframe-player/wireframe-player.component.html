@@ -1,10 +1,12 @@
 <div class="player-main" #wireframePlayer>
   <ul>
     @for (step of example?.steps; track $index) {
-      <li [class.active]="wireframePlayerService.currentStep() == $index"
-          (click)="wireframePlayerService.setStep($index)"
-          (keydown.enter)="wireframePlayerService.setStep($index)"
-          tabindex="0">
+      <li
+        [class.active]="wireframePlayerService.currentStep() == $index"
+        (click)="wireframePlayerService.setStep($index)"
+        (keydown.enter)="wireframePlayerService.setStep($index)"
+        tabindex="0"
+      >
         @for (fragment of step.fragments; track $index) {
           @if (fragment.type == "keyword") {
             <b class="keyword">{{ fragment.value }} </b>
@@ -21,10 +23,14 @@
   </ul>
   <div class="view-container-wrapper">
     <div>
-      <div class="view-container" #viewContainer [style.transform]="$viewTransform()"
-           [style.height]="$viewHeight() + 20 + 'px'">
+      <div
+        class="view-container"
+        #viewContainer
+        [style.transform]="$viewTransform()"
+        [style.height]="$viewHeight() + 20 + 'px'"
+      >
         @if (wireframePlayerService.currentView(); as view) {
-          <app-view-node #viewRoot [viewNode]="view"/>
+          <app-view-node #viewRoot [viewNode]="view" />
         } @else {
           <div class="empty-view">
             <p>Nothing to show</p>
@@ -36,5 +42,8 @@
 </div>
 
 <div class="progress-bar">
-  <div class="progress" [style.width]="wireframePlayerService.progressPercent() + '%'"></div>
+  <div
+    class="progress"
+    [style.width]="wireframePlayerService.progressPercent() + '%'"
+  ></div>
 </div>

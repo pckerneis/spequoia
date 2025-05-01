@@ -1,8 +1,8 @@
-import {Component, computed, Input} from '@angular/core';
+import { Component, computed, Input } from '@angular/core';
 import { MarkdownPipe } from '../../pipes/markdown.pipe';
 import { ParsedExample } from 'spequoia-core/dist/model/parsed-document.model';
-import {WireframePlayerComponent} from '../wireframe-player/wireframe-player.component';
-import {DocumentService} from '../../services/document.service';
+import { WireframePlayerComponent } from '../wireframe-player/wireframe-player.component';
+import { DocumentService } from '../../services/document.service';
 
 @Component({
   selector: 'app-example-panel',

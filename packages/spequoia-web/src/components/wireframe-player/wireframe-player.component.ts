@@ -1,40 +1,43 @@
-import {AfterViewInit, Component, ElementRef, HostListener, Input, signal, ViewChild} from '@angular/core';
-import {WireframePlayerService} from '../../services/wireframe-player.service';
-import {ParsedExample} from 'spequoia-core/dist/model/parsed-document.model';
-import {ViewNodeComponent} from '../view-node/view-node.component';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  signal,
+  ViewChild,
+} from '@angular/core';
+import { WireframePlayerService } from '../../services/wireframe-player.service';
+import { ParsedExample } from 'spequoia-core/dist/model/parsed-document.model';
+import { ViewNodeComponent } from '../view-node/view-node.component';
 
 @Component({
   selector: 'app-wireframe-player',
-  providers: [
-    WireframePlayerService
-  ],
-  imports: [
-    ViewNodeComponent
-  ],
+  providers: [WireframePlayerService],
+  imports: [ViewNodeComponent],
   templateUrl: './wireframe-player.component.html',
-  styleUrl: './wireframe-player.component.scss'
+  styleUrl: './wireframe-player.component.scss',
 })
 export class WireframePlayerComponent implements AfterViewInit {
   @Input() example: ParsedExample | undefined;
 
-  @ViewChild('wireframePlayer', {read: ElementRef, static: false})
+  @ViewChild('wireframePlayer', { read: ElementRef, static: false })
   playerRoot: ElementRef | null = null;
 
-  @ViewChild('viewRoot', {read: ElementRef, static: false})
+  @ViewChild('viewRoot', { read: ElementRef, static: false })
   viewRoot: ElementRef | null = null;
 
-  @ViewChild('viewContainer', {read: ElementRef, static: false})
+  @ViewChild('viewContainer', { read: ElementRef, static: false })
   viewContainer: ElementRef | null = null;
 
   $viewTransform = signal('translateX(0px) scale(1)');
   $viewHeight = signal(320);
 
-  constructor(public readonly wireframePlayerService: WireframePlayerService) {
-  }
+  constructor(public readonly wireframePlayerService: WireframePlayerService) {}
 
   ngAfterViewInit(): void {
     if (this.example) {
-      console.log('initialize')
+      console.log('initialize');
       this.wireframePlayerService.initialise(this.example);
 
       if (this.wireframePlayerService.currentView()) {

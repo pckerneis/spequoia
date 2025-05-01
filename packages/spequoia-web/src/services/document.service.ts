@@ -1,17 +1,19 @@
-import {Injectable, signal} from '@angular/core';
-import {ParsedDocument} from 'spequoia-core/dist/model/parsed-document.model';
-import {ProcessedDocument, ProcessedView} from '../models/processed-document.model';
-import {Heading} from '../models/heading.model';
+import { Injectable, signal } from '@angular/core';
+import { ParsedDocument } from 'spequoia-core/dist/model/parsed-document.model';
+import {
+  ProcessedDocument,
+  ProcessedView,
+} from '../models/processed-document.model';
+import { Heading } from '../models/heading.model';
 import * as commonmark from 'commonmark';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DocumentService {
-
   document = signal<ProcessedDocument | null>(null);
 
-  constructor() { }
+  constructor() {}
 
   public setDocument(parsedDocument: ParsedDocument): void {
     this.document.set(this.processDocument(parsedDocument));

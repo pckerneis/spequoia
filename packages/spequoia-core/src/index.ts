@@ -1,11 +1,12 @@
 import { parse } from "yaml";
 import {
-  ParsedDocument, ParsedExample,
+  ParsedDocument,
+  ParsedExample,
   ParsedStep,
   ParsedStepFragment,
   ParsedStepFragmentType,
   ParsedViewNode,
-} from './model/parsed-document.model';
+} from "./model/parsed-document.model";
 import Ajv from "ajv";
 import schema from "spequoia-model/schema/spequoia.json";
 import {
@@ -53,13 +54,16 @@ function parseRawDocument(rawDocument: SpequoiaDocument): ParsedDocument {
       name: feature.name,
       description: feature.description,
       examples:
-        feature.examples?.map((example) => ({
-          id: example.id,
-          name: example.name,
-          description: example.description,
-          steps: parseRawSteps(example.steps),
-          executors: example.executors,
-        } satisfies ParsedExample)) ?? [],
+        feature.examples?.map(
+          (example) =>
+            ({
+              id: example.id,
+              name: example.name,
+              description: example.description,
+              steps: parseRawSteps(example.steps),
+              executors: example.executors,
+            }) satisfies ParsedExample,
+        ) ?? [],
       tags: feature.tags ?? [],
     })),
     views: parseViews(rawDocument.views),
