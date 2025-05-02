@@ -28,9 +28,36 @@ export interface ParsedExample {
 export interface ParsedStep {
   raw: string;
   fragments: ParsedStepFragment[];
+  action?: Action;
+  computedView?: ParsedViewNode;
 }
 
 export type ParsedStepFragmentType = "text" | "variable" | "quoted" | "keyword";
+
+export type ActionType = "click" | "type" | "press_key";
+
+export interface BaseAction {
+  type: ActionType;
+}
+
+export interface ClickAction extends BaseAction {
+  type: "click";
+  selector: string;
+}
+
+export interface TypeAction extends BaseAction {
+  type: "type";
+  selector: string;
+  text: string;
+}
+
+export interface PressKeyAction extends BaseAction {
+  type: "press_key";
+  selector: string;
+  key: string;
+}
+
+export type Action = ClickAction | TypeAction | PressKeyAction;
 
 export interface ParsedStepFragment {
   type: ParsedStepFragmentType;

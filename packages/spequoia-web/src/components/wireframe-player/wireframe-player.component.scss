@@ -3,7 +3,6 @@
   flex-direction: column;
   background-color: white;
   border: 1px solid var(--main-border-color);
-  max-height: 340px;
   overflow: hidden;
 }
 
@@ -16,6 +15,7 @@
 ul {
   list-style: none;
   padding: 0;
+  margin: 0;
   width: 300px;
   min-width: 300px;
   border-right: 1px solid var(--main-border-color);

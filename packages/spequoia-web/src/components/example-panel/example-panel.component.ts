@@ -3,10 +3,11 @@ import { MarkdownPipe } from '../../pipes/markdown.pipe';
 import { ParsedExample } from 'spequoia-core/dist/model/parsed-document.model';
 import { WireframePlayerComponent } from '../wireframe-player/wireframe-player.component';
 import { DocumentService } from '../../services/document.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-example-panel',
-  imports: [MarkdownPipe, WireframePlayerComponent],
+  imports: [MarkdownPipe, WireframePlayerComponent, RouterLink],
   templateUrl: './example-panel.component.html',
   styleUrl: './example-panel.component.scss',
 })

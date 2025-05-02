@@ -11,10 +11,11 @@ import {
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import {FeaturePanelComponent} from '../../components/feature-panel/feature-panel.component';
-import {ViewPanelComponent} from '../../components/view-panel/view-panel.component';
-import {ProcessedDocument} from '../../models/processed-document.model';
-import {DomSanitizer} from '@angular/platform-browser';
+import { FeaturePanelComponent } from '../../components/feature-panel/feature-panel.component';
+import { ViewPanelComponent } from '../../components/view-panel/view-panel.component';
+import { ProcessedDocument } from '../../models/processed-document.model';
+import { DomSanitizer } from '@angular/platform-browser';
+import { DocumentService } from '../../services/document.service';
 
 @Component({
   selector: 'app-document-page',
@@ -24,14 +25,13 @@ import {DomSanitizer} from '@angular/platform-browser';
   styleUrls: ['./document-page.component.scss'],
 })
 export class DocumentPageComponent implements AfterViewInit, OnDestroy {
-  @Input() processedDocument!: ProcessedDocument | null;
-
   @ViewChild('mainContainer')
   mainContainer?: ElementRef<HTMLElement>;
 
   private scrollSubscription?: Subscription;
 
   constructor(
+    public readonly documentService: DocumentService,
     private readonly domSanitizer: DomSanitizer,
     private readonly ngZone: NgZone,
   ) {}
@@ -39,7 +39,7 @@ export class DocumentPageComponent implements AfterViewInit, OnDestroy {
   activeHeadingId = signal('');
 
   safeProcessedDescription = computed(() => {
-    const description = this.processedDocument?.processedDescription;
+    const description = this.documentService.document()?.processedDescription;
 
     if (!description) {
       return '';
@@ -54,7 +54,10 @@ export class DocumentPageComponent implements AfterViewInit, OnDestroy {
   }
 
   private scrollToHashHeading(): void {
-    if (!this.mainContainer?.nativeElement || !this.processedDocument) {
+    if (
+      !this.mainContainer?.nativeElement ||
+      !this.documentService.document()
+    ) {
       return;
     }
 
@@ -104,14 +107,15 @@ export class DocumentPageComponent implements AfterViewInit, OnDestroy {
   private updateActiveHeading(): void {
     if (
       !this.mainContainer?.nativeElement ||
-      !this.processedDocument?.headings.length
+      !this.documentService.document()?.headings.length
     ) {
       return;
     }
 
     const container = this.mainContainer.nativeElement;
     const headings = Array.from(container.querySelectorAll('[id]')).filter(
-      (el) => this.processedDocument?.headings.some((h) => h.id === el.id),
+      (el) =>
+        this.documentService.document()?.headings.some((h) => h.id === el.id),
     );
 
     if (!headings.length) {

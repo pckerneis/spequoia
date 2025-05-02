@@ -1,4 +1,8 @@
-<div class="player-main" #wireframePlayer>
+<div
+  class="player-main"
+  #wireframePlayer
+  [style.max-height]="$viewHeight() + 20 + 'px'"
+>
   <ul>
     @for (step of example?.steps; track $index) {
       <li

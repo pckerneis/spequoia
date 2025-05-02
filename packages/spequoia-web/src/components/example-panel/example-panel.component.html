@@ -16,6 +16,7 @@
 
     @if (hasExecutor()) {
       <app-wireframe-player [example]="example" />
+      <a [routerLink]="['example', example.id]">Open in full page</a>
     } @else {
       <ul>
         @for (step of example.steps; track $index) {

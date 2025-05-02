@@ -46,6 +46,8 @@ export function parseSpec(yamlText: string): ParseResult {
 }
 
 function parseRawDocument(rawDocument: SpequoiaDocument): ParsedDocument {
+  const views = parseViews(rawDocument.views);
+
   return {
     title: rawDocument.title,
     description: rawDocument.description,
@@ -60,27 +62,25 @@ function parseRawDocument(rawDocument: SpequoiaDocument): ParsedDocument {
               id: example.id,
               name: example.name,
               description: example.description,
-              steps: parseRawSteps(example.steps),
+              steps: parseRawSteps(example.steps, views),
               executors: example.executors,
             }) satisfies ParsedExample,
         ) ?? [],
       tags: feature.tags ?? [],
     })),
-    views: parseViews(rawDocument.views),
+    views,
     executors: rawDocument.executors,
     defaultExecutor: rawDocument.defaultExecutor,
   };
 }
 
-function parseRawSteps(steps: string[] | undefined): ParsedStep[] {
+function parseRawSteps(steps: string[] | undefined, views: ParsedViewNode[]): ParsedStep[] {
   if (!steps) {
     return [];
   }
 
   return steps.map((step) => parseRawStep(step));
 }
-
-const keywords = ["click", "type", "expect", "wait", "visit"];
 
 const actionOnElementPatterns = [
   // action keyword (click) followed by a variable
@@ -187,50 +187,10 @@ function parseStepFragments(step: string): ParsedStepFragment[] {
     }
   }
 
-  let fragments: ParsedStepFragment[] = [];
-  let currentValue = "";
-  let currentType: ParsedStepFragmentType = "text";
-
-  // Check if the step starts with a keyword
-  const keyword = keywords.find((kw) => step.startsWith(kw));
-
-  if (keyword) {
-    fragments.push({ type: "keyword", value: keyword });
-  }
-
-  const startIndex = keyword ? keyword.length : 0;
-
-  for (let i = startIndex; i < step.length; i++) {
-    const char = step[i];
-
-    if (char === "$") {
-      if (currentValue) {
-        fragments.push({ type: currentType, value: currentValue });
-        currentValue = "";
-      }
-      currentType = "variable";
-    } else if (char === '"') {
-      if (currentType === "quoted") {
-        fragments.push({ type: currentType, value: currentValue });
-        currentValue = "";
-        currentType = "text";
-      } else {
-        if (currentValue) {
-          fragments.push({ type: currentType, value: currentValue });
-          currentValue = "";
-        }
-        currentType = "quoted";
-      }
-    } else {
-      currentValue += char;
-    }
-  }
-
-  if (currentValue) {
-    fragments.push({ type: currentType, value: currentValue });
-  }
-
-  return fragments;
+  // If no patterns matched, return the step as a text fragment
+  return [
+    { type: "text", value: step },
+  ]
 }
 
 function parseViews(

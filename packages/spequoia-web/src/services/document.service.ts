@@ -1,5 +1,8 @@
 import { Injectable, signal } from '@angular/core';
-import { ParsedDocument } from 'spequoia-core/dist/model/parsed-document.model';
+import {
+  ParsedDocument,
+  ParsedExample,
+} from 'spequoia-core/dist/model/parsed-document.model';
 import {
   ProcessedDocument,
   ProcessedView,
@@ -136,5 +139,24 @@ export class DocumentService {
       processedViews,
       headings,
     };
+  }
+
+  public getExample(exampleId: any): ParsedExample | undefined {
+    const document = this.document();
+
+    console.log(exampleId);
+
+    if (!document) {
+      return undefined;
+    }
+
+    for (const feature of document.features) {
+      const example = feature.examples?.find((ex) => ex.id === exampleId);
+      if (example) {
+        return example;
+      }
+    }
+
+    return undefined;
   }
 }

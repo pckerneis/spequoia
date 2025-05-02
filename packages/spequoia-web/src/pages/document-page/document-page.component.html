@@ -1,4 +1,4 @@
-@if (processedDocument) {
+@if (this.documentService.document(); as processedDocument) {
   <div class="document-page">
     <header>
       <div>
@@ -32,10 +32,7 @@
 
           <h2 id="features">Features</h2>
 
-          @for (
-            feature of processedDocument.processedFeatures;
-            track $index
-          ) {
+          @for (feature of processedDocument.processedFeatures; track $index) {
             <app-feature-panel [feature]="feature" />
           }
 

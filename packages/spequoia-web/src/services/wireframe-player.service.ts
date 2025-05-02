@@ -5,7 +5,7 @@ import {
   ParsedViewNode,
 } from 'spequoia-core/dist/model/parsed-document.model';
 import { DocumentService } from './document.service';
-import {Subject} from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class WireframePlayerService {

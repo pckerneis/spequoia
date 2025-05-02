@@ -1,11 +1,15 @@
 import {
   AfterViewInit,
   Component,
+  computed,
   ElementRef,
   HostListener,
-  Input, QueryList,
+  Input,
+  QueryList,
   signal,
-  ViewChild, ViewChildren, viewChildren,
+  ViewChild,
+  ViewChildren,
+  viewChildren,
 } from '@angular/core';
 import { WireframePlayerService } from '../../services/wireframe-player.service';
 import { ParsedExample } from 'spequoia-core/dist/model/parsed-document.model';
@@ -33,8 +37,10 @@ export class WireframePlayerComponent implements AfterViewInit {
   @ViewChild('viewContainer', { read: ElementRef, static: false })
   viewContainer: ElementRef | null = null;
 
+  @Input() layout: 'large' | 'small' = 'small';
+
   $viewTransform = signal('translateX(0px) scale(1)');
-  $viewHeight = signal(320);
+  $viewHeight = computed(() => (this.layout === 'large' ? 500 : 320));
 
   constructor(public readonly wireframePlayerService: WireframePlayerService) {}
 
@@ -42,27 +48,23 @@ export class WireframePlayerComponent implements AfterViewInit {
     if (this.example) {
       this.wireframePlayerService.initialise(this.example);
 
-      this.wireframePlayerService.computedViewChanged$.subscribe(
-        () => {
-          setTimeout(() => this.updateTransform(), 0);
-        }
-      )
+      this.wireframePlayerService.computedViewChanged$.subscribe(() => {
+        setTimeout(() => this.updateTransform(), 0);
+      });
     }
 
     setTimeout(() => this.updateTransform(), 0);
 
-    this.wireframePlayerService.stepChanged$.subscribe(
-      () => {
-        if (!this.stepButtons) {
-          return;
-        }
-        this.stepButtons.forEach((el, index) => {
-          if (this.wireframePlayerService.currentStep() == index) {
-            el.nativeElement.focus();
-          }
-        })
+    this.wireframePlayerService.stepChanged$.subscribe(() => {
+      if (!this.stepButtons) {
+        return;
       }
-    )
+      this.stepButtons.forEach((el, index) => {
+        if (this.wireframePlayerService.currentStep() == index) {
+          el.nativeElement.focus();
+        }
+      });
+    });
   }
 
   @HostListener('window:keydown', ['$event'])
@@ -90,8 +92,8 @@ export class WireframePlayerComponent implements AfterViewInit {
       return;
     }
 
-    const viewHeight = view.offsetHeight;
-    const viewWidth = view.offsetWidth;
+    const viewHeight = view.scrollHeight;
+    const viewWidth = view.scrollWidth;
 
     const containerHeight = viewContainer.offsetHeight;
     const containerWidth = viewContainer.offsetWidth;
@@ -100,7 +102,7 @@ export class WireframePlayerComponent implements AfterViewInit {
     const scaleY = containerHeight / viewHeight;
     const scale = Math.min(scaleX, scaleY);
 
-    console.log({ containerHeight, viewHeight })
+    console.log({ containerHeight, viewHeight, containerWidth, viewWidth });
 
     this.$viewTransform.set(`scale(${scale})`);
   }
