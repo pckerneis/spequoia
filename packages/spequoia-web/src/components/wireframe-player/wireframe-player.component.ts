@@ -9,7 +9,6 @@ import {
   signal,
   ViewChild,
   ViewChildren,
-  viewChildren,
 } from '@angular/core';
 import { WireframePlayerService } from '../../services/wireframe-player.service';
 import { ParsedExample } from 'spequoia-core/dist/model/parsed-document.model';
@@ -48,7 +47,7 @@ export class WireframePlayerComponent implements AfterViewInit {
     if (this.example) {
       this.wireframePlayerService.initialise(this.example);
 
-      this.wireframePlayerService.computedViewChanged$.subscribe(() => {
+      this.wireframePlayerService.stepChanged$.subscribe(() => {
         setTimeout(() => this.updateTransform(), 0);
       });
     }
@@ -101,8 +100,6 @@ export class WireframePlayerComponent implements AfterViewInit {
     const scaleX = containerWidth / viewWidth;
     const scaleY = containerHeight / viewHeight;
     const scale = Math.min(scaleX, scaleY);
-
-    console.log({ containerHeight, viewHeight, containerWidth, viewWidth });
 
     this.$viewTransform.set(`scale(${scale})`);
   }

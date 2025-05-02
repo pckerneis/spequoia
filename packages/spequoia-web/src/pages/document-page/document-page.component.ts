@@ -3,7 +3,6 @@ import {
   Component,
   computed,
   ElementRef,
-  Input,
   NgZone,
   OnDestroy,
   signal,
@@ -13,7 +12,6 @@ import { fromEvent, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { FeaturePanelComponent } from '../../components/feature-panel/feature-panel.component';
 import { ViewPanelComponent } from '../../components/view-panel/view-panel.component';
-import { ProcessedDocument } from '../../models/processed-document.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DocumentService } from '../../services/document.service';
 

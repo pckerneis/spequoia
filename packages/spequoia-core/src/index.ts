@@ -1,11 +1,15 @@
 import { parse } from "yaml";
 import {
+  Action,
+  ClickAction,
   ParsedDocument,
   ParsedExample,
   ParsedStep,
   ParsedStepFragment,
-  ParsedStepFragmentType,
   ParsedViewNode,
+  PressKeyAction,
+  TypeAction,
+  VisitAction,
 } from "./model/parsed-document.model";
 import Ajv from "ajv";
 import schema from "spequoia-model/schema/spequoia.json";
@@ -74,12 +78,167 @@ function parseRawDocument(rawDocument: SpequoiaDocument): ParsedDocument {
   };
 }
 
-function parseRawSteps(steps: string[] | undefined, views: ParsedViewNode[]): ParsedStep[] {
+interface ResolvedTarget {
+  node: ParsedViewNode;
+  path: string[];
+}
+
+function resolveTarget(
+  currentView: ParsedViewNode | undefined,
+  targetName: string | undefined,
+  currentTarget: string[],
+): ResolvedTarget | null {
+  if (!currentView || !targetName) {
+    return null;
+  }
+
+  // TODO: use currentTarget to find the target node with precedence rules
+
+  const path: string[] = [];
+  let node: ParsedViewNode | null = currentView;
+
+  while (node) {
+    if (node.name === targetName) {
+      return { node, path };
+    }
+
+    path.push(node.name);
+
+    for (const child of node.children || []) {
+      const result = resolveTarget(child, targetName, currentTarget);
+
+      if (result) {
+        return result;
+      }
+    }
+
+    path.pop();
+    node = null;
+  }
+
+  return null;
+}
+
+function parseRawSteps(
+  steps: string[] | undefined,
+  views: ParsedViewNode[],
+): ParsedStep[] {
   if (!steps) {
     return [];
   }
 
-  return steps.map((step) => parseRawStep(step));
+  const parsedSteps: ParsedStep[] = [];
+  let currentView: ParsedViewNode | undefined;
+  let currentTarget: ParsedViewNode | undefined;
+  let currentTargetName: string | undefined;
+  let currentTargetPath: string[] = [];
+
+  for (const step of steps) {
+    const parsedStep = parseRawStep(step);
+    parsedSteps.push(parsedStep);
+
+    if (parsedStep.action?.type === "visit") {
+      const viewName = parsedStep.fragments[1].value.trim();
+      currentView = JSON.parse(
+        JSON.stringify(views.find((view) => view.name === viewName) || null),
+      );
+      currentTargetPath = [];
+      currentTarget = currentView;
+      currentTargetName = viewName;
+    }
+
+    if (parsedStep.action?.type === "click") {
+      const targetName = parsedStep.fragments[1].value.trim();
+      currentTargetName = targetName;
+      currentView = JSON.parse(JSON.stringify(currentView));
+      const resolvedTarget = resolveTarget(
+        currentView,
+        targetName,
+        currentTargetPath,
+      );
+
+      if (resolvedTarget) {
+        currentTargetPath = resolvedTarget.path;
+        currentTarget = resolvedTarget.node;
+        currentTarget.target = true;
+        currentTarget.clicked = true;
+      }
+    }
+
+    if (parsedStep.action?.type === "type") {
+      currentView = JSON.parse(JSON.stringify(currentView));
+      const resolvedTarget = resolveTarget(
+        currentView,
+        currentTargetName,
+        currentTargetPath,
+      );
+      currentTarget = resolvedTarget?.node;
+
+      if (currentTarget) {
+        currentTarget.target = true;
+        currentTarget.text = parsedStep.action.text;
+      }
+    }
+
+    if (parsedStep.action?.type === "press_key") {
+      currentView = JSON.parse(JSON.stringify(currentView));
+
+      if (currentTarget) {
+        currentTarget.target = true;
+      }
+    }
+
+    if (
+      parsedStep.fragments[0].type === "keyword" &&
+      parsedStep.fragments[0].value === "expect"
+    ) {
+      const targetName = parsedStep.fragments[1].value;
+      const assertion = parsedStep.fragments[2].value.trim();
+      const resolvedTarget = resolveTarget(
+        currentView,
+        targetName,
+        currentTargetPath,
+      );
+
+      if (resolvedTarget) {
+        currentTargetPath = resolvedTarget.path;
+        resolvedTarget.node.target = true;
+
+        switch (assertion) {
+          case "to have text":
+            resolvedTarget.node.text =
+              parsedStep.fragments[3]?.value?.trim() ?? "";
+            break;
+          case "to be empty":
+            resolvedTarget.node.empty = true;
+            break;
+          case "not to be empty":
+            resolvedTarget.node.empty = false;
+            break;
+          case "to be hidden":
+            resolvedTarget.node.hidden = true;
+            break;
+          case "to be visible":
+            resolvedTarget.node.hidden = false;
+            break;
+          case "not to be visible":
+            resolvedTarget.node.hidden = true;
+            break;
+          case "to have placeholder":
+            resolvedTarget.node.placeholder =
+              parsedStep.fragments[3].value.trim();
+            break;
+          case "not to have text":
+            resolvedTarget.node.text = "";
+            break;
+        }
+      }
+    }
+
+    parsedStep.computedView = currentView;
+  }
+
+  return parsedSteps;
 }
 
 const actionOnElementPatterns = [
@@ -96,8 +255,8 @@ const actionWithQuotedTextPatterns = [
 
 const assertionPatterns = [
   // "expect" keyword followed by a variable and "to have text" keyword
-  /expect\s+([\w\s]+)\s+(not to have text)\s+"([^"]+)"/,
-  /expect\s+([\w\s]+)\s+(to have text)\s+"([^"]+)"/,
+  /expect\s+([\w\s]+)\s+(not to have text)\s+"([^"]*)"/,
+  /expect\s+([\w\s]+)\s+(to have text)\s+"([^"]*)"/,
   /expect\s+([\w\s]+)\s+(not to have class)\s+"([^"]+)"/,
   /expect\s+([\w\s]+)\s+(to have class)\s+"([^"]+)"/,
   /expect\s+([\w\s]+)\s+(not to be visible)/,
@@ -118,9 +277,42 @@ const assertionPatterns = [
 ];
 
 function parseRawStep(step: string): ParsedStep {
+  const fragments = parseStepFragments(step);
+  let action: Action | undefined;
+
+  if (fragments[0].type === "keyword") {
+    switch (fragments[0].value) {
+      case "visit":
+        action = {
+          type: "visit",
+          selector: fragments[1].value,
+        } satisfies VisitAction;
+        break;
+      case "click":
+        action = {
+          type: "click",
+          selector: fragments[1].value,
+        } satisfies ClickAction;
+        break;
+      case "type":
+        action = {
+          type: "type",
+          text: fragments[1].value,
+        } satisfies TypeAction;
+        break;
+      case "press key":
+        action = {
+          type: "press_key",
+          key: fragments[1].value,
+        } satisfies PressKeyAction;
+        break;
+    }
+  }
+
   return {
     raw: step,
-    fragments: parseStepFragments(step),
+    fragments,
+    action,
   };
 }
 
@@ -188,9 +380,7 @@ function parseStepFragments(step: string): ParsedStepFragment[] {
   }
 
   // If no patterns matched, return the step as a text fragment
-  return [
-    { type: "text", value: step },
-  ]
+  return [{ type: "text", value: step }];
 }
 
 function parseViews(

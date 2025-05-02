@@ -34,10 +34,15 @@ export interface ParsedStep {
 
 export type ParsedStepFragmentType = "text" | "variable" | "quoted" | "keyword";
 
-export type ActionType = "click" | "type" | "press_key";
+export type ActionType = "visit" | "click" | "type" | "press_key";
 
 export interface BaseAction {
   type: ActionType;
+}
+
+export interface VisitAction extends BaseAction {
+  type: "visit";
+  selector: string;
 }
 
 export interface ClickAction extends BaseAction {
@@ -47,17 +52,15 @@ export interface ClickAction extends BaseAction {
 
 export interface TypeAction extends BaseAction {
   type: "type";
-  selector: string;
   text: string;
 }
 
 export interface PressKeyAction extends BaseAction {
   type: "press_key";
-  selector: string;
   key: string;
 }
 
-export type Action = ClickAction | TypeAction | PressKeyAction;
+export type Action = VisitAction | ClickAction | TypeAction | PressKeyAction;
 
 export interface ParsedStepFragment {
   type: ParsedStepFragmentType;
@@ -70,4 +73,9 @@ export interface ParsedViewNode {
   direction?: string;
   text?: string;
   children?: ParsedViewNode[];
+  target?: boolean;
+  clicked?: boolean;
+  empty?: boolean;
+  hidden?: boolean;
+  placeholder?: string;
 }

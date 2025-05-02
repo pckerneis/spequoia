@@ -4,8 +4,9 @@ import { parseSpec } from "./index";
 describe("parseSpec", () => {
   it("should parse a valid spec YAML", () => {
     const yaml = `
+title: My Spec
 features:
-  - id: SPEC001
+  - name: SPEC001
     description: A test feature
     examples:
       - id: SPEC001-EX1
@@ -13,8 +14,10 @@ features:
     `;
     const spec = parseSpec(yaml);
 
+    expect(spec.valid).toBeTruthy();
+
     expect(spec.parsedDocument?.features).toHaveLength(1);
-    expect(spec.parsedDocument?.features[0].id).toBe("SPEC001");
+    expect(spec.parsedDocument?.features[0].name).toBe("SPEC001");
     expect(spec.parsedDocument?.features[0].examples?.[0].id).toBe(
       "SPEC001-EX1",
     );

@@ -1,10 +1,7 @@
 import { Component, computed, Input, Optional } from '@angular/core';
 import { ParsedViewNode } from 'spequoia-core/dist/model/parsed-document.model';
 import { NgClass } from '@angular/common';
-import {
-  ComputedNodeState,
-  WireframePlayerService,
-} from '../../services/wireframe-player.service';
+import { WireframePlayerService } from '../../services/wireframe-player.service';
 
 @Component({
   selector: 'app-view-node',
@@ -24,32 +21,6 @@ export class ViewNodeComponent {
     return this.wireframePlayerService
       .currentTargets()
       .includes(this.viewNode.name);
-  });
-
-  computedNodeState = computed<ComputedNodeState | undefined>(() => {
-    if (this.wireframePlayerService) {
-      return this.wireframePlayerService.computedNodeStates()?.[
-        this.viewNode.name
-      ];
-    }
-
-    return undefined;
-  });
-
-  computedText = computed(() => {
-    return this.computedNodeState()?.text ?? this.viewNode.text;
-  });
-
-  computedPlaceholder = computed(() => {
-    return this.computedNodeState()?.placeholder;
-  });
-
-  computedEmpty = computed(() => {
-    return this.computedNodeState()?.empty;
-  });
-
-  computedHidden = computed(() => {
-    return this.computedNodeState()?.hidden;
   });
 
   constructor(

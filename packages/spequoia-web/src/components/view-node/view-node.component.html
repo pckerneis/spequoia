@@ -1,4 +1,4 @@
-@if (!computedHidden()) {
+@if (!viewNode.hidden) {
   <fieldset class="container" [class.target]="active()">
     <legend>
       <label>{{ viewNode.name }}</label>
@@ -7,17 +7,17 @@
       }
     </legend>
 
-    @if (computedText(); as text) {
+    @if (viewNode.text) {
       <div class="text">
-        <span>{{ text }}</span>
+        <span>{{ viewNode.text }}</span>
       </div>
-    } @else if (computedPlaceholder()) {
+    } @else if (viewNode.placeholder) {
       <div class="text placeholder">
-        <span>{{ computedPlaceholder() }}</span>
+        <span>{{ viewNode.placeholder }}</span>
       </div>
     }
 
-    @if (!computedEmpty()) {
+    @if (!viewNode.empty) {
       <div [ngClass]="cssClass">
         @for (child of viewNode.children; track $index) {
           <app-view-node [viewNode]="child"></app-view-node>

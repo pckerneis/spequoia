@@ -19,6 +19,7 @@ export class DocumentService {
   constructor() {}
 
   public setDocument(parsedDocument: ParsedDocument): void {
+    console.log('Parsed document:', parsedDocument);
     this.document.set(this.processDocument(parsedDocument));
   }
 
@@ -143,8 +144,6 @@ export class DocumentService {
 
   public getExample(exampleId: any): ParsedExample | undefined {
     const document = this.document();
-
-    console.log(exampleId);
 
     if (!document) {
       return undefined;

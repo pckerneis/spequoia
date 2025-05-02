@@ -1,9 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ParseResult, parseSpec } from '@spequoia/core';
-import { ProcessedDocument } from '../models/processed-document.model';
 import { DocumentService } from '../services/document.service';
-import { DocumentPageComponent } from '../pages/document-page/document-page.component';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
