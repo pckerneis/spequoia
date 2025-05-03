@@ -1,4 +1,4 @@
-import { SpequoiaExecutor } from "spequoia-model/src/model/spequoia.model";
+import {SpequoiaExecutor} from '@spequoia/model';
 
 export interface ParsedDocument {
   title: string;
