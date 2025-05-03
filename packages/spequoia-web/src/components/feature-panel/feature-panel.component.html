@@ -21,7 +21,7 @@
     <div [innerHTML]="feature.description | markdown"></div>
   }
 
-  @if (feature.examples) {
+  @if (feature.examples && feature.examples.length > 0) {
     <app-examples-panel [examples]="feature.examples" />
   }
 }

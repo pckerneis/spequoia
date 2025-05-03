@@ -73,24 +73,24 @@ features:
       in a `h1` tag.
       The app starts with an empty task list, and the user is prompted to add tasks.
     tags: [ui, layout]
-  #    examples:
-  #      - id: EX-001
-  #        name: The web app shows a header with the app title "todos", a text input, and an empty task list
-  #        description: |
-  #          The app title is prominently displayed in the header, making the purpose
-  #          of the application immediately clear to users.
-  #
-  #          The input field is always visible, allowing users to quickly add tasks. The input placeholder
-  #          is "What needs to be done?" to guide users on what to enter.
-  #
-  #          The task list is empty at the start, indicating that no tasks have been added yet.
-  #        steps:
-  #          - visit main page
-  #          - expect title to have text "todos"
-  #          - expect input to be visible
-  #          - expect input to have placeholder "What needs to be done?"
-  #          - expect todo list to be empty
-  #          - expect footer not to be visible
+    examples:
+      - id: EX-001
+        name: The web app shows a header with the app title "todos", a text input, and an empty task list
+        description: |
+          The app title is prominently displayed in the header, making the purpose
+          of the application immediately clear to users.
+
+          The input field is always visible, allowing users to quickly add tasks. The input placeholder
+          is "What needs to be done?" to guide users on what to enter.
+
+          The task list is empty at the start, indicating that no tasks have been added yet.
+        steps:
+          - visit main page
+          - expect title to have text "todos"
+          - expect input to be visible
+          - expect input to have placeholder "What needs to be done?"
+          - expect todo list to be empty
+          - expect footer not to be visible
 
   - name: Create new tasks
     description: |
