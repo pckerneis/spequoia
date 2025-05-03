@@ -1,12 +1,7 @@
 import {
-  Action,
-  ClickAction,
   ParsedStep,
   ParsedStepFragment,
   ParsedViewNode,
-  PressKeyAction,
-  TypeAction,
-  VisitAction,
 } from "../model/parsed-document.model";
 import { resolveTarget } from "./target-resolver";
 
@@ -35,8 +30,6 @@ export function parseRawSteps(
     }
 
     if (parsedStep.action?.type === "visit") {
-      parsedStep.duration = 500;
-
       const viewName = parsedStep.fragments[1].value.trim();
       currentView = JSON.parse(
         JSON.stringify(views.find((view) => view.name === viewName) || null),
@@ -51,8 +44,6 @@ export function parseRawSteps(
     }
 
     if (parsedStep.action?.type === "click") {
-      parsedStep.duration = 500;
-
       const targetName = parsedStep.fragments[1].value.trim();
       currentTargetName = targetName;
       const resolvedTarget = resolveTarget(
@@ -74,8 +65,6 @@ export function parseRawSteps(
     }
 
     if (parsedStep.action?.type === "type") {
-      parsedStep.duration = 2000;
-
       const resolvedTarget = resolveTarget(
         currentView,
         currentTargetName,
@@ -95,8 +84,6 @@ export function parseRawSteps(
     }
 
     if (parsedStep.action?.type === "press_key") {
-      parsedStep.duration = 500;
-
       if (currentTarget) {
         currentTarget.target = true;
       }
@@ -179,21 +166,6 @@ function resetOneTimeState(currentView: ParsedViewNode | undefined): void {
   }
 }
 
-const actionOnElementPatterns = [
-  // action keyword (click) followed by a variable
-  /^(click)\s+([a-zA-Z0-9_\-\s()]+)/,
-  /^(visit)\s+([a-zA-Z0-9_\-\s()]+)/,
-];
-
-const actionWithQuotedTextPatterns = [
-  // action keyword (type) followed by quoted text
-  /^(type)\s+"([^"]+)"/,
-  /^(press key)\s+"([^"]+)"/,
-];
-
-// A target name has letters, digits, underscores, hyphens, spaces and parentheses
-const targetPattern = /[a-zA-Z0-9_\-\s()]+/;
-
 const assertionPatterns = [
   // "expect" keyword followed by a variable and "to have text" keyword
   /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(not to have text)\s+"([^"]*)"/,
@@ -217,43 +189,133 @@ const assertionPatterns = [
   /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(to have placeholder)\s+"([^"]+)"/,
 ];
 
-function parseRawStep(step: string): ParsedStep {
-  const fragments = parseStepFragments(step);
-  let action: Action | undefined;
+const visitActionParser = (str: string): ParsedStep | null => {
+  const visitPattern = /^(visit)\s+([a-zA-Z0-9_\-\s()]+)/;
+  const match = str.match(visitPattern);
 
-  if (fragments[0].type === "keyword") {
-    switch (fragments[0].value) {
-      case "visit":
-        action = {
-          type: "visit",
-          selector: fragments[1].value,
-        } satisfies VisitAction;
-        break;
-      case "click":
-        action = {
-          type: "click",
-          selector: fragments[1].value,
-        } satisfies ClickAction;
-        break;
-      case "type":
-        action = {
-          type: "type",
-          text: fragments[1].value,
-        } satisfies TypeAction;
-        break;
-      case "press key":
-        action = {
-          type: "press_key",
-          key: fragments[1].value,
-        } satisfies PressKeyAction;
-        break;
+  if (match) {
+    return {
+      action: {
+        type: "visit",
+        selector: match[2],
+      },
+      fragments: [
+        { type: "keyword", value: match[1] },
+        { type: "variable", value: match[2] },
+      ],
+      raw: str,
+      duration: 1000,
+    };
+  }
+  return null;
+};
+
+const clickActionParser = (str: string): ParsedStep | null => {
+  const clickPattern = /^(click)\s+([a-zA-Z0-9_\-\s()]+)/;
+  const match = str.match(clickPattern);
+
+  if (match) {
+    return {
+      action: {
+        type: "click",
+        selector: match[2],
+      },
+      fragments: [
+        { type: "keyword", value: match[1] },
+        { type: "variable", value: match[2] },
+      ],
+      raw: str,
+      duration: 1000,
+    };
+  }
+  return null;
+};
+
+const typeActionParser = (str: string): ParsedStep | null => {
+  const typePattern = /^(type)\s+"([^"]+)"/;
+  const match = str.match(typePattern);
+
+  if (match) {
+    return {
+      action: {
+        type: "type",
+        text: match[2],
+      },
+      fragments: [
+        { type: "keyword", value: match[1] },
+        { type: "quoted", value: match[2] },
+      ],
+      raw: str,
+      duration: 2000,
+    };
+  }
+  return null;
+};
+
+const pressKeyActionParser = (str: string): ParsedStep | null => {
+  const pressKeyPattern = /^(press key)\s+"([^"]+)"/;
+  const match = str.match(pressKeyPattern);
+
+  if (match) {
+    return {
+      action: {
+        type: "press_key",
+        key: match[2],
+      },
+      fragments: [
+        { type: "keyword", value: match[1] },
+        { type: "quoted", value: match[2] },
+      ],
+      raw: str,
+      duration: 1000,
+    };
+  }
+  return null;
+};
+
+const hoverActionParser = (str: string): ParsedStep | null => {
+  const hoverPattern = /^(hover over)\s+([a-zA-Z0-9_\-\s()]+)/;
+  const match = str.match(hoverPattern);
+
+  if (match) {
+    return {
+      action: {
+        type: "hover",
+        selector: match[2],
+      },
+      fragments: [
+        { type: "keyword", value: match[1] },
+        { type: "variable", value: match[2] },
+      ],
+      raw: str,
+      duration: 1000,
+    };
+  }
+  return null;
+};
+
+const actionParsers = [
+  visitActionParser,
+  clickActionParser,
+  typeActionParser,
+  pressKeyActionParser,
+  hoverActionParser,
+];
+
+function parseRawStep(step: string): ParsedStep {
+  for (const parser of actionParsers) {
+    const parsedStep = parser(step);
+
+    if (parsedStep) {
+      return parsedStep;
     }
   }
+
+  const fragments = parseStepFragments(step);
 
   return {
     raw: step,
     fragments,
-    action,
   };
 }
 
@@ -281,42 +343,6 @@ function parseStepFragments(step: string): ParsedStepFragment[] {
       }
 
       return fragments;
-    }
-  }
-
-  // Check for action on element patterns
-  const actionOnElementPattern = actionOnElementPatterns.find((pattern) =>
-    pattern.test(step),
-  );
-
-  if (actionOnElementPattern) {
-    const matches = step.match(actionOnElementPattern);
-    if (matches) {
-      const action = matches[1];
-      const variable = matches[2];
-
-      return [
-        { type: "keyword", value: action },
-        { type: "variable", value: variable },
-      ];
-    }
-  }
-
-  // Check for action with quoted text patterns
-  const actionWithQuotedTextPattern = actionWithQuotedTextPatterns.find(
-    (pattern) => pattern.test(step),
-  );
-
-  if (actionWithQuotedTextPattern) {
-    const matches = step.match(actionWithQuotedTextPattern);
-    if (matches) {
-      const action = matches[1];
-      const quotedText = matches[2];
-
-      return [
-        { type: "keyword", value: action },
-        { type: "quoted", value: quotedText },
-      ];
     }
   }
 
