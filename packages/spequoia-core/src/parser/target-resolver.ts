@@ -16,7 +16,10 @@ export function resolveTarget(
   let node: ParsedViewNode | null = currentView;
 
   while (node) {
-    if (node.name === targetName) {
+    const transformedName = removeParameters(node.name);
+    const transformedTargetName = removeParameters(targetName);
+
+    if (transformedName === transformedTargetName) {
       return { node, path };
     }
 
@@ -35,4 +38,9 @@ export function resolveTarget(
   }
 
   return null;
+}
+
+function removeParameters(name: string): string {
+  // Replace all parameters (between parentheses) with an empty string
+  return name.replace(/\(.*?\)/g, "").trim();
 }

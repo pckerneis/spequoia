@@ -181,8 +181,8 @@ function resetOneTimeState(currentView: ParsedViewNode | undefined): void {
 
 const actionOnElementPatterns = [
   // action keyword (click) followed by a variable
-  /^(click)\s+([\w\s]+)/,
-  /^(visit)\s+([\w\s]+)/,
+  /^(click)\s+([a-zA-Z0-9_\-\s()]+)/,
+  /^(visit)\s+([a-zA-Z0-9_\-\s()]+)/,
 ];
 
 const actionWithQuotedTextPatterns = [
@@ -191,27 +191,30 @@ const actionWithQuotedTextPatterns = [
   /^(press key)\s+"([^"]+)"/,
 ];
 
+// A target name has letters, digits, underscores, hyphens, spaces and parentheses
+const targetPattern = /[a-zA-Z0-9_\-\s()]+/;
+
 const assertionPatterns = [
   // "expect" keyword followed by a variable and "to have text" keyword
-  /expect\s+([\w\s]+)\s+(not to have text)\s+"([^"]*)"/,
-  /expect\s+([\w\s]+)\s+(to have text)\s+"([^"]*)"/,
-  /expect\s+([\w\s]+)\s+(not to have class)\s+"([^"]+)"/,
-  /expect\s+([\w\s]+)\s+(to have class)\s+"([^"]+)"/,
-  /expect\s+([\w\s]+)\s+(not to be visible)/,
-  /expect\s+([\w\s]+)\s+(to be visible)/,
-  /expect\s+([\w\s]+)\s+(to be hidden)/,
-  /expect\s+([\w\s]+)\s+(not to exist)/,
-  /expect\s+([\w\s]+)\s+(to exist)/,
-  /expect\s+([\w\s]+)\s+(not to be checked)/,
-  /expect\s+([\w\s]+)\s+(to be checked)/,
-  /expect\s+([\w\s]+)\s+(not to be disabled)/,
-  /expect\s+([\w\s]+)\s+(to be disabled)/,
-  /expect\s+([\w\s]+)\s+(not to be enabled)/,
-  /expect\s+([\w\s]+)\s+(to be enabled)/,
-  /expect\s+([\w\s]+)\s+(not to be empty)/,
-  /expect\s+([\w\s]+)\s+(to be empty)/,
-  /expect\s+([\w\s]+)\s+(not to have placeholder)\s+"([^"]+)"/,
-  /expect\s+([\w\s]+)\s+(to have placeholder)\s+"([^"]+)"/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(not to have text)\s+"([^"]*)"/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(to have text)\s+"([^"]*)"/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(not to have class)\s+"([^"]+)"/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(to have class)\s+"([^"]+)"/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(not to be visible)/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(to be visible)/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(to be hidden)/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(not to exist)/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(to exist)/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(not to be checked)/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(to be checked)/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(not to be disabled)/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(to be disabled)/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(not to be enabled)/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(to be enabled)/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(not to be empty)/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(to be empty)/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(not to have placeholder)\s+"([^"]+)"/,
+  /expect\s+([a-zA-Z0-9_\-\s()]+)\s+(to have placeholder)\s+"([^"]+)"/,
 ];
 
 function parseRawStep(step: string): ParsedStep {

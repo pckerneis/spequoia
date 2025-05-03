@@ -38,7 +38,7 @@ views:
       input: input.new-todo
     todo list:
       $selector: .todo-list
-      "task row (n)":
+      task row (n):
         $selector: '[data-id="${n}"]'
         $direction: row
         done checkbox: input[type="checkbox"]
@@ -109,9 +109,10 @@ features:
           - type "New task"
           - press key "Enter"
           - expect input to have text ""
-          - expect task row 1 to be visible
+          - expect todo list not to be empty
+          - expect task row (1) to be visible
           - expect label to have text "New task"
-          - expect task row 1 done checkbox to be visible
+          - expect done checkbox to be visible
           - expect footer to be visible
           - expect todo count to have text "1 items left"
           - expect clear completed button to be hidden
