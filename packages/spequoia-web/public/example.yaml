@@ -229,11 +229,14 @@ features:
           - click input
           - type "Active task"
           - press key "Enter"
+          - expect task row (1) to be visible
+          - expect task row (1) label to have text "Active task"
           - type "Completed task"
           - press key "Enter"
-          - expect input to have text ""
-          - expect task row (1) to be visible
           - expect task row (2) to be visible
+          - expect task row (2) label to have text "Completed task"
+          - click task row (2) done checkbox
+          - expect input to have text ""
           - click active filter
           - expect task row (1) to be visible
           - expect task row (2) to be hidden
