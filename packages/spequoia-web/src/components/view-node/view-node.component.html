@@ -1,5 +1,5 @@
 @if (!viewNode.hidden) {
-  <fieldset class="container" [class.target]="active()">
+  <fieldset class="container" [class.target]="$active()">
     <legend>
       <label>{{ viewNode.name }}</label>
       @if (showSelector && viewNode.selector) {
@@ -7,9 +7,16 @@
       }
     </legend>
 
+    @if (viewNode.clicked) {
+      <div class="clicked">
+      </div>
+    }
+
     @if (viewNode.text) {
       <div class="text">
-        <span>{{ viewNode.text }}</span>
+        <span [class.typing]="viewNode.typing">
+          {{ $text() }}
+        </span>
       </div>
     } @else if (viewNode.placeholder) {
       <div class="text placeholder">

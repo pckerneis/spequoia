@@ -31,7 +31,6 @@ export class ExamplePageComponent {
       const exampleId = params['exampleId'];
       if (exampleId) {
         this.example = this.documentService.getExample(exampleId);
-        console.log(this.example);
       }
     });
   }

@@ -78,4 +78,5 @@ export interface ParsedViewNode {
   empty?: boolean;
   hidden?: boolean;
   placeholder?: string;
+  typing?: boolean;
 }

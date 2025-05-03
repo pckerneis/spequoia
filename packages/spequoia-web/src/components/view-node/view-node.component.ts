@@ -1,4 +1,4 @@
-import { Component, computed, Input, Optional } from '@angular/core';
+import {AfterViewInit, Component, computed, Input, Optional, signal} from '@angular/core';
 import { ParsedViewNode } from 'spequoia-core/dist/model/parsed-document.model';
 import { NgClass } from '@angular/common';
 import { WireframePlayerService } from '../../services/wireframe-player.service';
@@ -9,11 +9,24 @@ import { WireframePlayerService } from '../../services/wireframe-player.service'
   templateUrl: './view-node.component.html',
   styleUrl: './view-node.component.scss',
 })
-export class ViewNodeComponent {
-  @Input() viewNode!: ParsedViewNode;
+export class ViewNodeComponent implements AfterViewInit {
+  @Input()
+  set viewNode(parsedViewNode: ParsedViewNode) {
+    this._viewNode = parsedViewNode;
+    this.updateText();
+  }
+
+  get viewNode(): ParsedViewNode {
+    return this._viewNode;
+  }
+
+  private _viewNode!: ParsedViewNode;
+
   @Input() showSelector: boolean = false;
 
-  active = computed(() => {
+  $text = signal('');
+
+  $active = computed(() => {
     if (!this.wireframePlayerService) {
       return false;
     }
@@ -27,6 +40,41 @@ export class ViewNodeComponent {
     @Optional()
     private readonly wireframePlayerService?: WireframePlayerService,
   ) {}
+
+  ngAfterViewInit(): void {
+    this.updateText();
+  }
+
+  updateText() {
+    const text = this.viewNode.text;
+
+    if (!text) {
+      return;
+    }
+
+    if (this.viewNode.typing) {
+      this.$text.set(this.viewNode.placeholder || '');
+
+      setTimeout(() => {
+
+        let interval: any;
+        let i = 0;
+
+        interval = setInterval(() => {
+          if (i < text.length) {
+            const currentText = text.substring(0, i);
+            this.$text.set(currentText);
+            i++;
+          } else {
+            this.$text.set(text);
+            clearInterval(interval);
+          }
+        }, 80);
+      }, 100);
+    } else {
+      this.$text.set(text);
+    }
+  }
 
   get cssClass(): string {
     if (this.viewNode?.direction === 'row') {

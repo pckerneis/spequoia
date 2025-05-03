@@ -22,10 +22,16 @@ export function parseRawSteps(
   let currentTarget: ParsedViewNode | undefined;
   let currentTargetName: string | undefined;
   let currentTargetPath: string[] = [];
+  let mergedViews: ParsedViewNode[] = [];
 
   for (const step of steps) {
     const parsedStep = parseRawStep(step);
     parsedSteps.push(parsedStep);
+
+    if (currentView) {
+      currentView = JSON.parse(JSON.stringify(currentView));
+      resetOneTimeState(currentView);
+    }
 
     if (parsedStep.action?.type === "visit") {
       const viewName = parsedStep.fragments[1].value.trim();
@@ -35,12 +41,15 @@ export function parseRawSteps(
       currentTargetPath = [];
       currentTarget = currentView;
       currentTargetName = viewName;
+
+      if (currentView) {
+      mergedViews = [currentView];
+      }
     }
 
     if (parsedStep.action?.type === "click") {
       const targetName = parsedStep.fragments[1].value.trim();
       currentTargetName = targetName;
-      currentView = JSON.parse(JSON.stringify(currentView));
       const resolvedTarget = resolveTarget(
           currentView,
           targetName,
@@ -53,10 +62,13 @@ export function parseRawSteps(
         currentTarget.target = true;
         currentTarget.clicked = true;
       }
+
+      if (currentView) {
+        mergedViews = [currentView];
+      }
     }
 
     if (parsedStep.action?.type === "type") {
-      currentView = JSON.parse(JSON.stringify(currentView));
       const resolvedTarget = resolveTarget(
           currentView,
           currentTargetName,
@@ -67,14 +79,21 @@ export function parseRawSteps(
       if (currentTarget) {
         currentTarget.target = true;
         currentTarget.text = parsedStep.action.text;
+        currentTarget.typing = true;
+      }
+
+      if (currentView) {
+        mergedViews = [currentView];
       }
     }
 
     if (parsedStep.action?.type === "press_key") {
-      currentView = JSON.parse(JSON.stringify(currentView));
-
       if (currentTarget) {
         currentTarget.target = true;
+      }
+
+      if (currentView) {
+        mergedViews = [currentView];
       }
     }
 
@@ -82,45 +101,51 @@ export function parseRawSteps(
         parsedStep.fragments[0].type === "keyword" &&
         parsedStep.fragments[0].value === "expect"
     ) {
-      const targetName = parsedStep.fragments[1].value;
-      const assertion = parsedStep.fragments[2].value.trim();
-      const resolvedTarget = resolveTarget(
-          currentView,
-          targetName,
-          currentTargetPath,
-      );
+      if (currentView) {
+        mergedViews.push(currentView);
+      }
 
-      if (resolvedTarget) {
-        currentTargetPath = resolvedTarget.path;
-        resolvedTarget.node.target = true;
+      for (const view of mergedViews) {
+        const targetName = parsedStep.fragments[1].value;
+        const assertion = parsedStep.fragments[2].value.trim();
+        const resolvedTarget = resolveTarget(
+            view,
+            targetName,
+            currentTargetPath,
+        );
 
-        switch (assertion) {
-          case "to have text":
-            resolvedTarget.node.text =
-                parsedStep.fragments[3]?.value?.trim() ?? "";
-            break;
-          case "to be empty":
-            resolvedTarget.node.empty = true;
-            break;
-          case "not to be empty":
-            resolvedTarget.node.empty = false;
-            break;
-          case "to be hidden":
-            resolvedTarget.node.hidden = true;
-            break;
-          case "to be visible":
-            resolvedTarget.node.hidden = false;
-            break;
-          case "not to be visible":
-            resolvedTarget.node.hidden = true;
-            break;
-          case "to have placeholder":
-            resolvedTarget.node.placeholder =
-                parsedStep.fragments[3].value.trim();
-            break;
-          case "not to have text":
-            resolvedTarget.node.text = "";
-            break;
+        if (resolvedTarget) {
+          currentTargetPath = resolvedTarget.path;
+          resolvedTarget.node.target = true;
+
+          switch (assertion) {
+            case "to have text":
+              resolvedTarget.node.text =
+                  parsedStep.fragments[3]?.value?.trim() ?? "";
+              break;
+            case "to be empty":
+              resolvedTarget.node.empty = true;
+              break;
+            case "not to be empty":
+              resolvedTarget.node.empty = false;
+              break;
+            case "to be hidden":
+              resolvedTarget.node.hidden = true;
+              break;
+            case "to be visible":
+              resolvedTarget.node.hidden = false;
+              break;
+            case "not to be visible":
+              resolvedTarget.node.hidden = true;
+              break;
+            case "to have placeholder":
+              resolvedTarget.node.placeholder =
+                  parsedStep.fragments[3].value.trim();
+              break;
+            case "not to have text":
+              resolvedTarget.node.text = "";
+              break;
+          }
         }
       }
     }
@@ -129,6 +154,20 @@ export function parseRawSteps(
   }
 
   return parsedSteps;
+}
+
+function resetOneTimeState(currentView: ParsedViewNode | undefined): void {
+  if (currentView) {
+    currentView.clicked = false;
+    currentView.typing = false;
+    currentView.target = false;
+  }
+
+  if (currentView?.children) {
+    for (const child of currentView.children) {
+      resetOneTimeState(child);
+    }
+  }
 }
 
 const actionOnElementPatterns = [

@@ -9,6 +9,8 @@
   flex-direction: column;
   flex: 1;
   font-size: 16px;
+  position: relative;
+  min-height: 75px;
 
   &.target {
     border-color: tomato;
@@ -57,4 +59,47 @@ label,
   display: flex;
   flex-direction: column;
   flex: 1;
+}
+
+.clicked {
+  background: #ea3f3f;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  outline: 2px solid #ea3f3f;
+  outline-offset: -2px;
+  animation: clicked 0.5s ease-in-out;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes clicked {
+  0% {
+    outline-offset: 0;
+  }
+  100% {
+    outline-offset: 10px;
+    outline-color: transparent;
+  }
+}
+
+.typing:after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1rem;
+  transform: translate(-2px, 2px);
+  background-color: #ea3f3f;
+  animation: typing 1s infinite steps(1);
+}
+
+@keyframes typing {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
