@@ -3,7 +3,6 @@ import { SpequoiaDocument } from "@spequoia/model";
 
 export interface ResolvedTarget {
   node: ParsedViewNode;
-  path: string[];
 }
 
 export interface ParseError {

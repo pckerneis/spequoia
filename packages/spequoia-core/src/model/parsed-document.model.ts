@@ -86,7 +86,6 @@ export interface ParsedViewNode {
   children?: ParsedViewNode[];
   target?: boolean;
   clicked?: boolean;
-  empty?: boolean;
   hidden?: boolean;
   placeholder?: string;
   typing?: boolean;

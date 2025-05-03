@@ -2,39 +2,48 @@ import { ParsedViewNode } from "../model/parsed-document.model";
 import { ResolvedTarget } from "./interfaces";
 
 export function resolveTarget(
-  currentView: ParsedViewNode | undefined,
+  currentNode: ParsedViewNode | undefined,
   targetName: string | undefined,
-  currentTarget: string[],
+  viewTemplate?: ParsedViewNode,
 ): ResolvedTarget | null {
-  if (!currentView || !targetName) {
+  if (!currentNode || !targetName) {
     return null;
   }
 
-  // TODO: use currentTarget to find the target node with precedence rules
+  if (currentNode.name === targetName) {
+    return { node: currentNode };
+  }
 
-  const path: string[] = [];
-  let node: ParsedViewNode | null = currentView;
+  for (const child of currentNode.children || []) {
+    const result = resolveTarget(
+      child,
+      targetName,
+      viewTemplate?.children?.find((c) => child.name === c.name),
+    );
 
-  while (node) {
-    const transformedName = removeParameters(node.name);
-    const transformedTargetName = removeParameters(targetName);
-
-    if (transformedName === transformedTargetName) {
-      return { node, path };
+    if (result) {
+      return result;
     }
+  }
 
-    path.push(node.name);
+  if (hasParameter(targetName) && viewTemplate) {
+    for (const child of viewTemplate.children || []) {
+      const transformedName = removeParameters(child.name);
+      const transformedTargetName = removeParameters(targetName);
 
-    for (const child of node.children || []) {
-      const result = resolveTarget(child, targetName, currentTarget);
+      if (transformedName === transformedTargetName) {
+        const newNode = JSON.parse(JSON.stringify(child));
+        newNode.name = targetName;
 
-      if (result) {
-        return result;
+        if (currentNode.children) {
+          currentNode.children.push(newNode);
+        } else {
+          currentNode.children = [newNode];
+        }
+
+        return { node: newNode };
       }
     }
-
-    path.pop();
-    node = null;
   }
 
   return null;
@@ -43,4 +52,9 @@ export function resolveTarget(
 function removeParameters(name: string): string {
   // Replace all parameters (between parentheses) with an empty string
   return name.replace(/\(.*?\)/g, "").trim();
+}
+
+function hasParameter(name: string): boolean {
+  // Check if the name contains parameters (between parentheses)
+  return /\(.*?\)/.test(name);
 }

@@ -4,11 +4,10 @@ import { ParsedExample } from 'spequoia-core/dist/model/parsed-document.model';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MarkdownPipe } from '../../pipes/markdown.pipe';
 import { WireframePlayerComponent } from '../../components/wireframe-player/wireframe-player.component';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-example-page',
-  imports: [MarkdownPipe, WireframePlayerComponent, RouterLink, JsonPipe],
+  imports: [MarkdownPipe, WireframePlayerComponent, RouterLink],
   templateUrl: './example-page.component.html',
   styleUrl: './example-page.component.scss',
 })

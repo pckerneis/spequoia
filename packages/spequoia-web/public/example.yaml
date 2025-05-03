@@ -109,7 +109,6 @@ features:
           - type "New task"
           - press key "Enter"
           - expect input to have text ""
-          - expect todo list not to be empty
           - expect task row (1) to be visible
           - expect label to have text "New task"
           - expect done checkbox to be visible
@@ -134,7 +133,6 @@ features:
           - click input
           - type "New task"
           - press key "Enter"
-          - expect todo list not to be empty
           - expect task row (1) to be visible
           - expect label to have text "New task"
           - expect todo count to have text "1 items left"
@@ -149,7 +147,6 @@ features:
           - click input
           - type "New task"
           - press key "Enter"
-          - expect todo list not to be empty
           - expect task row (1) to be visible
           - expect label to have text "New task"
           - expect todo count to have text "1 items left"
@@ -177,7 +174,6 @@ features:
           - type "New task"
           - press key "Enter"
           - expect input to have text ""
-          - expect todo list not to be empty
           - expect task row (1) to be visible
           - expect label to have text "New task"
           - expect todo count to have text "1 items left"
@@ -208,7 +204,6 @@ features:
           - type "New task"
           - press key "Enter"
           - expect input to have text ""
-          - expect todo list not to be empty
           - expect task row (1) to be visible
           - expect label to have text "New task"
           - expect done checkbox to be visible
@@ -219,17 +214,18 @@ features:
 
   - name: Filter tasks
     description: |
-        The user can filter tasks by clicking the "All", "Active", or "Completed" links in the footer.
+      The user can filter tasks by clicking the "All", "Active", or "Completed" links in the footer.
 
-        When a link is clicked, only the tasks that match the filter are displayed in the task list.
+      When a link is clicked, only the tasks that match the filter are displayed in the task list.
 
-        The active filter is visually indicated by a different style.
+      The active filter is visually indicated by a different style.
 
     examples:
       - id: EX-007
         name: Filter tasks
         steps:
           - visit main page
+          - expect todo list to be empty
           - click input
           - type "Active task"
           - press key "Enter"

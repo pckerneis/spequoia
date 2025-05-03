@@ -23,12 +23,10 @@
       </div>
     }
 
-    @if (!viewNode.empty) {
-      <div [ngClass]="cssClass">
-        @for (child of viewNode.children; track $index) {
-          <app-view-node [viewNode]="child"></app-view-node>
-        }
-      </div>
-    }
+    <div [ngClass]="cssClass">
+      @for (child of viewNode.children; track $index) {
+        <app-view-node [viewNode]="child"></app-view-node>
+      }
+    </div>
   </fieldset>
 }
