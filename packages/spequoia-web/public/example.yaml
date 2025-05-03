@@ -130,6 +130,8 @@ features:
         name: Mark a task as done
         steps:
           - visit main_page
+          - expect todo_list to be empty
+          - expect footer not to be visible
           - click input
           - type "New task"
           - press key "Enter"
@@ -144,18 +146,22 @@ features:
         name: Unmark a task as done
         steps:
           - visit main_page
+          - expect todo_list to be empty
+          - expect footer not to be visible
           - click input
           - type "New task"
           - press key "Enter"
           - expect task_row(1) to be visible
           - expect label to have text "New task"
           - expect todo_count to have text "1 items left"
+          - expect clear_completed_button to be hidden
           - click done_checkbox
           - expect done_checkbox to be checked
           - expect todo_count to have text "0 items left"
           - click done_checkbox
           - expect done_checkbox not to be checked
           - expect todo_count to have text "1 items left"
+          - expect clear_completed_button to be hidden
 
   - name: Clear completed tasks
     description: |
@@ -170,6 +176,8 @@ features:
         name: Clear completed tasks
         steps:
           - visit main_page
+          - expect todo_list to be empty
+          - expect footer not to be visible
           - click input
           - type "New task"
           - press key "Enter"
@@ -226,11 +234,13 @@ features:
         steps:
           - visit main_page
           - expect todo_list to be empty
+          - expect footer not to be visible
           - click input
           - type "Active task"
           - press key "Enter"
           - expect task_row(1) to be visible
           - expect task_row(1) label to have text "Active task"
+          - expect footer to be visible
           - type "Completed task"
           - press key "Enter"
           - expect task_row(2) to be visible

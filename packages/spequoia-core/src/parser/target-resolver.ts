@@ -2,6 +2,33 @@ import { ParsedViewNode } from "../model/parsed-document.model";
 import { ResolvedTarget } from "./interfaces";
 
 export function resolveTarget(
+    currentNode: ParsedViewNode | undefined,
+    targetPath: string | undefined,
+    viewTemplate?: ParsedViewNode,
+): ResolvedTarget | null {
+  if (!currentNode || !targetPath) {
+    return null;
+  }
+
+  const targets = targetPath.split(" ")
+      .map(name => name.trim())
+      .filter(name => name !== "");
+
+  let currentScope = currentNode;
+
+  for (const targetName of targets) {
+    const resolvedTarget = resolveTargetInNode(currentScope, targetName, viewTemplate);
+    if (!resolvedTarget) {
+      return null;
+    }
+
+    currentScope = resolvedTarget.node;
+  }
+
+  return { node: currentScope };
+}
+
+export function resolveTargetInNode(
   currentNode: ParsedViewNode | undefined,
   targetName: string | undefined,
   viewTemplate?: ParsedViewNode,

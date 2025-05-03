@@ -110,6 +110,7 @@ export function parseRawSteps(
             case "to have text":
               resolvedTarget.node.text =
                 parsedStep.fragments[3]?.value?.trim() ?? "";
+              makeAllParentsVisible(resolvedTarget.node, currentView);
               break;
             case "to be empty":
               resolvedTarget.node.children = [];
