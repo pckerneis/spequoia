@@ -116,3 +116,134 @@ features:
           - expect footer to be visible
           - expect todo count to have text "1 items left"
           - expect clear completed button to be hidden
+
+  - name: Mark tasks as done
+    description: |
+      The user can mark tasks as done by clicking the checkbox next to the task name.
+
+      When a task is marked as done, it is visually indicated as completed and removed from the active
+      task count.
+
+      The user can also uncheck the checkbox to mark the task as not done again.
+
+    examples:
+      - id: EX-003
+        name: Mark a task as done
+        steps:
+          - visit main page
+          - click input
+          - type "New task"
+          - press key "Enter"
+          - expect todo list not to be empty
+          - expect task row (1) to be visible
+          - expect label to have text "New task"
+          - expect todo count to have text "1 items left"
+          - click done checkbox
+          - expect done checkbox to be checked
+          - expect todo count to have text "0 items left"
+          - expect clear completed button to be visible
+      - id: EX-004
+        name: Unmark a task as done
+        steps:
+          - visit main page
+          - click input
+          - type "New task"
+          - press key "Enter"
+          - expect todo list not to be empty
+          - expect task row (1) to be visible
+          - expect label to have text "New task"
+          - expect todo count to have text "1 items left"
+          - click done checkbox
+          - expect done checkbox to be checked
+          - expect todo count to have text "0 items left"
+          - click done checkbox
+          - expect done checkbox not to be checked
+          - expect todo count to have text "1 items left"
+
+  - name: Clear completed tasks
+    description: |
+      The user can clear completed tasks by clicking the "Clear completed" button.
+
+      When the button is clicked, all completed tasks are removed from the task list.
+
+      The button is only visible when there are completed tasks.
+
+    examples:
+      - id: EX-005
+        name: Clear completed tasks
+        steps:
+          - visit main page
+          - click input
+          - type "New task"
+          - press key "Enter"
+          - expect input to have text ""
+          - expect todo list not to be empty
+          - expect task row (1) to be visible
+          - expect label to have text "New task"
+          - expect todo count to have text "1 items left"
+          - click done checkbox
+          - expect done checkbox to be checked
+          - expect todo count to have text "0 items left"
+          - expect clear completed button to be visible
+          - click clear completed button
+          - expect todo list to be empty
+          - expect footer not to be visible
+
+  - name: Delete tasks
+    description: |
+      The user can delete tasks by clicking the "Delete" button next to the task name.
+
+      When the button is clicked, the task is removed from the task list.
+
+      The button is only visible when the task is hovered.
+
+    examples:
+      - id: EX-006
+        name: Delete a task
+        steps:
+          - visit main page
+          - expect todo list to be empty
+          - expect footer not to be visible
+          - click input
+          - type "New task"
+          - press key "Enter"
+          - expect input to have text ""
+          - expect todo list not to be empty
+          - expect task row (1) to be visible
+          - expect label to have text "New task"
+          - expect done checkbox to be visible
+          - hover over task row (1)
+          - expect delete button to be visible
+          - click delete button
+          - expect todo list to be empty
+
+  - name: Filter tasks
+    description: |
+        The user can filter tasks by clicking the "All", "Active", or "Completed" links in the footer.
+
+        When a link is clicked, only the tasks that match the filter are displayed in the task list.
+
+        The active filter is visually indicated by a different style.
+
+    examples:
+      - id: EX-007
+        name: Filter tasks
+        steps:
+          - visit main page
+          - click input
+          - type "Active task"
+          - press key "Enter"
+          - type "Completed task"
+          - press key "Enter"
+          - expect input to have text ""
+          - expect task row (1) to be visible
+          - expect task row (2) to be visible
+          - click active filter
+          - expect task row (1) to be visible
+          - expect task row (2) to be hidden
+          - click completed filter
+          - expect task row (1) to be hidden
+          - expect task row (2) to be visible
+          - click all filter
+          - expect task row (1) to be visible
+          - expect task row (2) to be visible
