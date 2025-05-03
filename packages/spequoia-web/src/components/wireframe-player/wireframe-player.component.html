@@ -8,8 +8,8 @@
       <li
         #step
         [class.active]="wireframePlayerService.currentStep() == $index"
-        (click)="wireframePlayerService.setStep($index)"
-        (keydown.enter)="wireframePlayerService.setStep($index)"
+        (click)="wireframePlayerService.setStepAndStop($index)"
+        (keydown.enter)="wireframePlayerService.setStepAndStop($index)"
         tabindex="0"
       >
         @for (fragment of step.fragments; track $index) {
@@ -50,4 +50,10 @@
     class="progress"
     [style.width]="wireframePlayerService.progressPercent() + '%'"
   ></div>
+</div>
+
+<div class="buttons">
+  <button (click)="wireframePlayerService.previousAndStop()">Previous</button>
+  <button (click)="wireframePlayerService.togglePlayState()" [class.active]="wireframePlayerService.playing()">{{ wireframePlayerService.playing() ? 'Pause' : 'Play' }}</button>
+  <button (click)="wireframePlayerService.nextAndStop()">Next</button>
 </div>

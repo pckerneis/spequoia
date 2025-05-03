@@ -30,6 +30,7 @@ export interface ParsedStep {
   fragments: ParsedStepFragment[];
   action?: Action;
   computedView?: ParsedViewNode;
+  duration?: number;
 }
 
 export type ParsedStepFragmentType = "text" | "variable" | "quoted" | "keyword";

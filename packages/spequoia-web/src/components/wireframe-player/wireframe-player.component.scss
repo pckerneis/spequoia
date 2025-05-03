@@ -81,3 +81,19 @@ ul {
     transition: width 0.2s ease-in-out;
   }
 }
+
+.buttons {
+  display: flex;
+  gap: 0.2rem;
+  padding: 0.2rem;
+  background-color: var(--player-step);
+  justify-content: center;
+
+  button {
+    min-width: 5rem;
+
+    &.active {
+      background-color: var(--active-nav-item-bg-color);
+    }
+  }
+}

@@ -3,7 +3,6 @@ import {
   ParsedExample,
   ParsedViewNode,
 } from 'spequoia-core/dist/model/parsed-document.model';
-import { DocumentService } from './document.service';
 import { Subject } from 'rxjs';
 
 @Injectable()
@@ -25,6 +24,7 @@ export class WireframePlayerService {
   });
   readonly currentStep = signal<number>(0);
   readonly example = signal<ParsedExample | null>(null);
+  readonly playing = signal<boolean>(false);
 
   readonly progressPercent = computed(() => {
     const example = this.example();
@@ -56,7 +56,7 @@ export class WireframePlayerService {
 
   readonly stepChanged$ = new Subject<void>();
 
-  constructor(private readonly documentService: DocumentService) {}
+  private _playTimeout: any;
 
   initialise(example: ParsedExample) {
     this.example.set(example);
@@ -98,5 +98,67 @@ export class WireframePlayerService {
     }
 
     this.stepChanged$.next();
+  }
+
+  public togglePlayState(): void {
+    this.playing.update((state) => !state);
+
+    if (this.playing()) {
+      this.play();
+    } else {
+      this.stop();
+    }
+  }
+
+  private play(): void {
+    const example = this.example();
+    const steps = example?.steps;
+
+    if (!steps || steps.length === 0) {
+      return;
+    }
+
+    let showNext: any;
+
+    showNext = () => {
+      if (this.currentStep() < steps.length - 1) {
+        const step = steps[this.currentStep()];
+
+        this._playTimeout = setTimeout(() => {
+          this.next();
+          if (this.playing()) {
+            showNext();
+          }
+        }, step.duration ?? 50);
+      } else {
+        this.stop();
+      }
+    }
+
+    if (this.currentStep() >= steps.length - 1) {
+      this.setStep(0);
+    }
+
+    showNext();
+  }
+
+  private stop(): void {
+    this.playing.set(false);
+    clearTimeout(this._playTimeout);
+  }
+
+  public setStepAndStop($index: number): void {
+    this.setStep($index);
+    this.stop();
+  }
+
+  public previousAndStop(): void {
+    this.previous();
+    this.stop();
+  }
+
+  public nextAndStop(): void {
+    this.next();
+    this.stop();
   }
 }
