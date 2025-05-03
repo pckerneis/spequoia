@@ -121,7 +121,7 @@ export class DocumentPageComponent implements AfterViewInit, OnDestroy {
     }
 
     const containerHeight = container.clientHeight;
-    const buffer = 50; // Buffer zone to consider a heading "active"
+    const buffer = 20; // Buffer zone to consider a heading "active"
 
     // Find the first heading that's within the viewport with a buffer
     for (const heading of headings) {
