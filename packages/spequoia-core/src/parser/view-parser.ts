@@ -1,21 +1,21 @@
-import {ParsedViewNode} from '../model/parsed-document.model';
-import {SpequoiaViewNode} from '@spequoia/model';
+import { ParsedViewNode } from "../model/parsed-document.model";
+import { SpequoiaViewNode } from "@spequoia/model";
 
 export function parseViews(
-    views: Record<string, SpequoiaViewNode> | undefined,
+  views: Record<string, SpequoiaViewNode> | undefined,
 ): ParsedViewNode[] {
   if (!views) {
     return [];
   }
 
   return Object.entries(views).map(([name, rawNode]) =>
-      parseViewNode(rawNode, name),
+    parseViewNode(rawNode, name),
   );
 }
 
 function parseViewNode(
-    rawNode: SpequoiaViewNode,
-    name: string,
+  rawNode: SpequoiaViewNode,
+  name: string,
 ): ParsedViewNode {
   if (typeof rawNode === "string") {
     return {
@@ -45,10 +45,10 @@ function parseViewNode(
       direction,
       text,
       children: Object.entries(rawNode)
-          .filter(([key]) => !key.startsWith("$"))
-          .map(([key, value]) => {
-            return parseViewNode(value!, key);
-          }),
+        .filter(([key]) => !key.startsWith("$"))
+        .map(([key, value]) => {
+          return parseViewNode(value!, key);
+        }),
     };
   }
 

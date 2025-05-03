@@ -56,7 +56,7 @@ export class WireframePlayerService {
 
   readonly stepChanged$ = new Subject<void>();
 
-  private _playTimeout: any;
+  private _playTimeout?: number;
 
   initialise(example: ParsedExample) {
     this.example.set(example);
@@ -118,13 +118,11 @@ export class WireframePlayerService {
       return;
     }
 
-    let showNext: any;
-
-    showNext = () => {
+    const showNext = () => {
       if (this.currentStep() < steps.length - 1) {
         const step = steps[this.currentStep()];
 
-        this._playTimeout = setTimeout(() => {
+        this._playTimeout = window.setTimeout(() => {
           this.next();
           if (this.playing()) {
             showNext();
@@ -133,7 +131,7 @@ export class WireframePlayerService {
       } else {
         this.stop();
       }
-    }
+    };
 
     if (this.currentStep() >= steps.length - 1) {
       this.setStep(0);

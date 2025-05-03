@@ -6,13 +6,13 @@ import {
   ParsedViewNode,
   PressKeyAction,
   TypeAction,
-  VisitAction
-} from '../model/parsed-document.model';
-import {resolveTarget} from './target-resolver';
+  VisitAction,
+} from "../model/parsed-document.model";
+import { resolveTarget } from "./target-resolver";
 
 export function parseRawSteps(
-    steps: string[] | undefined,
-    views: ParsedViewNode[],
+  steps: string[] | undefined,
+  views: ParsedViewNode[],
 ): ParsedStep[] {
   if (!steps) {
     return [];
@@ -34,12 +34,12 @@ export function parseRawSteps(
       resetOneTimeState(currentView);
     }
 
-    if (parsedStep.action?.type === 'visit') {
+    if (parsedStep.action?.type === "visit") {
       parsedStep.duration = 500;
 
       const viewName = parsedStep.fragments[1].value.trim();
       currentView = JSON.parse(
-          JSON.stringify(views.find((view) => view.name === viewName) || null),
+        JSON.stringify(views.find((view) => view.name === viewName) || null),
       );
       currentTargetPath = [];
       currentTarget = currentView;
@@ -50,15 +50,15 @@ export function parseRawSteps(
       }
     }
 
-    if (parsedStep.action?.type === 'click') {
+    if (parsedStep.action?.type === "click") {
       parsedStep.duration = 500;
 
       const targetName = parsedStep.fragments[1].value.trim();
       currentTargetName = targetName;
       const resolvedTarget = resolveTarget(
-          currentView,
-          targetName,
-          currentTargetPath,
+        currentView,
+        targetName,
+        currentTargetPath,
       );
 
       if (resolvedTarget) {
@@ -73,13 +73,13 @@ export function parseRawSteps(
       }
     }
 
-    if (parsedStep.action?.type === 'type') {
+    if (parsedStep.action?.type === "type") {
       parsedStep.duration = 2000;
 
       const resolvedTarget = resolveTarget(
-          currentView,
-          currentTargetName,
-          currentTargetPath,
+        currentView,
+        currentTargetName,
+        currentTargetPath,
       );
       currentTarget = resolvedTarget?.node;
 
@@ -94,7 +94,7 @@ export function parseRawSteps(
       }
     }
 
-    if (parsedStep.action?.type === 'press_key') {
+    if (parsedStep.action?.type === "press_key") {
       parsedStep.duration = 500;
 
       if (currentTarget) {
@@ -107,8 +107,8 @@ export function parseRawSteps(
     }
 
     if (
-        parsedStep.fragments[0].type === 'keyword' &&
-        parsedStep.fragments[0].value === 'expect'
+      parsedStep.fragments[0].type === "keyword" &&
+      parsedStep.fragments[0].value === "expect"
     ) {
       if (currentView) {
         mergedViews.push(currentView);
@@ -118,9 +118,9 @@ export function parseRawSteps(
         const targetName = parsedStep.fragments[1].value;
         const assertion = parsedStep.fragments[2].value.trim();
         const resolvedTarget = resolveTarget(
-            view,
-            targetName,
-            currentTargetPath,
+          view,
+          targetName,
+          currentTargetPath,
         );
 
         if (resolvedTarget) {
@@ -128,31 +128,31 @@ export function parseRawSteps(
           resolvedTarget.node.target = true;
 
           switch (assertion) {
-            case 'to have text':
+            case "to have text":
               resolvedTarget.node.text =
-                  parsedStep.fragments[3]?.value?.trim() ?? '';
+                parsedStep.fragments[3]?.value?.trim() ?? "";
               break;
-            case 'to be empty':
+            case "to be empty":
               resolvedTarget.node.empty = true;
               break;
-            case 'not to be empty':
+            case "not to be empty":
               resolvedTarget.node.empty = false;
               break;
-            case 'to be hidden':
+            case "to be hidden":
               resolvedTarget.node.hidden = true;
               break;
-            case 'to be visible':
+            case "to be visible":
               resolvedTarget.node.hidden = false;
               break;
-            case 'not to be visible':
+            case "not to be visible":
               resolvedTarget.node.hidden = true;
               break;
-            case 'to have placeholder':
+            case "to have placeholder":
               resolvedTarget.node.placeholder =
-                  parsedStep.fragments[3].value.trim();
+                parsedStep.fragments[3].value.trim();
               break;
-            case 'not to have text':
-              resolvedTarget.node.text = '';
+            case "not to have text":
+              resolvedTarget.node.text = "";
               break;
           }
         }
@@ -218,29 +218,29 @@ function parseRawStep(step: string): ParsedStep {
   const fragments = parseStepFragments(step);
   let action: Action | undefined;
 
-  if (fragments[0].type === 'keyword') {
+  if (fragments[0].type === "keyword") {
     switch (fragments[0].value) {
-      case 'visit':
+      case "visit":
         action = {
-          type: 'visit',
+          type: "visit",
           selector: fragments[1].value,
         } satisfies VisitAction;
         break;
-      case 'click':
+      case "click":
         action = {
-          type: 'click',
+          type: "click",
           selector: fragments[1].value,
         } satisfies ClickAction;
         break;
-      case 'type':
+      case "type":
         action = {
-          type: 'type',
+          type: "type",
           text: fragments[1].value,
         } satisfies TypeAction;
         break;
-      case 'press key':
+      case "press key":
         action = {
-          type: 'press_key',
+          type: "press_key",
           key: fragments[1].value,
         } satisfies PressKeyAction;
         break;
@@ -257,7 +257,7 @@ function parseRawStep(step: string): ParsedStep {
 function parseStepFragments(step: string): ParsedStepFragment[] {
   // Check for assertion patterns
   const assertionPattern = assertionPatterns.find((pattern) =>
-      pattern.test(step),
+    pattern.test(step),
   );
 
   if (assertionPattern) {
@@ -268,13 +268,13 @@ function parseStepFragments(step: string): ParsedStepFragment[] {
       const value = matches[3];
 
       const fragments: ParsedStepFragment[] = [
-        {type: 'keyword', value: 'expect'},
-        {type: 'variable', value: variable},
-        {type: 'keyword', value: assertion},
+        { type: "keyword", value: "expect" },
+        { type: "variable", value: variable },
+        { type: "keyword", value: assertion },
       ];
 
       if (value) {
-        fragments.push({type: 'quoted', value});
+        fragments.push({ type: "quoted", value });
       }
 
       return fragments;
@@ -283,7 +283,7 @@ function parseStepFragments(step: string): ParsedStepFragment[] {
 
   // Check for action on element patterns
   const actionOnElementPattern = actionOnElementPatterns.find((pattern) =>
-      pattern.test(step),
+    pattern.test(step),
   );
 
   if (actionOnElementPattern) {
@@ -293,15 +293,15 @@ function parseStepFragments(step: string): ParsedStepFragment[] {
       const variable = matches[2];
 
       return [
-        {type: 'keyword', value: action},
-        {type: 'variable', value: variable},
+        { type: "keyword", value: action },
+        { type: "variable", value: variable },
       ];
     }
   }
 
   // Check for action with quoted text patterns
   const actionWithQuotedTextPattern = actionWithQuotedTextPatterns.find(
-      (pattern) => pattern.test(step),
+    (pattern) => pattern.test(step),
   );
 
   if (actionWithQuotedTextPattern) {
@@ -311,12 +311,12 @@ function parseStepFragments(step: string): ParsedStepFragment[] {
       const quotedText = matches[2];
 
       return [
-        {type: 'keyword', value: action},
-        {type: 'quoted', value: quotedText},
+        { type: "keyword", value: action },
+        { type: "quoted", value: quotedText },
       ];
     }
   }
 
   // If no patterns matched, return the step as a text fragment
-  return [{type: 'text', value: step}];
+  return [{ type: "text", value: step }];
 }

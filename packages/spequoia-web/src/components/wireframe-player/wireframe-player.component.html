@@ -54,6 +54,11 @@
 
 <div class="buttons">
   <button (click)="wireframePlayerService.previousAndStop()">Previous</button>
-  <button (click)="wireframePlayerService.togglePlayState()" [class.active]="wireframePlayerService.playing()">{{ wireframePlayerService.playing() ? 'Pause' : 'Play' }}</button>
+  <button
+    (click)="wireframePlayerService.togglePlayState()"
+    [class.active]="wireframePlayerService.playing()"
+  >
+    {{ wireframePlayerService.playing() ? "Pause" : "Play" }}
+  </button>
   <button (click)="wireframePlayerService.nextAndStop()">Next</button>
 </div>

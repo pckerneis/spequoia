@@ -1,11 +1,11 @@
-import {ParseError, ParseResult} from './interfaces';
-import {parse} from 'yaml';
-import Ajv from 'ajv';
-import {parseRawDocument} from './document-parser';
-import {SPEQUOIA_SCHEMA, SpequoiaDocument} from '@spequoia/model';
+import { ParseError, ParseResult } from "./interfaces";
+import { parse } from "yaml";
+import Ajv from "ajv";
+import { parseRawDocument } from "./document-parser";
+import { SPEQUOIA_SCHEMA, SpequoiaDocument } from "@spequoia/model";
 
 export function parseSpec(yamlText: string): ParseResult {
-  console.log('Parsing YAML document...');
+  console.log("Parsing YAML document...");
   const rawDocument = parse(yamlText) as SpequoiaDocument;
   const ajv = new Ajv();
   const validateFn = ajv.compile(SPEQUOIA_SCHEMA);
@@ -13,12 +13,12 @@ export function parseSpec(yamlText: string): ParseResult {
 
   if (!valid) {
     const errors: ParseError[] =
-        validateFn.errors?.map((error) => {
-          return {
-            message: error.message ?? `Unknown error: ${JSON.stringify(error)}`,
-            schemaPath: error.schemaPath,
-          } satisfies ParseError;
-        }) || [];
+      validateFn.errors?.map((error) => {
+        return {
+          message: error.message ?? `Unknown error: ${JSON.stringify(error)}`,
+          schemaPath: error.schemaPath,
+        } satisfies ParseError;
+      }) || [];
 
     return {
       valid: false,

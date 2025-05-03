@@ -1,5 +1,5 @@
-import {ParsedDocument, ParsedViewNode} from '../model/parsed-document.model';
-import {SpequoiaDocument} from '@spequoia/model';
+import { ParsedDocument, ParsedViewNode } from "../model/parsed-document.model";
+import { SpequoiaDocument } from "@spequoia/model";
 
 export interface ResolvedTarget {
   node: ParsedViewNode;

@@ -1,10 +1,10 @@
-import {ParsedViewNode} from '../model/parsed-document.model';
-import {ResolvedTarget} from './interfaces';
+import { ParsedViewNode } from "../model/parsed-document.model";
+import { ResolvedTarget } from "./interfaces";
 
 export function resolveTarget(
-    currentView: ParsedViewNode | undefined,
-    targetName: string | undefined,
-    currentTarget: string[],
+  currentView: ParsedViewNode | undefined,
+  targetName: string | undefined,
+  currentTarget: string[],
 ): ResolvedTarget | null {
   if (!currentView || !targetName) {
     return null;

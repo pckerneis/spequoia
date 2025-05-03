@@ -1,9 +1,11 @@
-import {ParsedDocument, ParsedExample} from '../model/parsed-document.model';
-import {parseViews} from './view-parser';
-import {parseRawSteps} from './step-parser';
-import {SpequoiaDocument} from '@spequoia/model';
+import { ParsedDocument, ParsedExample } from "../model/parsed-document.model";
+import { parseViews } from "./view-parser";
+import { parseRawSteps } from "./step-parser";
+import { SpequoiaDocument } from "@spequoia/model";
 
-export function parseRawDocument(rawDocument: SpequoiaDocument): ParsedDocument {
+export function parseRawDocument(
+  rawDocument: SpequoiaDocument,
+): ParsedDocument {
   const views = parseViews(rawDocument.views);
 
   return {
@@ -14,16 +16,16 @@ export function parseRawDocument(rawDocument: SpequoiaDocument): ParsedDocument 
       name: feature.name,
       description: feature.description,
       examples:
-          feature.examples?.map(
-              (example) =>
-                  ({
-                    id: example.id,
-                    name: example.name,
-                    description: example.description,
-                    steps: parseRawSteps(example.steps, views),
-                    executors: example.executors,
-                  }) satisfies ParsedExample,
-          ) ?? [],
+        feature.examples?.map(
+          (example) =>
+            ({
+              id: example.id,
+              name: example.name,
+              description: example.description,
+              steps: parseRawSteps(example.steps, views),
+              executors: example.executors,
+            }) satisfies ParsedExample,
+        ) ?? [],
       tags: feature.tags ?? [],
     })),
     views,

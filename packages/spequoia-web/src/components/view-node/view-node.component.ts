@@ -1,4 +1,11 @@
-import {AfterViewInit, Component, computed, Input, Optional, signal} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  computed,
+  Input,
+  Optional,
+  signal,
+} from '@angular/core';
 import { ParsedViewNode } from 'spequoia-core/dist/model/parsed-document.model';
 import { NgClass } from '@angular/common';
 import { WireframePlayerService } from '../../services/wireframe-player.service';
@@ -56,11 +63,9 @@ export class ViewNodeComponent implements AfterViewInit {
       this.$text.set(this.viewNode.placeholder || '');
 
       setTimeout(() => {
-
-        let interval: any;
         let i = 0;
 
-        interval = setInterval(() => {
+        const interval = setInterval(() => {
           if (i < text.length) {
             const currentText = text.substring(0, i);
             this.$text.set(currentText);
