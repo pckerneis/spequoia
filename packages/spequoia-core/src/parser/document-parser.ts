@@ -22,14 +22,15 @@ export function parseRawDocument(
               id: example.id,
               name: example.name,
               description: example.description,
-              steps: parseRawSteps(example.steps, views),
+              steps: parseRawSteps(example.steps, views, rawDocument.actions),
               executors: example.executors,
             }) satisfies ParsedExample,
         ) ?? [],
       tags: feature.tags ?? [],
     })),
     views,
-    executors: rawDocument.executors,
+    executors: rawDocument.executors ?? {},
     defaultExecutor: rawDocument.defaultExecutor,
+    actions: [], // TODO
   };
 }

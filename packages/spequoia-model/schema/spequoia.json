@@ -2,9 +2,35 @@
   "$ref": "#/definitions/SpequoiaDocument",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
+    "SpequoiaAction": {
+      "properties": {
+        "description": {
+          "description": "A markdown description of the action.",
+          "type": "string"
+        },
+        "steps": {
+          "description": "List of steps to execute the action.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "steps"
+      ],
+      "type": "object"
+    },
     "SpequoiaDocument": {
       "description": "The Spequoia document model.\n\nThis model is used to define the structure of a Spequoia document.",
       "properties": {
+        "actions": {
+          "additionalProperties": {
+            "$ref": "#/definitions/SpequoiaAction"
+          },
+          "description": "A dictionary of actions that can be used in any example of the document.",
+          "type": "object"
+        },
         "defaultExecutor": {
           "description": "The default executor to be used for the feature examples.",
           "type": "string"

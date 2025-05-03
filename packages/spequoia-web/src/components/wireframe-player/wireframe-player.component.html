@@ -3,13 +3,14 @@
   #wireframePlayer
   [style.max-height]="$viewHeight() + 20 + 'px'"
 >
-  <ul>
+  <ul class="step-list">
     @for (step of example?.steps; track $index) {
       <li
         #step
-        [class.active]="wireframePlayerService.currentStep() == $index"
-        (click)="wireframePlayerService.setStepAndStop($index)"
-        (keydown.enter)="wireframePlayerService.setStepAndStop($index)"
+        [class.composite]="step.composite"
+        [class.active]="wireframePlayerService.currentStep() == step"
+        (click)="wireframePlayerService.setStepAndStop(step)"
+        (keydown.enter)="wireframePlayerService.setStepAndStop(step)"
         tabindex="0"
       >
         @for (fragment of step.fragments; track $index) {
@@ -22,6 +23,30 @@
           } @else {
             <span>{{ fragment.value }} </span>
           }
+        }
+        @if (step.composite) {
+          <ul>
+            @for (substep of step.steps; track $index) {
+              <li
+                [class.active]="wireframePlayerService.currentStep() == substep"
+                (click)="wireframePlayerService.setStepAndStop(substep)"
+                (keydown.enter)="wireframePlayerService.setStepAndStop(substep)"
+                tabindex="0"
+              >
+                @for (fragment of substep.fragments; track $index) {
+                  @if (fragment.type == "keyword") {
+                    <b class="keyword">{{ fragment.value }} </b>
+                  } @else if (fragment.type == "variable") {
+                    <b>&#64;{{ fragment.value }} </b>
+                  } @else if (fragment.type == "quoted") {
+                    <span class="quoted">"{{ fragment.value }}"</span>
+                  } @else {
+                    <span>{{ fragment.value }} </span>
+                  }
+                }
+              </li>
+            }
+          </ul>
         }
       </li>
     }

@@ -66,6 +66,16 @@ views:
         $selector: .clear-completed
         $text: Clear completed
 
+actions:
+  visit_main_page:
+    description: |
+      Visit the main page of the TodoMVC app.
+      The page is loaded and the header, input, and task list are displayed.
+    steps:
+      - visit main_page
+      - expect todo_list to be empty
+      - expect footer to be hidden
+
 features:
   - name: Initial state of the app
     description: |
@@ -85,7 +95,7 @@ features:
 
           The task list is empty at the start, indicating that no tasks have been added yet.
         steps:
-          - visit main_page
+          - visit_main_page
           - expect title to have text "todos"
           - expect input to be visible
           - expect input to have placeholder "What needs to be done?"

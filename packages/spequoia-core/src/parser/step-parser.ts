@@ -4,10 +4,12 @@ import {
   ParsedViewNode,
 } from "../model/parsed-document.model";
 import { resolveTarget } from "./target-resolver";
+import { SpequoiaAction } from "spequoia-model/dist";
 
 export function parseRawSteps(
   steps: string[] | undefined,
   views: ParsedViewNode[],
+  actions: Record<string, SpequoiaAction> = {},
 ): ParsedStep[] {
   if (!steps) {
     return [];
@@ -20,124 +22,153 @@ export function parseRawSteps(
   let mergedViews: ParsedViewNode[] = [];
   let currentViewTemplate: ParsedViewNode | undefined;
 
-  for (const step of steps) {
-    const parsedStep = parseRawStep(step);
-    parsedSteps.push(parsedStep);
+  for (const rawStep of steps) {
+    const foundAction = actions[rawStep];
+    const stepsToProcess: string[] = [];
 
-    if (currentView) {
-      currentView = JSON.parse(JSON.stringify(currentView));
-      resetOneTimeState(currentView);
+    if (foundAction) {
+      stepsToProcess.push(...foundAction.steps);
+    } else {
+      stepsToProcess.push(rawStep);
     }
 
-    if (parsedStep.action?.type === "visit") {
-      const viewName = parsedStep.fragments[1].value.trim();
-      currentViewTemplate = views.find((view) => view.name === viewName);
-      currentView = JSON.parse(JSON.stringify(currentViewTemplate));
-      currentTarget = currentView;
-      currentTargetName = viewName;
+    const processedSteps: ParsedStep[] = [];
+
+    for (const step of stepsToProcess) {
+      const parsedStep = parseRawStep(step);
+      processedSteps.push(parsedStep);
 
       if (currentView) {
-        mergedViews = [currentView];
-      }
-    }
-
-    if (!currentView || !currentViewTemplate) {
-      continue;
-    }
-
-    if (parsedStep.action?.type === "click") {
-      const targetName = parsedStep.fragments[1].value.trim();
-      currentTargetName = targetName;
-      const resolvedTarget = resolveTarget(
-        currentView,
-        targetName,
-        currentViewTemplate,
-      );
-
-      if (resolvedTarget) {
-        currentTarget = resolvedTarget.node;
-        currentTarget.target = true;
-        currentTarget.clicked = true;
+        currentView = JSON.parse(JSON.stringify(currentView));
+        resetOneTimeState(currentView);
       }
 
-      mergedViews = [currentView];
-    }
+      if (parsedStep.action?.type === "visit") {
+        const viewName = parsedStep.fragments[1].value.trim();
+        currentViewTemplate = views.find((view) => view.name === viewName);
+        currentView = JSON.parse(JSON.stringify(currentViewTemplate));
+        currentTarget = currentView;
+        currentTargetName = viewName;
 
-    if (parsedStep.action?.type === "type") {
-      const resolvedTarget = resolveTarget(
-        currentView,
-        currentTargetName,
-        currentViewTemplate,
-      );
-      currentTarget = resolvedTarget?.node;
-
-      if (currentTarget) {
-        currentTarget.target = true;
-        currentTarget.text = parsedStep.action.text;
-        currentTarget.typing = true;
+        if (currentView) {
+          mergedViews = [currentView];
+        }
       }
 
-      mergedViews = [currentView];
-    }
-
-    if (parsedStep.action?.type === "press_key") {
-      if (currentTarget) {
-        currentTarget.target = true;
+      if (!currentView || !currentViewTemplate) {
+        continue;
       }
 
-      mergedViews = [currentView];
-    }
-
-    if (
-      parsedStep.fragments[0].type === "keyword" &&
-      parsedStep.fragments[0].value === "expect"
-    ) {
-      mergedViews.push(currentView);
-
-      for (const view of mergedViews) {
-        const targetName = parsedStep.fragments[1].value;
-        const assertion = parsedStep.fragments[2].value.trim();
+      if (parsedStep.action?.type === "click") {
+        const targetName = parsedStep.fragments[1].value.trim();
+        currentTargetName = targetName;
         const resolvedTarget = resolveTarget(
-          view,
+          currentView,
           targetName,
           currentViewTemplate,
         );
 
         if (resolvedTarget) {
-          resolvedTarget.node.target = true;
+          currentTarget = resolvedTarget.node;
+          currentTarget.target = true;
+          currentTarget.clicked = true;
+        }
 
-          switch (assertion) {
-            case "to have text":
-              resolvedTarget.node.text =
-                parsedStep.fragments[3]?.value?.trim() ?? "";
-              makeAllParentsVisible(resolvedTarget.node, currentView);
-              break;
-            case "to be empty":
-              resolvedTarget.node.children = [];
-              break;
-            case "to be hidden":
-              resolvedTarget.node.hidden = true;
-              break;
-            case "to be visible":
-              resolvedTarget.node.hidden = false;
-              makeAllParentsVisible(resolvedTarget.node, currentView);
-              break;
-            case "not to be visible":
-              resolvedTarget.node.hidden = true;
-              break;
-            case "to have placeholder":
-              resolvedTarget.node.placeholder =
-                parsedStep.fragments[3].value.trim();
-              break;
-            case "not to have text":
-              resolvedTarget.node.text = "";
-              break;
+        mergedViews = [currentView];
+      }
+
+      if (parsedStep.action?.type === "type") {
+        const resolvedTarget = resolveTarget(
+          currentView,
+          currentTargetName,
+          currentViewTemplate,
+        );
+        currentTarget = resolvedTarget?.node;
+
+        if (currentTarget) {
+          currentTarget.target = true;
+          currentTarget.text = parsedStep.action.text;
+          currentTarget.typing = true;
+        }
+
+        mergedViews = [currentView];
+      }
+
+      if (parsedStep.action?.type === "press_key") {
+        if (currentTarget) {
+          currentTarget.target = true;
+        }
+
+        mergedViews = [currentView];
+      }
+
+      if (
+        parsedStep.fragments[0].type === "keyword" &&
+        parsedStep.fragments[0].value === "expect"
+      ) {
+        mergedViews.push(currentView);
+
+        for (const view of mergedViews) {
+          const targetName = parsedStep.fragments[1].value;
+          const assertion = parsedStep.fragments[2].value.trim();
+          const resolvedTarget = resolveTarget(
+            view,
+            targetName,
+            currentViewTemplate,
+          );
+
+          if (resolvedTarget) {
+            resolvedTarget.node.target = true;
+
+            switch (assertion) {
+              case "to have text":
+                resolvedTarget.node.text =
+                  parsedStep.fragments[3]?.value?.trim() ?? "";
+                makeAllParentsVisible(resolvedTarget.node, currentView);
+                break;
+              case "to be empty":
+                resolvedTarget.node.children = [];
+                break;
+              case "to be hidden":
+                resolvedTarget.node.hidden = true;
+                break;
+              case "to be visible":
+                resolvedTarget.node.hidden = false;
+                makeAllParentsVisible(resolvedTarget.node, currentView);
+                break;
+              case "not to be visible":
+                resolvedTarget.node.hidden = true;
+                break;
+              case "to have placeholder":
+                resolvedTarget.node.placeholder =
+                  parsedStep.fragments[3].value.trim();
+                break;
+              case "not to have text":
+                resolvedTarget.node.text = "";
+                break;
+            }
           }
         }
       }
+
+      parsedStep.computedView = currentView;
     }
 
-    parsedStep.computedView = currentView;
+    if (foundAction) {
+      parsedSteps.push({
+        steps: processedSteps,
+        composite: true,
+        raw: rawStep,
+        fragments: [
+          {
+            type: "keyword",
+            value: rawStep,
+          },
+        ],
+      });
+    } else {
+      parsedSteps.push(...processedSteps);
+    }
   }
 
   return parsedSteps;

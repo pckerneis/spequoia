@@ -38,6 +38,11 @@ export interface SpequoiaDocument {
    * The default executor to be used for the feature examples.
    */
   defaultExecutor?: string;
+
+  /**
+   * A dictionary of actions that can be used in any example of the document.
+   */
+  actions?: Record<string, SpequoiaAction>;
 }
 
 /**
@@ -157,4 +162,16 @@ export interface SpequoiaExecutor {
    * Additional parameters for the executor.
    */
   configuration?: Record<string, string | number | boolean>;
+}
+
+export interface SpequoiaAction {
+  /**
+   * A markdown description of the action.
+   */
+  description?: string;
+
+  /**
+   * List of steps to execute the action.
+   */
+  steps: string[];
 }

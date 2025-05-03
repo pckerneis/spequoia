@@ -1,6 +1,7 @@
 import { computed, Injectable, signal } from '@angular/core';
 import {
   ParsedExample,
+  ParsedStep,
   ParsedViewNode,
 } from 'spequoia-core/dist/model/parsed-document.model';
 import { Subject } from 'rxjs';
@@ -14,7 +15,7 @@ export class WireframePlayerService {
       return undefined;
     }
 
-    const step = example.steps[this.currentStep()];
+    const step = this.currentStep();
 
     if (!step) {
       return undefined;
@@ -22,18 +23,42 @@ export class WireframePlayerService {
 
     return step.computedView;
   });
-  readonly currentStep = signal<number>(0);
+
+  readonly flattenSteps = computed(() => {
+    const example = this.example();
+
+    if (!example || !example.steps || example.steps.length === 0) {
+      return [];
+    }
+
+    const steps: ParsedStep[] = [];
+
+    for (const step of example.steps) {
+      if (step.composite) {
+        steps.push(...step.steps!);
+      } else {
+        steps.push(step);
+      }
+    }
+
+    return steps;
+  });
+
+  readonly currentStepIndex = signal<number>(0);
+  readonly currentStep = computed(() => {
+    return this.flattenSteps()[this.currentStepIndex()];
+  });
   readonly example = signal<ParsedExample | null>(null);
   readonly playing = signal<boolean>(false);
 
   readonly progressPercent = computed(() => {
     const example = this.example();
 
-    if (!example || !example.steps || example.steps.length === 0) {
+    if (!example || !example.steps || this.flattenSteps().length === 0) {
       return 0;
     }
 
-    return ((this.currentStep() + 1) / example.steps.length) * 100;
+    return ((this.currentStepIndex() + 1) / this.flattenSteps().length) * 100;
   });
 
   readonly currentTargets = computed<string[]>(() => {
@@ -43,7 +68,7 @@ export class WireframePlayerService {
       return [];
     }
 
-    const step = example.steps[this.currentStep()];
+    const step = this.currentStep();
 
     if (!step) {
       return [];
@@ -70,8 +95,8 @@ export class WireframePlayerService {
     const example = this.example();
 
     if (example && example.steps) {
-      if (this.currentStep() < example.steps.length - 1) {
-        this.currentStep.update((step) => step + 1);
+      if (this.currentStepIndex() < this.flattenSteps().length - 1) {
+        this.currentStepIndex.update((step) => step + 1);
       }
     }
 
@@ -82,19 +107,17 @@ export class WireframePlayerService {
     const example = this.example();
 
     if (example && example.steps) {
-      if (this.currentStep() > 0) {
-        this.currentStep.update((step) => step - 1);
+      if (this.currentStepIndex() > 0) {
+        this.currentStepIndex.update((step) => step - 1);
       }
     }
 
     this.stepChanged$.next();
   }
 
-  setStep(index: number): void {
-    const example = this.example();
-
-    if (example?.steps && index >= 0 && index < example.steps.length) {
-      this.currentStep.set(index);
+  setStepIndex(index: number): void {
+    if (index >= 0 && index < this.flattenSteps().length) {
+      this.currentStepIndex.set(index);
     }
 
     this.stepChanged$.next();
@@ -111,30 +134,27 @@ export class WireframePlayerService {
   }
 
   private play(): void {
-    const example = this.example();
-    const steps = example?.steps;
-
-    if (!steps || steps.length === 0) {
+    if (this.flattenSteps().length === 0) {
       return;
     }
 
     const showNext = () => {
-      if (this.currentStep() < steps.length - 1) {
-        const step = steps[this.currentStep()];
+      if (this.currentStepIndex() < this.flattenSteps().length - 1) {
+        const step = this.currentStep();
 
         this._playTimeout = window.setTimeout(() => {
           this.next();
           if (this.playing()) {
             showNext();
           }
-        }, step.duration ?? 50);
+        }, step.duration);
       } else {
         this.stop();
       }
     };
 
-    if (this.currentStep() >= steps.length - 1) {
-      this.setStep(0);
+    if (this.currentStepIndex() >= this.flattenSteps().length - 1) {
+      this.setStepIndex(0);
     }
 
     showNext();
@@ -145,8 +165,14 @@ export class WireframePlayerService {
     clearTimeout(this._playTimeout);
   }
 
-  public setStepAndStop($index: number): void {
-    this.setStep($index);
+  public setStepAndStop(step: ParsedStep): void {
+    for (let i = 0; i < this.flattenSteps().length; i++) {
+      if (this.flattenSteps()[i] === step) {
+        this.setStepIndex(i);
+        break;
+      }
+    }
+
     this.stop();
   }
 

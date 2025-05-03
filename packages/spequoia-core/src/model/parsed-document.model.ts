@@ -4,9 +4,10 @@ export interface ParsedDocument {
   title: string;
   description?: string;
   features: ParsedFeature[];
-  views?: ParsedViewNode[];
-  executors?: Record<string, SpequoiaExecutor>;
+  views: ParsedViewNode[];
+  executors: Record<string, SpequoiaExecutor>;
   defaultExecutor?: string;
+  actions: ParsedAction[];
 }
 
 export interface ParsedFeature {
@@ -31,6 +32,8 @@ export interface ParsedStep {
   action?: Action;
   computedView?: ParsedViewNode;
   duration?: number;
+  composite?: boolean;
+  steps?: ParsedStep[];
 }
 
 export type ParsedStepFragmentType = "text" | "variable" | "quoted" | "keyword";
@@ -89,4 +92,10 @@ export interface ParsedViewNode {
   hidden?: boolean;
   placeholder?: string;
   typing?: boolean;
+}
+
+export interface ParsedAction {
+  name: string;
+  description?: string;
+  steps: ParsedStep[];
 }

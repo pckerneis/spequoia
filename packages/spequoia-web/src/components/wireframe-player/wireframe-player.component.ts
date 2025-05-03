@@ -59,7 +59,7 @@ export class WireframePlayerComponent implements AfterViewInit {
         return;
       }
       this.stepButtons.forEach((el, index) => {
-        if (this.wireframePlayerService.currentStep() == index) {
+        if (this.wireframePlayerService.currentStepIndex() == index) {
           el.nativeElement.focus();
         }
       });
