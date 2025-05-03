@@ -1,0 +1,27 @@
+<li
+  #listItem
+  [class.composite]="step.composite"
+  [class.active]="wireframePlayerService.currentStep() == step"
+  (click)="wireframePlayerService.setStepAndStop(step)"
+  (keydown.enter)="wireframePlayerService.setStepAndStop(step)"
+  tabindex="0"
+>
+  @for (fragment of step.fragments; track $index) {
+    @if (fragment.type == "keyword") {
+      <b class="keyword">{{ fragment.value }} </b>
+    } @else if (fragment.type == "variable") {
+      <b>&#64;{{ fragment.value }} </b>
+    } @else if (fragment.type == "quoted") {
+      <span class="quoted">"{{ fragment.value }}"</span>
+    } @else {
+      <span>{{ fragment.value }} </span>
+    }
+  }
+  @if (step.composite) {
+    <ul>
+      @for (substep of step.steps; track substep) {
+        <app-wireframe-player-step [step]="substep" />
+      }
+    </ul>
+  }
+</li>

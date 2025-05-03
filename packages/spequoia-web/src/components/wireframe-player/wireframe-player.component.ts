@@ -13,11 +13,12 @@ import {
 import { WireframePlayerService } from '../../services/wireframe-player.service';
 import { ParsedExample } from 'spequoia-core/dist/model/parsed-document.model';
 import { ViewNodeComponent } from '../view-node/view-node.component';
+import { WireframePlayerStepComponent } from '../wireframe-player-step/wireframe-player-step.component';
 
 @Component({
   selector: 'app-wireframe-player',
   providers: [WireframePlayerService],
-  imports: [ViewNodeComponent],
+  imports: [ViewNodeComponent, WireframePlayerStepComponent],
   templateUrl: './wireframe-player.component.html',
   styleUrl: './wireframe-player.component.scss',
 })
@@ -53,17 +54,6 @@ export class WireframePlayerComponent implements AfterViewInit {
     }
 
     setTimeout(() => this.updateTransform(), 0);
-
-    this.wireframePlayerService.stepChanged$.subscribe(() => {
-      if (!this.stepButtons) {
-        return;
-      }
-      this.stepButtons.forEach((el, index) => {
-        if (this.wireframePlayerService.currentStepIndex() == index) {
-          el.nativeElement.focus();
-        }
-      });
-    });
   }
 
   @HostListener('window:keydown', ['$event'])

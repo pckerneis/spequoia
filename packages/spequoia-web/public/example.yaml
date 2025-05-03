@@ -75,6 +75,24 @@ actions:
       - visit main_page
       - expect todo_list to be empty
       - expect footer to be hidden
+      - expect input to have placeholder "What needs to be done?"
+
+  add_first_task:
+    description: |
+      Add a task named "New task".
+      The input field is clicked, and the task name is typed.
+      The task is added to the task list and displayed as active.
+    steps:
+      - click input
+      - type "New task"
+      - press key "Enter"
+      - expect input to have text ""
+      - expect task_row(1) to be visible
+      - expect label to have text "New task"
+      - expect done_checkbox to be visible
+      - expect footer to be visible
+      - expect todo_count to have text "1 items left"
+      - expect clear_completed_button to be hidden
 
 features:
   - name: Initial state of the app
@@ -112,19 +130,8 @@ features:
       - id: EX-002
         name: Create a new task
         steps:
-          - visit main_page
-          - expect todo_list to be empty
-          - expect footer not to be visible
-          - click input
-          - type "New task"
-          - press key "Enter"
-          - expect input to have text ""
-          - expect task_row(1) to be visible
-          - expect label to have text "New task"
-          - expect done_checkbox to be visible
-          - expect footer to be visible
-          - expect todo_count to have text "1 items left"
-          - expect clear_completed_button to be hidden
+          - visit_main_page
+          - add_first_task
 
   - name: Mark tasks as done
     description: |
@@ -139,15 +146,8 @@ features:
       - id: EX-003
         name: Mark a task as done
         steps:
-          - visit main_page
-          - expect todo_list to be empty
-          - expect footer not to be visible
-          - click input
-          - type "New task"
-          - press key "Enter"
-          - expect task_row(1) to be visible
-          - expect label to have text "New task"
-          - expect todo_count to have text "1 items left"
+          - visit_main_page
+          - add_first_task
           - click done_checkbox
           - expect done_checkbox to be checked
           - expect todo_count to have text "0 items left"
@@ -155,16 +155,8 @@ features:
       - id: EX-004
         name: Unmark a task as done
         steps:
-          - visit main_page
-          - expect todo_list to be empty
-          - expect footer not to be visible
-          - click input
-          - type "New task"
-          - press key "Enter"
-          - expect task_row(1) to be visible
-          - expect label to have text "New task"
-          - expect todo_count to have text "1 items left"
-          - expect clear_completed_button to be hidden
+          - visit_main_page
+          - add_first_task
           - click done_checkbox
           - expect done_checkbox to be checked
           - expect todo_count to have text "0 items left"
@@ -185,16 +177,8 @@ features:
       - id: EX-005
         name: Clear completed tasks
         steps:
-          - visit main_page
-          - expect todo_list to be empty
-          - expect footer not to be visible
-          - click input
-          - type "New task"
-          - press key "Enter"
-          - expect input to have text ""
-          - expect task_row(1) to be visible
-          - expect label to have text "New task"
-          - expect todo_count to have text "1 items left"
+          - visit_main_page
+          - add_first_task
           - click done_checkbox
           - expect done_checkbox to be checked
           - expect todo_count to have text "0 items left"
@@ -215,16 +199,8 @@ features:
       - id: EX-006
         name: Delete a task
         steps:
-          - visit main_page
-          - expect todo_list to be empty
-          - expect footer not to be visible
-          - click input
-          - type "New task"
-          - press key "Enter"
-          - expect input to have text ""
-          - expect task_row(1) to be visible
-          - expect label to have text "New task"
-          - expect done_checkbox to be visible
+          - visit_main_page
+          - add_first_task
           - hover over task_row(1)
           - expect delete_button to be visible
           - click delete_button
@@ -242,9 +218,7 @@ features:
       - id: EX-007
         name: Filter tasks
         steps:
-          - visit main_page
-          - expect todo_list to be empty
-          - expect footer not to be visible
+          - visit_main_page
           - click input
           - type "Active task"
           - press key "Enter"
