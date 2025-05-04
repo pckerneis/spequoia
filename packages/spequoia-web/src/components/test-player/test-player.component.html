@@ -1,0 +1,26 @@
+<div class="viewer">
+  <img class="screenshot" [src]="screenshotSrc()" alt="Screenshot"/>
+  <div class="transport-controls">
+    <div class="timeline">
+      <div class="timeline-bar">
+        @for(section of $sections(); track $index) {
+          <div
+            class="section"
+            [style.width]="section.width"
+            [style.left]="section.left"
+          >
+            <div class="section-progress" [style.width]="section.progressWidth"></div>
+          </div>
+        }
+        <div class="timeline-indicator" [style.left]="$indicatorLeft()"></div>
+      </div>
+      <div class="timeline-preview" style="display:none;"></div>
+    </div>
+    <div class="timeline-transport-buttons">
+      <button (click)="prev()">⏮️</button>
+      <button (click)="togglePlayState()">{{ $playing() ? '⏸️' : '▶️' }}</button>
+      <button (click)="next()">⏭️</button>
+      <p id="description">{{ $currentSectionName() }}</p>
+    </div>
+  </div>
+</div>

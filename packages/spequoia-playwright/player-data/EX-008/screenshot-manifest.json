@@ -1,0 +1,45 @@
+{
+  "sections": [
+    {
+      "name": "visit_main_page - visit main_page",
+      "startFrame": 0,
+      "endFrame": 1
+    },
+    {
+      "name": "add_first_task - click input",
+      "startFrame": 1,
+      "endFrame": 2
+    },
+    {
+      "name": "add_first_task - type \"New task\"",
+      "startFrame": 2,
+      "endFrame": 10
+    },
+    {
+      "name": "add_first_task - press key \"Enter\"",
+      "startFrame": 10,
+      "endFrame": 11
+    },
+    {
+      "name": "double-click task_row(1)",
+      "startFrame": 11,
+      "endFrame": 12
+    },
+    {
+      "name": "press key \"ControlOrMeta+A\"",
+      "startFrame": 12,
+      "endFrame": 13
+    },
+    {
+      "name": "type \"Edited task\"",
+      "startFrame": 13,
+      "endFrame": 24
+    },
+    {
+      "name": "press key \"Enter\"",
+      "startFrame": 24,
+      "endFrame": 25
+    }
+  ],
+  "frameCount": 25
+}

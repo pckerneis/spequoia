@@ -16,4 +16,11 @@ export const routes: Routes = [
         (m) => m.ExamplePageComponent,
       ),
   },
+  {
+    path: 'test-results/:exampleId',
+    loadComponent: () =>
+      import('../pages/test-results-page/test-results-page.component').then(
+        (m) => m.TestResultsPageComponent,
+      ),
+  },
 ];

@@ -7,6 +7,75 @@ import {
   PressKeyAction,
   TypeAction,
 } from "spequoia-core/dist";
+import path from 'path';
+import fs from 'fs';
+
+interface ScreenshotSection {
+  name: string;
+  startFrame: number;
+  endFrame?: number;
+}
+
+const SCREENSHOT_DIRECTORY = 'player-data';
+
+let frameCounter = 0;
+const sections: ScreenshotSection[] = [];
+
+function beginSection(name: string) {
+  if (sections.length === 0 && frameCounter > 0) {
+    sections.push({
+      name: '',
+      startFrame: 0,
+    });
+  }
+
+  sections.push({
+    name,
+    startFrame: frameCounter,
+  });
+}
+
+function saveManifest(exampleId: string) {
+  const sectionsWithEndFrames = sections.map((section, index) => {
+    const nextSection = sections[index + 1];
+    return {
+      ...section,
+      endFrame: nextSection ? nextSection.startFrame : frameCounter,
+    };
+  }).filter(section => section.endFrame - section.startFrame > 0);
+
+  const json = JSON.stringify({
+    sections: sectionsWithEndFrames,
+    frameCount: frameCounter
+  }, null, 2);
+
+  const manifestPath = path.join(__dirname, '..', SCREENSHOT_DIRECTORY, exampleId, 'screenshot-manifest.json');
+  const folder = path.dirname(manifestPath);
+
+  if (!fs.existsSync(folder)) {
+    fs.mkdirSync(folder);
+  }
+
+  fs.writeFileSync(manifestPath, json);
+  console.log(`Manifest saved to ${manifestPath}`);
+
+  sections.length = 0;
+  frameCounter = 0;
+}
+
+async function screenshot(page: Page, exampleId: string) {
+  await page.screenshot({
+    path: path.join(SCREENSHOT_DIRECTORY, exampleId, `${frameCounter++}.png`),
+  });
+}
+
+async function slowType(page: Page, text: string, exampleId: string) {
+  for (let i = 0; i < text.length; i++) {
+    let chr = text[i];
+    await page.keyboard.type(chr);
+    await screenshot(page, exampleId);
+  }
+}
 
 const document = `
 version: 1.0.0-it1
@@ -268,7 +337,8 @@ features:
         steps:
           - visit_main_page
           - add_first_task
-          - double-click task_row(1) label
+          - double-click task_row(1)
+          - press key "ControlOrMeta+A"
           - type "Edited task"
           - press key "Enter"
           - expect label to have text "Edited task"
@@ -277,7 +347,8 @@ features:
         steps:
           - visit_main_page
           - add_first_task
-          - double-click task_row(1) label
+          - double-click task_row(1)
+          - press key "ControlOrMeta+A"
           - type "Edited task"
           - press key "Escape"
           - expect label to have text "New task"
@@ -369,7 +440,7 @@ function resolveNode(
   return null;
 }
 
-async function runStep(step: ParsedStep, page: Page) {
+async function runStep(step: ParsedStep, page: Page, exampleId: string) {
   const action = step.action;
 
   if (!action) {
@@ -397,6 +468,7 @@ async function runStep(step: ParsedStep, page: Page) {
       }
 
       await page.goto(url);
+      await screenshot(page, exampleId);
       break;
     }
     case "click": {
@@ -409,24 +481,20 @@ async function runStep(step: ParsedStep, page: Page) {
         throw new Error(`Selector for ${target} not found`);
       }
 
-      if (selector) {
-        await page.locator(selector).click();
-      }
+      await page.locator(selector).click();
+      await screenshot(page, exampleId);
 
       break;
     }
     case "type": {
       const text = (step.action as TypeAction).text;
-      if (currentSelector) {
-        await page.keyboard.type(text);
-      }
+      await slowType(page, text, exampleId);
       break;
     }
     case "press_key": {
       const key = (step.action as PressKeyAction).key;
-      if (currentSelector) {
-        await page.keyboard.press(key);
-      }
+      await page.keyboard.press(key);
+      await screenshot(page, exampleId);
       break;
     }
     case "hover": {
@@ -438,11 +506,9 @@ async function runStep(step: ParsedStep, page: Page) {
         throw new Error(`Selector for ${hoverTarget} not found`);
       }
 
-      if (hoverSelector) {
-        await page.locator(hoverSelector).hover({trial: true, force: false});
-        await page.waitForTimeout(100); // Small wait for hover effects
-      }
-
+      await page.locator(hoverSelector).hover({trial: true, force: false});
+      await page.waitForTimeout(100); // Small wait for hover effects
+      await screenshot(page, exampleId);
       break;
     }
     case "double_click": {
@@ -457,10 +523,8 @@ async function runStep(step: ParsedStep, page: Page) {
         throw new Error(`Selector for ${doubleClickTarget} not found`);
       }
 
-      if (doubleClickSelector) {
-        await page.locator(doubleClickSelector).dblclick();
-      }
-
+      await page.locator(doubleClickSelector).dblclick();
+      await screenshot(page, exampleId);
       break;
     }
     default:
@@ -474,12 +538,16 @@ for (const feature of parseResult.parsedDocument!.features) {
       for (const step of example.steps!) {
         if (step.composite) {
           for (const subStep of step.steps!) {
-            await runStep(subStep, page);
+            beginSection(step.raw + ' - ' + subStep.raw);
+            await runStep(subStep, page, example.id);
           }
         } else {
-          await runStep(step, page);
+          beginSection(step.raw);
+          await runStep(step, page, example.id);
         }
       }
+
+      saveManifest(example.id);
     });
   }
 }

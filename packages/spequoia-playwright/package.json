@@ -8,6 +8,7 @@
     "@types/node": "^22.15.3"
   },
   "scripts": {
+    "clean": "rimraf player-data",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",

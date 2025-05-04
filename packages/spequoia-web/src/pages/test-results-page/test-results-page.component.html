@@ -1,0 +1,25 @@
+@if (this.documentService.document(); as document) {
+  <div class="document-page">
+    <header>
+      <div>
+        <h1>{{ document.title }}</h1>
+      </div>
+
+      <div>
+        <input type="search" placeholder="Search..." />
+      </div>
+    </header>
+
+    <div class="main-container">
+      <main>
+        <a routerLink="/" class="back-link"> Back to document </a>
+
+        @if (example) {
+          <app-test-player [example]="example"/>
+        } @else {
+          <span>Example not found</span>
+        }
+      </main>
+    </div>
+  </div>
+}
