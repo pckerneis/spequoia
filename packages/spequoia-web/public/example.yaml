@@ -25,7 +25,7 @@ executors:
       This executor uses Playwright to run the tests. It uses the Playwright
       API to interact with the web application and verify the expected behavior.
     configuration:
-      baseUrl: "https://https://todomvc.com/examples/javascript-es5/dist/"
+      baseUrl: "https://todomvc.com/examples/javascript-es5/dist/"
 
 defaultExecutor: default
 

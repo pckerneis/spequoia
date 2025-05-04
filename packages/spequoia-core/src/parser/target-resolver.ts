@@ -33,6 +33,22 @@ export function resolveTarget(
   return { node: currentScope };
 }
 
+function applyParameters(
+  baseSelector: string | undefined,
+  targetName: string,
+): string | null {
+  if (!baseSelector) {
+    return null;
+  }
+
+  const parameters = targetName.match(/\((.*?)\)/);
+  if (parameters) {
+    const parameter = parameters[1];
+    return baseSelector.replace(/\${.*?}/g, parameter);
+  }
+  return baseSelector;
+}
+
 export function resolveTargetInNode(
   currentNode: ParsedViewNode | undefined,
   targetName: string | undefined,
@@ -65,6 +81,7 @@ export function resolveTargetInNode(
 
       if (transformedName === transformedTargetName) {
         const newNode = JSON.parse(JSON.stringify(child));
+        newNode.selector = applyParameters(child.selector, targetName);
         newNode.name = targetName;
 
         if (currentNode.children) {

@@ -59,7 +59,10 @@ export function parseRawSteps(
         continue;
       }
 
-      if (parsedStep.action?.type === "click" || parsedStep.action?.type === "double_click") {
+      if (
+        parsedStep.action?.type === "click" ||
+        parsedStep.action?.type === "double_click"
+      ) {
         const targetName = parsedStep.fragments[1].value.trim();
         currentTargetName = targetName;
         const resolvedTarget = resolveTarget(
@@ -218,7 +221,7 @@ const visitActionParser = (str: string): ParsedStep | null => {
     return {
       action: {
         type: "visit",
-        selector: match[2],
+        view: match[2],
       },
       fragments: [
         { type: "keyword", value: match[1] },
@@ -239,7 +242,7 @@ const clickActionParser = (str: string): ParsedStep | null => {
     return {
       action: {
         type: "click",
-        selector: match[2],
+        target: match[2],
       },
       fragments: [
         { type: "keyword", value: match[1] },
@@ -260,7 +263,7 @@ const doubleClickActionParser = (str: string): ParsedStep | null => {
     return {
       action: {
         type: "double_click",
-        selector: match[2],
+        target: match[2],
       },
       fragments: [
         { type: "keyword", value: match[1] },
@@ -323,7 +326,7 @@ const hoverActionParser = (str: string): ParsedStep | null => {
     return {
       action: {
         type: "hover",
-        selector: match[2],
+        target: match[2],
       },
       fragments: [
         { type: "keyword", value: match[1] },

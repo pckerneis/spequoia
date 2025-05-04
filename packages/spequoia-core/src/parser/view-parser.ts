@@ -26,6 +26,7 @@ function parseViewNode(
     const selector = rawNode["$selector"];
     const direction = rawNode["$direction"];
     const text = rawNode["$text"];
+    const route = rawNode["$url"];
 
     if (selector && typeof selector !== "string") {
       throw new Error(`Invalid selector for node ${name}: ${selector}`);
@@ -39,11 +40,16 @@ function parseViewNode(
       throw new Error(`Invalid text for node ${name}: ${text}`);
     }
 
+    if (route && typeof route !== "string") {
+      throw new Error(`Invalid route for node ${name}: ${route}`);
+    }
+
     return {
       name,
       selector,
       direction,
       text,
+      route,
       children: Object.entries(rawNode)
         .filter(([key]) => !key.startsWith("$"))
         .map(([key, value]) => {

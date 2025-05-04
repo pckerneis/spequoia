@@ -38,7 +38,13 @@ export interface ParsedStep {
 
 export type ParsedStepFragmentType = "text" | "variable" | "quoted" | "keyword";
 
-export type ActionType = "visit" | "click" | "double_click" | "type" | "press_key" | "hover";
+export type ActionType =
+  | "visit"
+  | "click"
+  | "double_click"
+  | "type"
+  | "press_key"
+  | "hover";
 
 export interface BaseAction {
   type: ActionType;
@@ -46,17 +52,17 @@ export interface BaseAction {
 
 export interface VisitAction extends BaseAction {
   type: "visit";
-  selector: string;
+  view: string;
 }
 
 export interface ClickAction extends BaseAction {
   type: "click";
-  selector: string;
+  target: string;
 }
 
 export interface DoubleClickAction extends BaseAction {
   type: "double_click";
-  selector: string;
+  target: string;
 }
 
 export interface TypeAction extends BaseAction {
@@ -71,7 +77,7 @@ export interface PressKeyAction extends BaseAction {
 
 export interface HoverAction extends BaseAction {
   type: "hover";
-  selector: string;
+  target: string;
 }
 
 export type Action =
@@ -90,6 +96,7 @@ export interface ParsedStepFragment {
 export interface ParsedViewNode {
   name: string;
   selector?: string;
+  route?: string;
   direction?: string;
   text?: string;
   children?: ParsedViewNode[];

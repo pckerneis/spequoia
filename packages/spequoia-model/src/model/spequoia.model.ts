@@ -27,7 +27,7 @@ export interface SpequoiaDocument {
   /**
    * Dictionary of views for the system.
    */
-  views?: Record<string, SpequoiaViewNode>;
+  views?: Record<string, SpequoiaView>;
 
   /**
    * Dictionary of configured executors for the feature examples.
@@ -127,6 +127,13 @@ export interface SpequoiaViewNodeObjectMetadata {
    */
   $text?: string;
 }
+
+export type SpequoiaView = SpequoiaViewNode & {
+  /**
+   * Route attached to the view.
+   */
+  $route?: string;
+};
 
 /**
  * A view node in the document. It can be a string (a selector) or an object

@@ -63,7 +63,7 @@
         },
         "views": {
           "additionalProperties": {
-            "$ref": "#/definitions/SpequoiaViewNode"
+            "$ref": "#/definitions/SpequoiaView"
           },
           "description": "Dictionary of views for the system.",
           "type": "object"
@@ -172,6 +172,51 @@
         "name"
       ],
       "type": "object"
+    },
+    "SpequoiaView": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/SpequoiaViewNode"
+              },
+              {
+                "not": {}
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "properties": {
+            "$direction": {
+              "description": "Direction of the node, either \"row\" or \"column\".",
+              "enum": [
+                "row",
+                "column"
+              ],
+              "type": "string"
+            },
+            "$route": {
+              "description": "Route attached to the view.",
+              "type": "string"
+            },
+            "$selector": {
+              "description": "CSS selector used to find the node in the DOM.",
+              "type": "string"
+            },
+            "$text": {
+              "description": "Text content of the node.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      ]
     },
     "SpequoiaViewNode": {
       "anyOf": [
