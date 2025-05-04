@@ -337,7 +337,7 @@ function parseRawStep(step: string): ParsedStep {
   return {
     raw: step,
     fragments,
-    duration: 500,
+    duration: 200,
   };
 }
 

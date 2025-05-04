@@ -1,24 +1,26 @@
+:host:not(:last-child) {
+  border-bottom: 1px solid var(--player-step-border-color);
+}
+
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  border-right: 1px solid var(--main-border-color);
   display: flex;
   flex-direction: column;
-  background-color: var(--player-step);
+  background-color: var(--player-step-bg-color);
   overflow-y: auto;
 }
 
 li {
   padding: 0.5rem 1rem 0.5rem calc(1rem - 4px);
-  border-bottom: 1px solid var(--main-border-color);
   text-overflow: ellipsis;
   cursor: pointer;
   font-size: 0.8rem;
   border-left: 4px solid transparent;
 
   &.composite {
-    background-color: #d8d8d8 !important;
+    background-color: var(--composite-player-step-bg-color) !important;
 
     & > b {
       margin-left: 1rem;
@@ -28,10 +30,6 @@ li {
 
     padding: 0.5rem 0.2rem 0 0.2rem;
     border-left: 0;
-  }
-
-  &:last-child {
-    border-bottom: none;
   }
 
   &:hover {

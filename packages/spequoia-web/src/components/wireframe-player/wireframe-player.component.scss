@@ -26,7 +26,7 @@ ul {
   border-right: 1px solid var(--main-border-color);
   display: flex;
   flex-direction: column;
-  background-color: var(--player-step);
+  background-color: var(--player-step-bg-color);
   overflow-y: auto;
 }
 
@@ -64,7 +64,7 @@ ul {
   display: flex;
   gap: 0.2rem;
   padding: 0.2rem;
-  background-color: var(--player-step);
+  background-color: var(--player-step-bg-color);
   justify-content: center;
 
   button {
