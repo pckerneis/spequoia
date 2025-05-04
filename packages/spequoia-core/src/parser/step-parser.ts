@@ -37,6 +37,7 @@ export function parseRawSteps(
     for (const step of stepsToProcess) {
       const parsedStep = parseRawStep(step);
       processedSteps.push(parsedStep);
+      parsedStep.computedViewBefore = currentView ? JSON.parse(JSON.stringify(currentView)) : undefined;
 
       if (currentView) {
         currentView = JSON.parse(JSON.stringify(currentView));
@@ -163,7 +164,7 @@ export function parseRawSteps(
         }
       }
 
-      parsedStep.computedView = currentView;
+      parsedStep.computedViewAfter = currentView;
     }
 
     if (foundAction) {

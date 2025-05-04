@@ -213,7 +213,7 @@ features:
         steps:
           - visit_main_page
           - add_first_task
-          - hover over task_row(1) label
+          - hover over task_row(1)
           - expect task_row(1) delete_button to be visible
           - click delete_button
           - expect todo_list to be empty
@@ -322,7 +322,8 @@ function resolveSelector(
   for (const part of parts) {
     const res = resolveNode(part, currentNode);
     if (!res) {
-      throw new Error(`Node '${part}' not found`);
+      console.error(`Node '${part}' not found in '${target}'`, JSON.stringify(view));
+      throw new Error(`Node '${part}' not found in '${target}'`);
     }
 
     if (res.selector) {
@@ -400,10 +401,11 @@ async function runStep(step: ParsedStep, page: Page) {
     }
     case "click": {
       const target = (step.action as ClickAction).target;
-      const selector = resolveSelector(target, step.computedView);
+      const selector = resolveSelector(target, step.computedViewBefore);
       currentSelector = selector || null;
 
       if (!selector) {
+        console.error(`Selector for ${target} not found`, step.computedViewBefore);
         throw new Error(`Selector for ${target} not found`);
       }
 
@@ -429,7 +431,7 @@ async function runStep(step: ParsedStep, page: Page) {
     }
     case "hover": {
       const hoverTarget = (step.action as ClickAction).target;
-      const hoverSelector = resolveSelector(hoverTarget, step.computedView);
+      const hoverSelector = resolveSelector(hoverTarget, step.computedViewBefore);
       currentSelector = hoverSelector || null;
 
       if (!hoverSelector) {
@@ -438,6 +440,7 @@ async function runStep(step: ParsedStep, page: Page) {
 
       if (hoverSelector) {
         await page.locator(hoverSelector).hover({trial: true, force: false});
+        await page.waitForTimeout(100); // Small wait for hover effects
       }
 
       break;
@@ -446,7 +449,7 @@ async function runStep(step: ParsedStep, page: Page) {
       const doubleClickTarget = (step.action as ClickAction).target;
       const doubleClickSelector = resolveSelector(
           doubleClickTarget,
-          step.computedView,
+          step.computedViewBefore,
       );
       currentSelector = doubleClickSelector || null;
 

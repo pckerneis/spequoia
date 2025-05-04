@@ -30,7 +30,8 @@ export interface ParsedStep {
   raw: string;
   fragments: ParsedStepFragment[];
   action?: Action;
-  computedView?: ParsedViewNode;
+  computedViewBefore?: ParsedViewNode;
+  computedViewAfter?: ParsedViewNode;
   duration?: number;
   composite?: boolean;
   steps?: ParsedStep[];

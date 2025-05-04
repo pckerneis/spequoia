@@ -21,7 +21,7 @@ export class WireframePlayerService {
       return undefined;
     }
 
-    return step.computedView;
+    return step.computedViewAfter;
   });
 
   readonly flattenSteps = computed(() => {
