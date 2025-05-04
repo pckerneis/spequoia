@@ -46,3 +46,17 @@ li {
     outline-offset: -2px;
   }
 }
+
+.error-indicator {
+  display: inline-flex;
+  color: white;
+  font-weight: bold;
+  background-color: #f11212;
+  border-radius: 50%;
+  width: 0.8rem;
+  height: 0.8rem;
+  font-size: 0.8rem;
+  margin-right: 0.2rem;
+  align-items: center;
+  justify-content: center;
+}

@@ -41,8 +41,9 @@ views:
       task_row(n):
         $selector: '[data-id="${n}"]'
         $direction: row
-        done_checkbox: input[type="checkbox"]
+        done_checkbox: input[type="checkbox"].toggle
         label: label
+        input: input.edit
         delete_button: button.destroy
     footer:
       $selector: .footer
@@ -201,9 +202,9 @@ features:
         steps:
           - visit_main_page
           - add_first_task
-          - hover over task_row(1)
-          - expect delete_button to be visible
-          - click delete_button
+          - hover over task_row(1) label
+          - expect task_row(1) delete_button to be visible
+          - click task_row(1) delete_button
           - expect todo_list to be empty
 
   - name: Filter tasks
@@ -256,7 +257,7 @@ features:
         steps:
           - visit_main_page
           - add_first_task
-          - double-click label
+          - double-click task_row(1) label
           - type "Edited task"
           - press key "Enter"
           - expect label to have text "Edited task"
@@ -265,7 +266,7 @@ features:
         steps:
           - visit_main_page
           - add_first_task
-          - double-click label
+          - double-click task_row(1) label
           - type "Edited task"
-          - press key "Esc"
+          - press key "Escape"
           - expect label to have text "New task"

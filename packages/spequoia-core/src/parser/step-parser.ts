@@ -61,7 +61,8 @@ export function parseRawSteps(
 
       if (
         parsedStep.action?.type === "click" ||
-        parsedStep.action?.type === "double_click"
+        parsedStep.action?.type === "double_click" ||
+        parsedStep.action?.type === "hover"
       ) {
         const targetName = parsedStep.fragments[1].value.trim();
         currentTargetName = targetName;
@@ -75,6 +76,8 @@ export function parseRawSteps(
           currentTarget = resolvedTarget.node;
           currentTarget.target = true;
           currentTarget.clicked = true;
+        } else {
+          parsedStep.errors.push('Target not found');
         }
 
         mergedViews = [currentView];
@@ -92,6 +95,8 @@ export function parseRawSteps(
           currentTarget.target = true;
           currentTarget.text = parsedStep.action.text;
           currentTarget.typing = true;
+        } else {
+          parsedStep.errors.push('Target not found');
         }
 
         mergedViews = [currentView];
@@ -150,6 +155,10 @@ export function parseRawSteps(
                 resolvedTarget.node.text = "";
                 break;
             }
+          } else {
+            if (!parsedStep.errors.includes('Target not found')) {
+              parsedStep.errors.push('Target not found');
+            }
           }
         }
       }
@@ -168,6 +177,7 @@ export function parseRawSteps(
             value: rawStep,
           },
         ],
+        errors: [],
       });
     } else {
       parsedSteps.push(...processedSteps);
@@ -229,6 +239,7 @@ const visitActionParser = (str: string): ParsedStep | null => {
       ],
       raw: str,
       duration: 1000,
+      errors: [],
     };
   }
   return null;
@@ -250,6 +261,7 @@ const clickActionParser = (str: string): ParsedStep | null => {
       ],
       raw: str,
       duration: 1000,
+      errors: [],
     };
   }
   return null;
@@ -271,6 +283,7 @@ const doubleClickActionParser = (str: string): ParsedStep | null => {
       ],
       raw: str,
       duration: 1000,
+      errors: [],
     };
   }
   return null;
@@ -292,6 +305,7 @@ const typeActionParser = (str: string): ParsedStep | null => {
       ],
       raw: str,
       duration: 2000,
+      errors: [],
     };
   }
   return null;
@@ -313,6 +327,7 @@ const pressKeyActionParser = (str: string): ParsedStep | null => {
       ],
       raw: str,
       duration: 1000,
+      errors: [],
     };
   }
   return null;
@@ -334,6 +349,7 @@ const hoverActionParser = (str: string): ParsedStep | null => {
       ],
       raw: str,
       duration: 1000,
+      errors: [],
     };
   }
   return null;
@@ -357,19 +373,9 @@ function parseRawStep(step: string): ParsedStep {
     }
   }
 
-  const fragments = parseStepFragments(step);
-
-  return {
-    raw: step,
-    fragments,
-    duration: 200,
-  };
-}
-
-function parseStepFragments(step: string): ParsedStepFragment[] {
   // Check for assertion patterns
   const assertionPattern = assertionPatterns.find((pattern) =>
-    pattern.test(step),
+      pattern.test(step),
   );
 
   if (assertionPattern) {
@@ -389,12 +395,20 @@ function parseStepFragments(step: string): ParsedStepFragment[] {
         fragments.push({ type: "quoted", value });
       }
 
-      return fragments;
+      return {
+        raw: step,
+        fragments,
+        duration: 200,
+        errors: [],
+      };
     }
   }
 
-  // If no patterns matched, return the step as a text fragment
-  return [{ type: "text", value: step }];
+  return {
+    raw: step,
+    fragments: [{ type: "text", value: step }],
+    errors: ['No action found'],
+  }
 }
 
 function findParent(

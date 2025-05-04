@@ -6,6 +6,10 @@
   (keydown.enter)="wireframePlayerService.setStepAndStop(step)"
   tabindex="0"
 >
+  @if (step.errors.length > 0) {
+    <span [title]="step.errors.join(', ')" class="error-indicator">!</span>
+  }
+
   @for (fragment of step.fragments; track $index) {
     @if (fragment.type == "keyword") {
       <b class="keyword">{{ fragment.value }} </b>

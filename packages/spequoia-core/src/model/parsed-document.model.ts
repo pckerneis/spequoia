@@ -34,6 +34,7 @@ export interface ParsedStep {
   duration?: number;
   composite?: boolean;
   steps?: ParsedStep[];
+  errors: string[];
 }
 
 export type ParsedStepFragmentType = "text" | "variable" | "quoted" | "keyword";
