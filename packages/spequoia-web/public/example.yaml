@@ -240,3 +240,32 @@ features:
           - click all_filter
           - expect task_row(1) to be visible
           - expect task_row(2) to be visible
+
+  - name: Edit tasks
+    description: |
+      The user can edit tasks by double-clicking the task name.
+
+      When the task is in edit mode, the user can change the task name and hit `Enter` to save
+      the changes or hit `Esc` to cancel the changes.
+
+      The task is visually indicated as being edited.
+
+    examples:
+      - id: EX-008
+        name: Edit a task
+        steps:
+          - visit_main_page
+          - add_first_task
+          - double-click label
+          - type "Edited task"
+          - press key "Enter"
+          - expect label to have text "Edited task"
+      - id: EX-009
+        name: Cancel editing a task
+        steps:
+          - visit_main_page
+          - add_first_task
+          - double-click label
+          - type "Edited task"
+          - press key "Esc"
+          - expect label to have text "New task"

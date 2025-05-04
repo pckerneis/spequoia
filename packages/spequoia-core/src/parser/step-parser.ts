@@ -59,7 +59,7 @@ export function parseRawSteps(
         continue;
       }
 
-      if (parsedStep.action?.type === "click") {
+      if (parsedStep.action?.type === "click" || parsedStep.action?.type === "double_click") {
         const targetName = parsedStep.fragments[1].value.trim();
         currentTargetName = targetName;
         const resolvedTarget = resolveTarget(
@@ -252,6 +252,27 @@ const clickActionParser = (str: string): ParsedStep | null => {
   return null;
 };
 
+const doubleClickActionParser = (str: string): ParsedStep | null => {
+  const clickPattern = /^(double-click)\s+([a-zA-Z0-9_\-\s()]+)/;
+  const match = str.match(clickPattern);
+
+  if (match) {
+    return {
+      action: {
+        type: "double_click",
+        selector: match[2],
+      },
+      fragments: [
+        { type: "keyword", value: match[1] },
+        { type: "variable", value: match[2] },
+      ],
+      raw: str,
+      duration: 1000,
+    };
+  }
+  return null;
+};
+
 const typeActionParser = (str: string): ParsedStep | null => {
   const typePattern = /^(type)\s+"([^"]+)"/;
   const match = str.match(typePattern);
@@ -318,6 +339,7 @@ const hoverActionParser = (str: string): ParsedStep | null => {
 const actionParsers = [
   visitActionParser,
   clickActionParser,
+  doubleClickActionParser,
   typeActionParser,
   pressKeyActionParser,
   hoverActionParser,
