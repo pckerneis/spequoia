@@ -24,6 +24,19 @@
         }
       </div>
     </div>
+
+    <div class="before-after" [class.hidden]="wireframePlayerService.playing()">
+      <button class="before" [class.active]="wireframePlayerService.showBefore()"
+        (click)="wireframePlayerService.setShowBefore(true)"
+      >
+        Before
+      </button>
+      <button class="after"
+        [class.active]="!wireframePlayerService.showBefore()"
+              (click)="wireframePlayerService.setShowBefore(false)">
+        After
+      </button>
+    </div>
   </div>
 </div>
 

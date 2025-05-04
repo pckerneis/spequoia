@@ -7,8 +7,8 @@
       }
     </legend>
 
-    @if (viewNode.clicked) {
-      <div class="clicked"></div>
+    @if (viewNode.clicked || viewNode.hovered) {
+      <div class="mouse" [class.clicked]="viewNode.clicked"></div>
     }
 
     @if (viewNode.text) {

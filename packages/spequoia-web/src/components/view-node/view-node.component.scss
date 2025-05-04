@@ -60,18 +60,21 @@ label,
   flex: 1;
 }
 
-.clicked {
+.mouse {
   background: #ea3f3f;
   width: 10px;
   height: 10px;
   border-radius: 50%;
   outline: 2px solid #ea3f3f;
   outline-offset: -2px;
-  animation: clicked 0.5s ease-in-out;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.clicked {
+  animation: clicked 0.5s ease-in-out;
 }
 
 @keyframes clicked {

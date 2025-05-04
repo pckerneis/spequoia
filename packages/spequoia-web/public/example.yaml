@@ -202,7 +202,7 @@ features:
         steps:
           - visit_main_page
           - add_first_task
-          - hover over task_row(1) label
+          - hover over task_row(1)
           - expect task_row(1) delete_button to be visible
           - click task_row(1) delete_button
           - expect todo_list to be empty

@@ -35,6 +35,7 @@ ul {
   flex: 1;
   overflow: hidden;
   display: flex;
+  position: relative;
 
   .view-container-viewport {
     flex: 1;
@@ -72,6 +73,46 @@ ul {
 
     &.active {
       background-color: var(--active-nav-item-bg-color);
+    }
+  }
+}
+
+.before-after {
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0;
+  padding: 0;
+  justify-content: center;
+
+  &.hidden {
+    display: none;
+  }
+
+  button {
+    min-width: 4rem;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--main-border-color);
+    background-color: var(--player-step-bg-color);
+
+    &.active {
+      background-color: var(--active-nav-item-bg-color);
+      font-weight: bold;
+    }
+
+    &.before {
+      border-radius: 5px 0 0 5px;
+    }
+
+    &.after {
+      border-radius: 0 5px 5px 0;
+      border-left: none;
+    }
+
+    &:not(.active) {
+      color: var(--disabled-text);
     }
   }
 }

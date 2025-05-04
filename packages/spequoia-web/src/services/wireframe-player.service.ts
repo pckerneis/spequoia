@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 
 @Injectable()
 export class WireframePlayerService {
+  readonly showBefore = signal<boolean>(false);
   readonly currentView = computed<ParsedViewNode | undefined>(() => {
     const example = this.example();
 
@@ -21,7 +22,7 @@ export class WireframePlayerService {
       return undefined;
     }
 
-    return step.computedViewAfter;
+    return this.showBefore() ? step.computedViewBefore : step.computedViewAfter;
   });
 
   readonly flattenSteps = computed(() => {
@@ -138,6 +139,8 @@ export class WireframePlayerService {
       return;
     }
 
+    this.showBefore.set(false);
+
     const showNext = () => {
       if (this.currentStepIndex() < this.flattenSteps().length - 1) {
         const step = this.currentStep();
@@ -184,5 +187,9 @@ export class WireframePlayerService {
   public nextAndStop(): void {
     this.next();
     this.stop();
+  }
+
+  public setShowBefore(showBefore: boolean): void {
+    this.showBefore.set(showBefore);
   }
 }

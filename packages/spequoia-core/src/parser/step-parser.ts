@@ -76,7 +76,11 @@ export function parseRawSteps(
         if (resolvedTarget) {
           currentTarget = resolvedTarget.node;
           currentTarget.target = true;
-          currentTarget.clicked = true;
+          if (parsedStep.action.type === "hover") {
+            currentTarget.hovered = true;
+          } else {
+            currentTarget.clicked = true;
+          }
         } else {
           parsedStep.errors.push('Target not found');
         }
