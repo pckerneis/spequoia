@@ -111,7 +111,7 @@ export class TestPlayerComponent implements OnInit {
     return Math.floor(percentage * this.allFrames.length);
   }
 
-  onTimelineHover(event: MouseEvent) {
+  private updatePreviewFromMouseEvent(event: MouseEvent) {
     const frame = this.getFrameFromMouseEvent(event);
 
     if (frame >= 0 && frame < this.allFrames.length) {
@@ -125,6 +125,12 @@ export class TestPlayerComponent implements OnInit {
         this.$previewFrame.set(`player-data/${this.example.id}/${frame}.png`);
         this.$previewSectionName.set(section.name);
       }
+    }
+  }
+
+  onTimelineHover(event: MouseEvent) {
+    if (!this.$isDragging()) {
+      this.updatePreviewFromMouseEvent(event);
     }
   }
 
@@ -142,6 +148,7 @@ export class TestPlayerComponent implements OnInit {
   private onGlobalMouseMove = (event: MouseEvent) => {
     if (this.$isDragging()) {
       this.updateFrameFromMouseEvent(event);
+      this.updatePreviewFromMouseEvent(event);
     }
   }
 
@@ -159,6 +166,7 @@ export class TestPlayerComponent implements OnInit {
 
   onTimelineMouseUp() {
     this.$isDragging.set(false);
+    this.$previewVisible.set(false);
     window.removeEventListener('mousemove', this.onGlobalMouseMove);
     window.removeEventListener('mouseup', this.onGlobalMouseUp);
   }
