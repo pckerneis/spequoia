@@ -17,10 +17,10 @@
       <div class="timeline-preview" style="display:none;"></div>
     </div>
     <div class="timeline-transport-buttons">
-      <button (click)="prev()">⏮️</button>
-      <button (click)="togglePlayState()">{{ $playing() ? '⏸️' : '▶️' }}</button>
-      <button (click)="next()">⏭️</button>
-      <p id="description">{{ $currentSectionName() }}</p>
+      <button (click)="prev()">⏮</button>
+      <button (click)="togglePlayState()">{{ $playing() ? '⏸' : '▶' }}</button>
+      <button (click)="next()">⏭</button>
     </div>
+    <div class="section-name">{{ $currentSectionName() }}</div>
   </div>
 </div>

@@ -19,17 +19,19 @@ export class TestPlayerComponent implements OnInit {
 
   $playing = signal(false);
   $currentFrame = signal(0);
-  $currentStep = signal(0);
+  $sectionByFrame = signal([] as (Section | null)[]);
+  $currentStep = computed(() => {
+    return this.$sectionByFrame()[this.$currentFrame()];
+  });
   $indicatorLeft = signal('0');
   $sections = signal<TimelineSection[]>([]);
   $currentSectionName = computed(() => {
-    const section = this.$sections()[this.$currentStep()];
+    const section = this.$currentStep();
     return section ? section.name : '';
   });
 
   private sections: Section[] = [];
   private allFrames: any[] = [];
-  private frameStepMap: any;
   private playInterval?: number;
 
   constructor(public readonly http: HttpClient) {
@@ -50,13 +52,13 @@ export class TestPlayerComponent implements OnInit {
         }
 
         // Map each frame to the closest previous step index
-        this.frameStepMap = this.allFrames.map(f => {
+        this.$sectionByFrame.set(this.allFrames.map(f => {
           for (let i = this.sections.length - 1; i >= 0; i--) {
             if (f >= this.sections[i].startFrame) return this.sections[i];
           }
 
           return null;
-        });
+        }));
 
         this.showFrame(0);
         this.renderTimeline();
@@ -147,29 +149,33 @@ export class TestPlayerComponent implements OnInit {
     this.$sections.set(timelineSections);
   }
 
-  showStep(i: number) {
-    if (i < 0 || i > this.sections.length) return;
-
-    this.$currentStep.set(i);
-    const frameIdx = this.sections[this.$currentStep()].startFrame;
-    this.showFrame(frameIdx >= 0 ? frameIdx : 0);
-  }
-
   showFrame(frameIdx: number) {
     if (frameIdx < 0 || frameIdx >= this.allFrames.length) return;
     this.$currentFrame.set(frameIdx);
     this.screenshotSrc.set(`player-data/${this.example.id}/${frameIdx}.png`);
-    const section = this.frameStepMap[frameIdx];
-    this.$currentStep.set(section.sectionIndex);
     this.updateTimeline();
   }
 
   next() {
-    this.showStep(this.$currentStep() + 1);
+    for (let i = 0; i < this.sections.length; i++) {
+      if (this.$currentFrame() < this.sections[i].startFrame) {
+        this.showFrame(this.sections[i].startFrame);
+        return;
+      }
+    }
+
+    this.showFrame(this.allFrames.length - 1);
   }
 
   prev() {
-    this.showStep(this.$currentStep() - 1);
+    for (let i = this.sections.length - 1; i >= 0; i--) {
+      if (this.$currentFrame() > this.sections[i].endFrame) {
+        this.showFrame(this.sections[i].endFrame);
+        return;
+      }
+    }
+
+    this.showFrame(0);
   }
 }
 

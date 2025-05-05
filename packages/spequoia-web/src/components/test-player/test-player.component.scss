@@ -100,4 +100,21 @@
   align-items: center;
   justify-content: center;
   padding: 8px;
+
+  button {
+    border: none;
+    padding: 0.5rem;
+    width: 40px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+  }
+}
+
+.section-name {
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
