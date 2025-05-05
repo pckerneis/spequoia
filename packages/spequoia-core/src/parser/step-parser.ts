@@ -37,7 +37,9 @@ export function parseRawSteps(
     for (const step of stepsToProcess) {
       const parsedStep = parseRawStep(step);
       processedSteps.push(parsedStep);
-      parsedStep.computedViewBefore = currentView ? JSON.parse(JSON.stringify(currentView)) : undefined;
+      parsedStep.computedViewBefore = currentView
+        ? JSON.parse(JSON.stringify(currentView))
+        : undefined;
 
       if (currentView) {
         currentView = JSON.parse(JSON.stringify(currentView));
@@ -82,7 +84,7 @@ export function parseRawSteps(
             currentTarget.clicked = true;
           }
         } else {
-          parsedStep.errors.push('Target not found');
+          parsedStep.errors.push("Target not found");
         }
 
         mergedViews = [currentView];
@@ -101,7 +103,7 @@ export function parseRawSteps(
           currentTarget.text = parsedStep.action.text;
           currentTarget.typing = true;
         } else {
-          parsedStep.errors.push('Target not found');
+          parsedStep.errors.push("Target not found");
         }
 
         mergedViews = [currentView];
@@ -161,8 +163,8 @@ export function parseRawSteps(
                 break;
             }
           } else {
-            if (!parsedStep.errors.includes('Target not found')) {
-              parsedStep.errors.push('Target not found');
+            if (!parsedStep.errors.includes("Target not found")) {
+              parsedStep.errors.push("Target not found");
             }
           }
         }
@@ -380,7 +382,7 @@ function parseRawStep(step: string): ParsedStep {
 
   // Check for assertion patterns
   const assertionPattern = assertionPatterns.find((pattern) =>
-      pattern.test(step),
+    pattern.test(step),
   );
 
   if (assertionPattern) {
@@ -412,8 +414,8 @@ function parseRawStep(step: string): ParsedStep {
   return {
     raw: step,
     fragments: [{ type: "text", value: step }],
-    errors: ['No action found'],
-  }
+    errors: ["No action found"],
+  };
 }
 
 function findParent(

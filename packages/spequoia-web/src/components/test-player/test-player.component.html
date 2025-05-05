@@ -1,37 +1,52 @@
 <div class="viewer">
-  <img class="screenshot" [src]="screenshotSrc()" alt="Screenshot"/>
+  <img class="screenshot" [src]="screenshotSrc()" alt="Screenshot" />
   <div class="transport-controls">
-    <div class="timeline"
-           (mousemove)="onTimelineHover($event)"
-           (mouseleave)="hidePreview()">
-      <div class="timeline-bar"
-           style="cursor: pointer;"
-           (mousedown)="onTimelineMouseDown($event)"
-           (mousemove)="onTimelineMouseMove($event)">
-        @for(section of $sections(); track $index) {
+    <div
+      class="timeline"
+      (mousemove)="onTimelineHover($event)"
+      (mouseleave)="hidePreview()"
+    >
+      <div
+        class="timeline-bar"
+        style="cursor: pointer"
+        (mousedown)="onTimelineMouseDown($event)"
+        (mousemove)="onTimelineMouseMove($event)"
+      >
+        @for (section of $sections(); track $index) {
           <div
             class="section"
             [style.width]="section.width"
             [style.left]="section.left"
           >
-            <div class="section-progress" [style.width]="section.progressWidth"></div>
+            <div
+              class="section-progress"
+              [style.width]="section.progressWidth"
+            ></div>
           </div>
         }
         <div class="timeline-indicator" [style.left]="$indicatorLeft()"></div>
       </div>
-      <div class="timeline-preview"
-           [style.display]="$previewVisible() ? 'block' : 'none'"
-           [style.left]="$previewLeft()">
+      <div
+        class="timeline-preview"
+        [style.display]="$previewVisible() ? 'block' : 'none'"
+        [style.left]="$previewLeft()"
+      >
         <div class="preview-content">
           <div class="preview-section-name">{{ $previewSectionName() }}</div>
-          <img [src]="$previewFrame()" alt="Preview frame" class="preview-image"/>
+          <img
+            [src]="$previewFrame()"
+            alt="Preview frame"
+            class="preview-image"
+          />
         </div>
       </div>
     </div>
     <div class="player-footer">
       <div class="timeline-transport-buttons">
         <button (click)="prev()">⏮</button>
-        <button (click)="togglePlayState()">{{ $playing() ? '⏸' : '▶' }}</button>
+        <button (click)="togglePlayState()">
+          {{ $playing() ? "⏸" : "▶" }}
+        </button>
         <button (click)="next()">⏭</button>
       </div>
       <div class="section-name">{{ $currentSectionName() }}</div>

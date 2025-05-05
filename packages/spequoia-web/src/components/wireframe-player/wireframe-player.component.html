@@ -26,14 +26,18 @@
     </div>
 
     <div class="before-after" [class.hidden]="wireframePlayerService.playing()">
-      <button class="before" [class.active]="wireframePlayerService.showBefore()"
+      <button
+        class="before"
+        [class.active]="wireframePlayerService.showBefore()"
         (click)="wireframePlayerService.setShowBefore(true)"
       >
         Before
       </button>
-      <button class="after"
+      <button
+        class="after"
         [class.active]="!wireframePlayerService.showBefore()"
-              (click)="wireframePlayerService.setShowBefore(false)">
+        (click)="wireframePlayerService.setShowBefore(false)"
+      >
         After
       </button>
     </div>
@@ -53,7 +57,7 @@
     (click)="wireframePlayerService.togglePlayState()"
     [class.active]="wireframePlayerService.playing()"
   >
-    {{ wireframePlayerService.playing() ? '⏸' : '▶' }}
+    {{ wireframePlayerService.playing() ? "⏸" : "▶" }}
   </button>
   <button (click)="wireframePlayerService.nextAndStop()">⏭</button>
 </div>

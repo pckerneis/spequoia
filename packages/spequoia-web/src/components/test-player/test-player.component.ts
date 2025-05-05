@@ -1,6 +1,13 @@
-import {Component, computed, ElementRef, Input, OnInit, signal} from '@angular/core';
-import {ParsedExample} from 'spequoia-core/dist';
-import {HttpClient} from '@angular/common/http';
+import {
+  Component,
+  computed,
+  ElementRef,
+  Input,
+  OnInit,
+  signal,
+} from '@angular/core';
+import { ParsedExample } from 'spequoia-core/dist';
+import { HttpClient } from '@angular/common/http';
 
 const FRAME_DURATION = 100;
 
@@ -8,10 +15,9 @@ const FRAME_DURATION = 100;
   selector: 'app-test-player',
   imports: [],
   templateUrl: './test-player.component.html',
-  styleUrl: './test-player.component.scss'
+  styleUrl: './test-player.component.scss',
 })
 export class TestPlayerComponent implements OnInit {
-
   @Input()
   example!: ParsedExample;
 
@@ -37,39 +43,44 @@ export class TestPlayerComponent implements OnInit {
   $isDragging = signal(false);
 
   private sections: Section[] = [];
-  private allFrames: any[] = [];
+  private allFrames: number[] = [];
   private playInterval?: number;
 
   constructor(
     public readonly http: HttpClient,
     private elementRef: ElementRef,
-  ) {
-  }
+  ) {}
 
   public ngOnInit(): void {
     if (this.example) {
       this.screenshotSrc.set(`player-data/${this.example.id}/0.png`);
 
-      this.http.get<Manifest>(`player-data/${this.example.id}/screenshot-manifest.json`).subscribe(manifest => {
-        this.sections = manifest.sections;
+      this.http
+        .get<Manifest>(
+          `player-data/${this.example.id}/screenshot-manifest.json`,
+        )
+        .subscribe((manifest) => {
+          this.sections = manifest.sections;
 
-        this.allFrames = [];
-        for (let i = 0; i < manifest.frameCount; i++) {
-          this.allFrames.push(i);
-        }
-
-        // Map each frame to the closest previous step index
-        this.$sectionByFrame.set(this.allFrames.map(f => {
-          for (let i = this.sections.length - 1; i >= 0; i--) {
-            if (f >= this.sections[i].startFrame) return this.sections[i];
+          this.allFrames = [];
+          for (let i = 0; i < manifest.frameCount; i++) {
+            this.allFrames.push(i);
           }
 
-          return null;
-        }));
+          // Map each frame to the closest previous step index
+          this.$sectionByFrame.set(
+            this.allFrames.map((f) => {
+              for (let i = this.sections.length - 1; i >= 0; i--) {
+                if (f >= this.sections[i].startFrame) return this.sections[i];
+              }
 
-        this.showFrame(0);
-        this.renderTimeline();
-      })
+              return null;
+            }),
+          );
+
+          this.showFrame(0);
+          this.renderTimeline();
+        });
     }
   }
 
@@ -97,12 +108,13 @@ export class TestPlayerComponent implements OnInit {
     this.$playing.set(false);
 
     if (this.playInterval) {
-      clearInterval(this.playInterval)
+      clearInterval(this.playInterval);
     }
   }
 
   private getFrameFromMouseEvent(event: MouseEvent): number {
-    const timeline = this.elementRef.nativeElement.querySelector('.timeline-bar');
+    const timeline =
+      this.elementRef.nativeElement.querySelector('.timeline-bar');
     const rect = timeline.getBoundingClientRect();
     const relativeX = event.clientX - rect.left;
     const percentage = relativeX / rect.width;
@@ -116,9 +128,12 @@ export class TestPlayerComponent implements OnInit {
       const section = this.$sectionByFrame()[frame];
       if (section) {
         this.$previewVisible.set(true);
-        const timeline = this.elementRef.nativeElement.querySelector('.timeline');
+        const timeline =
+          this.elementRef.nativeElement.querySelector('.timeline');
         if (timeline) {
-          this.$previewLeft.set(`${event.clientX - timeline.getBoundingClientRect().left}px`);
+          this.$previewLeft.set(
+            `${event.clientX - timeline.getBoundingClientRect().left}px`,
+          );
         }
         this.$previewFrame.set(`player-data/${this.example.id}/${frame}.png`);
         this.$previewSectionName.set(section.name);
@@ -148,13 +163,13 @@ export class TestPlayerComponent implements OnInit {
       this.updateFrameFromMouseEvent(event);
       this.updatePreviewFromMouseEvent(event);
     }
-  }
+  };
 
   private onGlobalMouseUp = () => {
     if (this.$isDragging()) {
       this.onTimelineMouseUp();
     }
-  }
+  };
 
   onTimelineMouseMove(event: MouseEvent) {
     if (!this.$isDragging()) {
@@ -170,11 +185,15 @@ export class TestPlayerComponent implements OnInit {
   }
 
   private updateFrameFromMouseEvent(event: MouseEvent) {
-    const timeline = this.elementRef.nativeElement.querySelector('.timeline-bar');
+    const timeline =
+      this.elementRef.nativeElement.querySelector('.timeline-bar');
     if (!timeline) return;
 
     const rect = timeline.getBoundingClientRect();
-    const relativeX = Math.max(0, Math.min(event.clientX - rect.left, rect.width));
+    const relativeX = Math.max(
+      0,
+      Math.min(event.clientX - rect.left, rect.width),
+    );
     const percentage = relativeX / rect.width;
     const frame = Math.floor(percentage * this.allFrames.length);
 
@@ -193,11 +212,18 @@ export class TestPlayerComponent implements OnInit {
     for (let i = 0; i < this.sections.length; i++) {
       const section = this.sections[i];
 
-      const sectionLength = Math.min(section.endFrame, this.allFrames.length - 1) - section.startFrame;
-      const sectionRelativeWidth = (sectionLength / (this.allFrames.length - 1)) * 100;
-      const width = section.endFrame < this.allFrames.length ? `calc(${sectionRelativeWidth}% - 2px)` : `${sectionRelativeWidth}%`;
+      const sectionLength =
+        Math.min(section.endFrame, this.allFrames.length - 1) -
+        section.startFrame;
+      const sectionRelativeWidth =
+        (sectionLength / (this.allFrames.length - 1)) * 100;
+      const width =
+        section.endFrame < this.allFrames.length
+          ? `calc(${sectionRelativeWidth}% - 2px)`
+          : `${sectionRelativeWidth}%`;
 
-      const relativePosition = (section.startFrame / (this.allFrames.length - 1)) * 100;
+      const relativePosition =
+        (section.startFrame / (this.allFrames.length - 1)) * 100;
       const left = `${relativePosition}%`;
 
       timelineSections.push({
@@ -219,7 +245,7 @@ export class TestPlayerComponent implements OnInit {
   updateTimeline() {
     if (this.allFrames.length > 1) {
       const percent = this.$currentFrame() / (this.allFrames.length - 1);
-      this.$indicatorLeft.set((percent * 100) + '%');
+      this.$indicatorLeft.set(percent * 100 + '%');
     }
 
     const timelineSections = this.$sections();
@@ -231,9 +257,12 @@ export class TestPlayerComponent implements OnInit {
       } else if (currentFrame < section.startFrame) {
         section.progressWidth = '0%';
       } else {
-        const sectionLength = Math.min(this.allFrames.length - 1, section.endFrame) - section.startFrame;
-        const sectionProgress = (currentFrame - section.startFrame) / sectionLength;
-        section.progressWidth = (sectionProgress * 100) + '%';
+        const sectionLength =
+          Math.min(this.allFrames.length - 1, section.endFrame) -
+          section.startFrame;
+        const sectionProgress =
+          (currentFrame - section.startFrame) / sectionLength;
+        section.progressWidth = sectionProgress * 100 + '%';
       }
     }
 

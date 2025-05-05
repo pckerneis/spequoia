@@ -15,19 +15,17 @@
     }
 
     <ul>
-    @if (hasExecutor()) {
-      <li>
-        <a [routerLink]="['example', example.id]">Open wireframe</a>
-      </li>
-    }
+      @if (hasExecutor()) {
+        <li>
+          <a [routerLink]="['example', example.id]">Open wireframe</a>
+        </li>
+      }
 
-    @if (hasTestResults()) {
-      <li>
-        <a [routerLink]="['test-results', example.id]">Open test results</a>
-      </li>
-    }
+      @if (hasTestResults()) {
+        <li>
+          <a [routerLink]="['test-results', example.id]">Open test results</a>
+        </li>
+      }
     </ul>
-
-
   </details>
 }

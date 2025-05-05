@@ -7,8 +7,8 @@ import {
   PressKeyAction,
   TypeAction,
 } from "spequoia-core/dist";
-import path from 'path';
-import fs from 'fs';
+import path from "path";
+import fs from "fs";
 
 interface ScreenshotSection {
   name: string;
@@ -16,7 +16,7 @@ interface ScreenshotSection {
   endFrame?: number;
 }
 
-const SCREENSHOT_DIRECTORY = 'player-data';
+const SCREENSHOT_DIRECTORY = "player-data";
 
 let frameCounter = 0;
 const sections: ScreenshotSection[] = [];
@@ -24,7 +24,7 @@ const sections: ScreenshotSection[] = [];
 function beginSection(name: string) {
   if (sections.length === 0 && frameCounter > 0) {
     sections.push({
-      name: '',
+      name: "",
       startFrame: 0,
     });
   }
@@ -36,20 +36,32 @@ function beginSection(name: string) {
 }
 
 function saveManifest(exampleId: string) {
-  const sectionsWithEndFrames = sections.map((section, index) => {
-    const nextSection = sections[index + 1];
-    return {
-      ...section,
-      endFrame: nextSection ? nextSection.startFrame : frameCounter,
-    };
-  }).filter(section => section.endFrame - section.startFrame > 0);
+  const sectionsWithEndFrames = sections
+    .map((section, index) => {
+      const nextSection = sections[index + 1];
+      return {
+        ...section,
+        endFrame: nextSection ? nextSection.startFrame : frameCounter,
+      };
+    })
+    .filter((section) => section.endFrame - section.startFrame > 0);
 
-  const json = JSON.stringify({
-    sections: sectionsWithEndFrames,
-    frameCount: frameCounter
-  }, null, 2);
+  const json = JSON.stringify(
+    {
+      sections: sectionsWithEndFrames,
+      frameCount: frameCounter,
+    },
+    null,
+    2,
+  );
 
-  const manifestPath = path.join(__dirname, '..', SCREENSHOT_DIRECTORY, exampleId, 'screenshot-manifest.json');
+  const manifestPath = path.join(
+    __dirname,
+    "..",
+    SCREENSHOT_DIRECTORY,
+    exampleId,
+    "screenshot-manifest.json",
+  );
   const folder = path.dirname(manifestPath);
 
   if (!fs.existsSync(folder)) {
@@ -71,7 +83,7 @@ async function screenshot(page: Page, exampleId: string) {
 
 async function slowType(page: Page, text: string, exampleId: string) {
   for (let i = 0; i < text.length; i++) {
-    let chr = text[i];
+    const chr = text[i];
     await page.keyboard.type(chr);
     await screenshot(page, exampleId);
   }
@@ -372,8 +384,6 @@ const { name, executor } = foundExecutor;
 
 console.log(`Running tests with executor: ${name}`);
 
-let currentSelector: string | null = null;
-
 function resolveSelector(
   target: string,
   view: ParsedViewNode | undefined,
@@ -393,7 +403,10 @@ function resolveSelector(
   for (const part of parts) {
     const res = resolveNode(part, currentNode);
     if (!res) {
-      console.error(`Node '${part}' not found in '${target}'`, JSON.stringify(view));
+      console.error(
+        `Node '${part}' not found in '${target}'`,
+        JSON.stringify(view),
+      );
       throw new Error(`Node '${part}' not found in '${target}'`);
     }
 
@@ -452,7 +465,7 @@ async function runStep(step: ParsedStep, page: Page, exampleId: string) {
   switch (type) {
     case "visit": {
       const view = parseResult.parsedDocument!.views.find(
-          (v) => v.name === action.view,
+        (v) => v.name === action.view,
       );
 
       if (!view) {
@@ -477,7 +490,10 @@ async function runStep(step: ParsedStep, page: Page, exampleId: string) {
       currentSelector = selector || null;
 
       if (!selector) {
-        console.error(`Selector for ${target} not found`, step.computedViewBefore);
+        console.error(
+          `Selector for ${target} not found`,
+          step.computedViewBefore,
+        );
         throw new Error(`Selector for ${target} not found`);
       }
 
@@ -499,14 +515,17 @@ async function runStep(step: ParsedStep, page: Page, exampleId: string) {
     }
     case "hover": {
       const hoverTarget = (step.action as ClickAction).target;
-      const hoverSelector = resolveSelector(hoverTarget, step.computedViewBefore);
+      const hoverSelector = resolveSelector(
+        hoverTarget,
+        step.computedViewBefore,
+      );
       currentSelector = hoverSelector || null;
 
       if (!hoverSelector) {
         throw new Error(`Selector for ${hoverTarget} not found`);
       }
 
-      await page.locator(hoverSelector).hover({trial: true, force: false});
+      await page.locator(hoverSelector).hover({ trial: true, force: false });
       await page.waitForTimeout(100); // Small wait for hover effects
       await screenshot(page, exampleId);
       break;
@@ -514,8 +533,8 @@ async function runStep(step: ParsedStep, page: Page, exampleId: string) {
     case "double_click": {
       const doubleClickTarget = (step.action as ClickAction).target;
       const doubleClickSelector = resolveSelector(
-          doubleClickTarget,
-          step.computedViewBefore,
+        doubleClickTarget,
+        step.computedViewBefore,
       );
       currentSelector = doubleClickSelector || null;
 
@@ -538,7 +557,7 @@ for (const feature of parseResult.parsedDocument!.features) {
       for (const step of example.steps!) {
         if (step.composite) {
           for (const subStep of step.steps!) {
-            beginSection(step.raw + ' - ' + subStep.raw);
+            beginSection(step.raw + " - " + subStep.raw);
             await runStep(subStep, page, example.id);
           }
         } else {
