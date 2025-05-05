@@ -51,8 +51,6 @@ export class TestPlayerComponent implements OnInit {
       this.screenshotSrc.set(`player-data/${this.example.id}/0.png`);
 
       this.http.get<Manifest>(`player-data/${this.example.id}/screenshot-manifest.json`).subscribe(manifest => {
-        console.log(manifest);
-
         this.sections = manifest.sections;
 
         this.allFrames = [];
@@ -212,8 +210,6 @@ export class TestPlayerComponent implements OnInit {
         endFrame: section.endFrame,
       });
     }
-
-    console.log(timelineSections);
 
     this.$sections.set(timelineSections);
 

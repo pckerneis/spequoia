@@ -1,3 +1,8 @@
+:host {
+  background-color: white;
+  border: 1px solid var(--main-border-color);
+}
+
 .viewer {
   max-width: 100%;
   display: flex;
@@ -6,7 +11,7 @@
 }
 
 .section {
-  background: #eee;
+  background: var(--progress-bar-bg-color);
   height: 100%;
   transition: transform 0.1s ease-in-out;
   transform: scaleY(80%);
@@ -19,7 +24,7 @@
 }
 
 .section-progress {
-  background: #007bff;
+  background-color: var(--player-step-progress-color);
   height: 100%;
   width: 0;
   position: absolute;
@@ -31,7 +36,6 @@
 .timeline {
   position: relative;
   height: 8px;
-  margin-bottom: 24px;
 }
 
 .timeline-bar {
@@ -49,7 +53,7 @@
   left: 0;
   width: 16px;
   height: 16px;
-  background: #007bff;
+  background-color: var(--player-step-progress-color);
   border-radius: 50%;
   transform: translate(-50%, calc(4px - 50%));
   pointer-events: none;
@@ -129,6 +133,10 @@
   text-overflow: ellipsis;
 }
 
+.player-footer {
+  background-color: var(--player-step-bg-color);
+}
+
 .timeline-transport-buttons {
   display: flex;
   gap: 8px;
@@ -137,19 +145,20 @@
   padding: 8px;
 
   button {
-    border: none;
-    padding: 0.5rem;
+    padding: 0.2rem;
     width: 40px;
     font-size: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 8px;
+    border: 1px solid var(--main-border-color);
   }
 }
 
 .section-name {
   font-size: 0.8rem;
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  text-align: center;
 }

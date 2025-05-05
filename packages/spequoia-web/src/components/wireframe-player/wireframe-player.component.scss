@@ -69,10 +69,21 @@ ul {
   justify-content: center;
 
   button {
-    min-width: 5rem;
+    padding: 0.2rem;
+    width: 40px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid var(--main-border-color);
 
     &.active {
       background-color: var(--active-nav-item-bg-color);
+    }
+
+    &:hover {
+      background-color: var(--hover-bg-color);
     }
   }
 }

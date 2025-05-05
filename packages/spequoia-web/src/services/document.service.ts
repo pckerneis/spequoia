@@ -19,7 +19,6 @@ export class DocumentService {
   constructor() {}
 
   public setDocument(parsedDocument: ParsedDocument): void {
-    console.log('Parsed document:', parsedDocument);
     this.document.set(this.processDocument(parsedDocument));
   }
 

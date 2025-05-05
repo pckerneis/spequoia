@@ -1,10 +1,10 @@
 <div class="viewer">
   <img class="screenshot" [src]="screenshotSrc()" alt="Screenshot"/>
   <div class="transport-controls">
-    <div class="timeline" 
-           (mousemove)="onTimelineHover($event)" 
+    <div class="timeline"
+           (mousemove)="onTimelineHover($event)"
            (mouseleave)="hidePreview()">
-      <div class="timeline-bar" 
+      <div class="timeline-bar"
            style="cursor: pointer;"
            (mousedown)="onTimelineMouseDown($event)"
            (mousemove)="onTimelineMouseMove($event)">
@@ -19,7 +19,7 @@
         }
         <div class="timeline-indicator" [style.left]="$indicatorLeft()"></div>
       </div>
-      <div class="timeline-preview" 
+      <div class="timeline-preview"
            [style.display]="$previewVisible() ? 'block' : 'none'"
            [style.left]="$previewLeft()">
         <div class="preview-content">
@@ -28,11 +28,13 @@
         </div>
       </div>
     </div>
-    <div class="timeline-transport-buttons">
-      <button (click)="prev()">⏮</button>
-      <button (click)="togglePlayState()">{{ $playing() ? '⏸' : '▶' }}</button>
-      <button (click)="next()">⏭</button>
+    <div class="player-footer">
+      <div class="timeline-transport-buttons">
+        <button (click)="prev()">⏮</button>
+        <button (click)="togglePlayState()">{{ $playing() ? '⏸' : '▶' }}</button>
+        <button (click)="next()">⏭</button>
+      </div>
+      <div class="section-name">{{ $currentSectionName() }}</div>
     </div>
-    <div class="section-name">{{ $currentSectionName() }}</div>
   </div>
 </div>
