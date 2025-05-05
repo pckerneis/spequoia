@@ -14,27 +14,20 @@
       <p [innerHTML]="example.description | markdown"></p>
     }
 
+    <ul>
     @if (hasExecutor()) {
-      <app-wireframe-player [example]="example" />
-      <a [routerLink]="['example', example.id]">Open in full page</a>
-    } @else {
-      <ul>
-        @for (step of example.steps; track $index) {
-          <li>
-            @for (fragment of step.fragments; track $index) {
-              @if (fragment.type == "keyword") {
-                <b class="keyword">{{ fragment.value }} </b>
-              } @else if (fragment.type == "variable") {
-                <b>&#64;{{ fragment.value }} </b>
-              } @else if (fragment.type == "quoted") {
-                <span class="quoted">"{{ fragment.value }}"</span>
-              } @else {
-                <span>{{ fragment.value }} </span>
-              }
-            }
-          </li>
-        }
-      </ul>
+      <li>
+        <a [routerLink]="['example', example.id]">Open wireframe</a>
+      </li>
     }
+
+    @if (hasTestResults()) {
+      <li>
+        <a [routerLink]="['test-results', example.id]">Open test results</a>
+      </li>
+    }
+    </ul>
+
+
   </details>
 }
