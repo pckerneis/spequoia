@@ -18,6 +18,14 @@ import {MarkdownPipe} from '../../pipes/markdown.pipe';
 export class TestResultsPageComponent {
   example: ParsedExample | undefined;
 
+  hasExecutor = computed(() => {
+    if (this.example?.executors?.length) {
+      return true;
+    }
+
+    return this.documentService.document()?.defaultExecutor != null;
+  });
+
   constructor(
     public readonly documentService: DocumentService,
     private readonly activatedRoute: ActivatedRoute,

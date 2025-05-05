@@ -12,7 +12,17 @@
 
     <div class="main-container">
       <main>
-        <a routerLink="/" class="back-link"> Back to document </a>
+        <ul>
+          <li>
+            <a routerLink="/" class="back-link"> Back to document </a>
+          </li>
+
+          @if (hasTestResults()) {
+            <li>
+              <a [routerLink]="['/test-results', example?.id!]">Open test results</a>
+            </li>
+          }
+        </ul>
 
         @if (example) {
           <h2>{{ example.id }} - {{ example.name }}</h2>

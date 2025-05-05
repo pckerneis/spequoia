@@ -12,8 +12,16 @@
 
     <div class="main-container">
       <main>
-        <a routerLink="/" class="back-link"> Back to document </a>
-
+        <ul>
+          <li>
+            <a routerLink="/" class="back-link"> Back to document </a>
+          </li>
+          @if (hasExecutor()) {
+            <li>
+              <a [routerLink]="['/example', example?.id!]">Open wireframe</a>
+            </li>
+          }
+        </ul>
 
         @if (example) {
           <h2>{{ example.id }} - {{ example.name }}</h2>
