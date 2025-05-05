@@ -1,7 +1,9 @@
 <div class="viewer">
   <img class="screenshot" [src]="screenshotSrc()" alt="Screenshot"/>
   <div class="transport-controls">
-    <div class="timeline">
+    <div class="timeline" 
+           (mousemove)="onTimelineHover($event)" 
+           (mouseleave)="hidePreview()">
       <div class="timeline-bar">
         @for(section of $sections(); track $index) {
           <div
@@ -14,7 +16,14 @@
         }
         <div class="timeline-indicator" [style.left]="$indicatorLeft()"></div>
       </div>
-      <div class="timeline-preview" style="display:none;"></div>
+      <div class="timeline-preview" 
+           [style.display]="$previewVisible() ? 'block' : 'none'"
+           [style.left]="$previewLeft()">
+        <div class="preview-content">
+          <div class="preview-section-name">{{ $previewSectionName() }}</div>
+          <img [src]="$previewFrame()" alt="Preview frame" class="preview-image"/>
+        </div>
+      </div>
     </div>
     <div class="timeline-transport-buttons">
       <button (click)="prev()">⏮</button>

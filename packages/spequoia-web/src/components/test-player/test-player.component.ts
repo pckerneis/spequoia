@@ -1,4 +1,4 @@
-import {Component, computed, Input, OnInit, signal} from '@angular/core';
+import {Component, computed, ElementRef, Input, OnInit, signal} from '@angular/core';
 import {ParsedExample} from 'spequoia-core/dist';
 import {HttpClient} from '@angular/common/http';
 
@@ -30,11 +30,19 @@ export class TestPlayerComponent implements OnInit {
     return section ? section.name : '';
   });
 
+  $previewVisible = signal(false);
+  $previewLeft = signal('0px');
+  $previewFrame = signal('');
+  $previewSectionName = signal('');
+
   private sections: Section[] = [];
   private allFrames: any[] = [];
   private playInterval?: number;
 
-  constructor(public readonly http: HttpClient) {
+  constructor(
+    public readonly http: HttpClient,
+    private elementRef: ElementRef,
+  ) {
   }
 
   public ngOnInit(): void {
@@ -92,6 +100,28 @@ export class TestPlayerComponent implements OnInit {
     if (this.playInterval) {
       clearInterval(this.playInterval)
     }
+  }
+
+  onTimelineHover(event: MouseEvent) {
+    const timeline = this.elementRef.nativeElement.querySelector('.timeline-bar');
+    const rect = timeline.getBoundingClientRect();
+    const relativeX = event.clientX - rect.left;
+    const percentage = relativeX / rect.width;
+    const frame = Math.floor(percentage * this.allFrames.length);
+
+    if (frame >= 0 && frame < this.allFrames.length) {
+      const section = this.$sectionByFrame()[frame];
+      if (section) {
+        this.$previewVisible.set(true);
+        this.$previewLeft.set(`${relativeX}px`);
+        this.$previewFrame.set(`player-data/${this.example.id}/${frame}.png`);
+        this.$previewSectionName.set(section.name);
+      }
+    }
+  }
+
+  hidePreview() {
+    this.$previewVisible.set(false);
   }
 
   private renderTimeline() {
