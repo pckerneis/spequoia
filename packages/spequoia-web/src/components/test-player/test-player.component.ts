@@ -34,6 +34,7 @@ export class TestPlayerComponent implements OnInit {
   $previewLeft = signal('0px');
   $previewFrame = signal('');
   $previewSectionName = signal('');
+  $isDragging = signal(false);
 
   private sections: Section[] = [];
   private allFrames: any[] = [];
@@ -102,21 +103,77 @@ export class TestPlayerComponent implements OnInit {
     }
   }
 
-  onTimelineHover(event: MouseEvent) {
+  private getFrameFromMouseEvent(event: MouseEvent): number {
     const timeline = this.elementRef.nativeElement.querySelector('.timeline-bar');
     const rect = timeline.getBoundingClientRect();
     const relativeX = event.clientX - rect.left;
     const percentage = relativeX / rect.width;
-    const frame = Math.floor(percentage * this.allFrames.length);
+    return Math.floor(percentage * this.allFrames.length);
+  }
+
+  onTimelineHover(event: MouseEvent) {
+    const frame = this.getFrameFromMouseEvent(event);
 
     if (frame >= 0 && frame < this.allFrames.length) {
       const section = this.$sectionByFrame()[frame];
       if (section) {
         this.$previewVisible.set(true);
-        this.$previewLeft.set(`${relativeX}px`);
+        const timeline = this.elementRef.nativeElement.querySelector('.timeline');
+        if (timeline) {
+          this.$previewLeft.set(`${event.clientX - timeline.getBoundingClientRect().left}px`);
+        }
         this.$previewFrame.set(`player-data/${this.example.id}/${frame}.png`);
         this.$previewSectionName.set(section.name);
       }
+    }
+  }
+
+  onTimelineMouseDown(event: MouseEvent) {
+    event.preventDefault();
+    this.$isDragging.set(true);
+    this.pause();
+    this.updateFrameFromMouseEvent(event);
+
+    // Add global mouse event listeners
+    window.addEventListener('mousemove', this.onGlobalMouseMove);
+    window.addEventListener('mouseup', this.onGlobalMouseUp);
+  }
+
+  private onGlobalMouseMove = (event: MouseEvent) => {
+    if (this.$isDragging()) {
+      this.updateFrameFromMouseEvent(event);
+    }
+  }
+
+  private onGlobalMouseUp = () => {
+    if (this.$isDragging()) {
+      this.onTimelineMouseUp();
+    }
+  }
+
+  onTimelineMouseMove(event: MouseEvent) {
+    if (!this.$isDragging()) {
+      this.onTimelineHover(event);
+    }
+  }
+
+  onTimelineMouseUp() {
+    this.$isDragging.set(false);
+    window.removeEventListener('mousemove', this.onGlobalMouseMove);
+    window.removeEventListener('mouseup', this.onGlobalMouseUp);
+  }
+
+  private updateFrameFromMouseEvent(event: MouseEvent) {
+    const timeline = this.elementRef.nativeElement.querySelector('.timeline-bar');
+    if (!timeline) return;
+
+    const rect = timeline.getBoundingClientRect();
+    const relativeX = Math.max(0, Math.min(event.clientX - rect.left, rect.width));
+    const percentage = relativeX / rect.width;
+    const frame = Math.floor(percentage * this.allFrames.length);
+
+    if (frame >= 0 && frame < this.allFrames.length) {
+      this.showFrame(frame);
     }
   }
 
