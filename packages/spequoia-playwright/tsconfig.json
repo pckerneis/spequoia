@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": ".",
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "module": "ESNext",
+    "moduleResolution": "node"
+  },
+  "include": ["tests/**/*.ts"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+}

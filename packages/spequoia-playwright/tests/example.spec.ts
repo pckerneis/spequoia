@@ -472,8 +472,6 @@ async function runStep(step: ParsedStep, page: Page, exampleId: string) {
         throw new Error(`View ${action.view} not found`);
       }
 
-      currentSelector = view.selector || null;
-
       let url = executor!.configuration!.baseUrl as string;
 
       if (view?.route) {
@@ -487,7 +485,6 @@ async function runStep(step: ParsedStep, page: Page, exampleId: string) {
     case "click": {
       const target = (step.action as ClickAction).target;
       const selector = resolveSelector(target, step.computedViewBefore);
-      currentSelector = selector || null;
 
       if (!selector) {
         console.error(
@@ -519,7 +516,6 @@ async function runStep(step: ParsedStep, page: Page, exampleId: string) {
         hoverTarget,
         step.computedViewBefore,
       );
-      currentSelector = hoverSelector || null;
 
       if (!hoverSelector) {
         throw new Error(`Selector for ${hoverTarget} not found`);
@@ -536,7 +532,6 @@ async function runStep(step: ParsedStep, page: Page, exampleId: string) {
         doubleClickTarget,
         step.computedViewBefore,
       );
-      currentSelector = doubleClickSelector || null;
 
       if (!doubleClickSelector) {
         throw new Error(`Selector for ${doubleClickTarget} not found`);
