@@ -25,7 +25,7 @@
   <input type="search" placeholder="Search..." (input)="handleInput($event)" />
   @if (searchResults().length > 0) {
     <div class="search-results">
-      @for (result of searchResults(); track result.id) {
+      @for (result of searchResults(); track result) {
         <div class="search-result" (click)="onResultClick(result)">
           <div class="result-title" [innerHTML]="result.name"></div>
           @if (result.description) {

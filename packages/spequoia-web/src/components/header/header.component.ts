@@ -37,6 +37,8 @@ export class HeaderComponent {
     const input = $event.target as HTMLInputElement;
     const results = this.searchService.search(input.value);
 
+    console.log('Search results:', results);
+
     this.searchResults.set(
       results
         .map((result) => {
@@ -52,6 +54,7 @@ export class HeaderComponent {
     result: SearchResult,
   ): HighlightedSearchResult[] {
     return Object.entries(match)
+      .slice(0, 1)
       .map((entry) => {
         const [matchedTerm, locations] = entry;
 
@@ -66,7 +69,7 @@ export class HeaderComponent {
             const highlightedDescription =
               location === 'description'
                 ? this.getMatchingSnippet(description, matchedTerm)
-                : description;
+                : description.slice(0, 100);
             return {
               id: result['id'],
               anchorId: result['anchorId'],

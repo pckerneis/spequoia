@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import MiniSearch from 'minisearch';
-import { ProcessedDocument } from '../models/processed-document.model';
+import {ProcessedDocument, ProcessedFeature} from '../models/processed-document.model';
 import * as commonmark from 'commonmark';
+
+const MAX_RESULT_COUNT = 5;
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +16,7 @@ export class SearchService {
   public indexDocument(document: ProcessedDocument) {
     const normalizedFeatures = document.processedFeatures.map((feature) => ({
       ...feature,
-      description: textify(feature.description),
+      description: mergeDescriptionAndExamples(feature),
     }));
 
     const miniSearch = new MiniSearch({
@@ -43,10 +45,24 @@ export class SearchService {
       boost: {
         title: 2,
       },
-      fuzzy: 0.2,
-      prefix: true,
-    });
+      fuzzy: 0.1,
+      prefix: query.length > 2,
+    }).slice(0, MAX_RESULT_COUNT);
   }
+}
+
+function mergeDescriptionAndExamples(feature: ProcessedFeature): string {
+  const description = textify(feature.description);
+
+  const examples = feature.examples
+    ?.map((example) => {
+      const name = example.name;
+      const description = textify(example.description);
+      return `${name}${description ? `\n\n${description}` : ''}`;
+    })
+    .join('\n');
+
+  return [description, examples].filter(Boolean).join('\n');
 }
 
 function textify(markdown: string | undefined): string {

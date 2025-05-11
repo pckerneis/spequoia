@@ -110,7 +110,7 @@ features:
     tags: [ui, layout]
     examples:
       - id: EX-001
-        name: The web app shows a header with the app title "todos", a text input, and an empty task list
+        name: Initial state
         description: |
           The app title is prominently displayed in the header, making the purpose
           of the application immediately clear to users.
