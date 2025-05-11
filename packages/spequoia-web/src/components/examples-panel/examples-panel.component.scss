@@ -3,13 +3,14 @@
   flex-direction: column;
   background-color: var(--examples-bg-color);
   border: 1px solid var(--main-border-color);
-  padding: 0.5rem;
+  padding: 1rem;
   border-radius: 5px;
   margin-bottom: 1rem;
 }
 
 h4 {
   margin: 0;
+  font-size: 1.2rem;
 }
 
 ul.examples {
