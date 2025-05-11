@@ -23,21 +23,8 @@
     align-items: center;
     margin-left: auto;
 
-    button {
+    app-tag-dropdown {
       margin-right: 0.5rem;
-      color: var(--disabled-text);
-      appearance: none;
-      border: none;
-      background: none;
-      cursor: pointer;
-
-      &:hover {
-        color: var(--text-800);
-      }
-
-      .material-icons {
-        font-size: 1.5rem;
-      }
     }
 
     ul {

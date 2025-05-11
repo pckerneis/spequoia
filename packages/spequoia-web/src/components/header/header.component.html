@@ -3,14 +3,16 @@
 </div>
 
 <span class="filters">
-  <button>
-    <span class="material-icons">filter_list</span>
-  </button>
   <ul>
     @for (tag of documentService.tagFilter(); track tag) {
       <app-tag [tagName]="tag" [deletable]="true" (onDelete)="removeTagFilter($event)" />
     }
   </ul>
+  <app-tag-dropdown
+    [availableTags]="availableTags()"
+    [selectedTags]="documentService.tagFilter()"
+    (tagToggled)="toggleTag($event)"
+  />
 </span>
 
 <div>

@@ -234,5 +234,16 @@ export class DocumentService {
       })
     });
   }
+
+  public toggleTagFilter(tagName: string): void {
+    const currentTags = this.tagFilter();
+    if (currentTags.includes(tagName)) {
+      this.tagFilter.set(currentTags.filter(t => t !== tagName));
+    } else {
+      this.tagFilter.set([...currentTags, tagName]);
+    }
+
+    this.applyFilters();
+  }
 }
 
