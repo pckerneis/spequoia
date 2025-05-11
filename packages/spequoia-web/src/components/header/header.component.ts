@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { TagComponent } from '../tag/tag.component';
 import { DocumentService } from '../../services/document.service';
 import { TagDropdownComponent } from '../tag-dropdown/tag-dropdown.component';
+import {SearchService} from '../../services/search.service';
 
 @Component({
   selector: 'header',
@@ -15,7 +16,7 @@ export class HeaderComponent {
   @Input()
   document!: ProcessedDocument;
 
-  constructor(readonly documentService: DocumentService) {}
+  constructor(readonly documentService: DocumentService, readonly searchService: SearchService) {}
 
   toggleTag(tagName: string) {
     this.documentService.toggleTagFilter(tagName);
@@ -23,5 +24,11 @@ export class HeaderComponent {
 
   public removeTagFilter(tagName: string): void {
     this.documentService.removeTagFilter(tagName);
+  }
+
+  public handleInput($event: Event): void {
+    const input = $event.target as HTMLInputElement;
+    const results = this.searchService.search(input.value);
+    console.log(results);
   }
 }

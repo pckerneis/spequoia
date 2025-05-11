@@ -10,6 +10,7 @@ import * as commonmark from 'commonmark';
 import { HttpClient } from '@angular/common/http';
 import { Manifest } from '../models/manifest.model';
 import { map, Observable, of, tap } from 'rxjs';
+import {SearchService} from './search.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,7 @@ export class DocumentService {
 
   private readonly manifestByExampleId = new Map<string, Manifest>();
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient, private readonly searchService: SearchService) {}
 
   public setDocument(parsedDocument: ParsedDocument): void {
     const processedDocument = this.processDocument(parsedDocument);
@@ -35,6 +36,8 @@ export class DocumentService {
         .filter((tag, index, self) => self.indexOf(tag) === index)
         .sort();
       this.availableTags.set(allTags);
+
+      this.searchService.indexDocument(processedDocument);
     }
   }
 

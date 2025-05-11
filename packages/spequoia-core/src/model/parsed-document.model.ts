@@ -12,7 +12,7 @@ export interface ParsedDocument {
 }
 
 export interface ParsedFeature {
-  id?: string;
+  id: string;
   name: string;
   description?: string;
   examples?: ParsedExample[];

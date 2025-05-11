@@ -12,7 +12,7 @@ export function parseRawDocument(
     title: rawDocument.title,
     description: rawDocument.description,
     features: rawDocument.features.map((feature) => ({
-      id: feature.id,
+      id: feature.id ?? feature.name,
       name: feature.name,
       description: feature.description,
       examples:
