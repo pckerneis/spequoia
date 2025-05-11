@@ -18,6 +18,8 @@ interface ScreenshotSection {
 
 const SCREENSHOT_DIRECTORY = "player-data";
 
+let startTime = 0;
+
 let frameCounter = 0;
 const sections: ScreenshotSection[] = [];
 
@@ -50,6 +52,7 @@ function saveManifest(exampleId: string) {
     {
       sections: sectionsWithEndFrames,
       frameCount: frameCounter,
+      startTime: startTime,
     },
     null,
     2,
@@ -549,6 +552,8 @@ async function runStep(step: ParsedStep, page: Page, exampleId: string) {
 for (const feature of parseResult.parsedDocument!.features) {
   for (const example of feature.examples!) {
     test(example.name!, async ({ page }) => {
+      startTime = Date.now();
+
       for (const step of example.steps!) {
         if (step.composite) {
           for (const subStep of step.steps!) {

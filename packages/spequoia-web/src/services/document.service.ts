@@ -4,11 +4,15 @@ import {
   ParsedExample,
 } from 'spequoia-core/dist/model/parsed-document.model';
 import {
+  ExampleWithManifest,
   ProcessedDocument,
   ProcessedView,
 } from '../models/processed-document.model';
 import { Heading } from '../models/heading.model';
 import * as commonmark from 'commonmark';
+import {HttpClient} from '@angular/common/http';
+import {Manifest} from '../models/manifest.model';
+import {map, Observable, of, tap} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +20,9 @@ import * as commonmark from 'commonmark';
 export class DocumentService {
   document = signal<ProcessedDocument | null>(null);
 
-  constructor() {}
+  private readonly manifestByExampleId = new Map<string, Manifest>();
+
+  constructor(private readonly http: HttpClient) {}
 
   public setDocument(parsedDocument: ParsedDocument): void {
     this.document.set(this.processDocument(parsedDocument));
@@ -141,20 +147,41 @@ export class DocumentService {
     };
   }
 
-  public getExample(exampleId: any): ParsedExample | undefined {
+  public getExample(exampleId: any): Observable<ExampleWithManifest | undefined> {
     const document = this.document();
 
     if (!document) {
-      return undefined;
+      return of(undefined);
     }
 
     for (const feature of document.features) {
       const example = feature.examples?.find((ex) => ex.id === exampleId);
       if (example) {
-        return example;
+        return this.findCorrespondingManifest(example.id).pipe(
+          map((manifest) => {
+            return {
+              ...example,
+              manifest,
+            };
+          })
+        );
       }
     }
 
-    return undefined;
+    return of(undefined);
+  }
+
+  private findCorrespondingManifest(exampleId: string): Observable<Manifest | null> {
+    const manifest = this.manifestByExampleId.get(exampleId);
+    if (manifest) {
+      return of(manifest);
+    }
+
+    return this.http
+      .get<Manifest>(`player-data/${exampleId}/screenshot-manifest.json`)
+      .pipe(tap((manifest) => {
+        this.manifestByExampleId.set(exampleId, manifest);
+      }));
   }
 }
+

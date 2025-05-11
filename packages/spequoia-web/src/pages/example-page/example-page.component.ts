@@ -6,6 +6,7 @@ import { MarkdownPipe } from '../../pipes/markdown.pipe';
 import { WireframePlayerComponent } from '../../components/wireframe-player/wireframe-player.component';
 import { HttpClient } from '@angular/common/http';
 import {HeaderComponent} from '../../components/header/header.component';
+import {map, switchMap} from 'rxjs';
 
 @Component({
   selector: 'app-example-page',
@@ -29,20 +30,14 @@ export class ExamplePageComponent {
   constructor(
     public readonly documentService: DocumentService,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly http: HttpClient,
   ) {
-    this.activatedRoute.params.subscribe((params) => {
-      const exampleId = params['exampleId'];
-      if (exampleId) {
-        this.example = this.documentService.getExample(exampleId);
-      }
-
-      if (this.example) {
-        this.http
-          .get(`player-data/${this.example.id}/screenshot-manifest.json`)
-          .subscribe((manifest) => {
-            this.hasTestResults.set(manifest != null);
-          });
+    this.activatedRoute.params.pipe(
+      map((params) => params['exampleId']),
+      switchMap(exampleId => this.documentService.getExample(exampleId))
+    ).subscribe((example) => {
+      if (example) {
+        this.example = example;
+        this.hasTestResults.set(example.manifest != null);
       }
     });
   }

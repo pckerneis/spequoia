@@ -8,6 +8,8 @@ import {
 } from '@angular/core';
 import { ParsedExample } from 'spequoia-core/dist';
 import { HttpClient } from '@angular/common/http';
+import {ExampleWithManifest} from '../../models/processed-document.model';
+import {Section} from '../../models/manifest.model';
 
 const FRAME_DURATION = 100;
 
@@ -19,7 +21,7 @@ const FRAME_DURATION = 100;
 })
 export class TestPlayerComponent implements OnInit {
   @Input()
-  example!: ParsedExample;
+  example!: ExampleWithManifest;
 
   screenshotSrc = signal('');
 
@@ -52,35 +54,28 @@ export class TestPlayerComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    if (this.example) {
-      this.screenshotSrc.set(`player-data/${this.example.id}/0.png`);
+    if (this.example?.manifest) {
+      const manifest = this.example.manifest;
+      this.sections = manifest.sections;
 
-      this.http
-        .get<Manifest>(
-          `player-data/${this.example.id}/screenshot-manifest.json`,
-        )
-        .subscribe((manifest) => {
-          this.sections = manifest.sections;
+      this.allFrames = [];
+      for (let i = 0; i < manifest.frameCount; i++) {
+        this.allFrames.push(i);
+      }
 
-          this.allFrames = [];
-          for (let i = 0; i < manifest.frameCount; i++) {
-            this.allFrames.push(i);
+      // Map each frame to the closest previous step index
+      this.$sectionByFrame.set(
+        this.allFrames.map((f) => {
+          for (let i = this.sections.length - 1; i >= 0; i--) {
+            if (f >= this.sections[i].startFrame) return this.sections[i];
           }
 
-          // Map each frame to the closest previous step index
-          this.$sectionByFrame.set(
-            this.allFrames.map((f) => {
-              for (let i = this.sections.length - 1; i >= 0; i--) {
-                if (f >= this.sections[i].startFrame) return this.sections[i];
-              }
+          return null;
+        }),
+      );
 
-              return null;
-            }),
-          );
-
-          this.showFrame(0);
-          this.renderTimeline();
-        });
+      this.showFrame(0);
+      this.renderTimeline();
     }
   }
 
@@ -307,17 +302,6 @@ export class TestPlayerComponent implements OnInit {
 
     this.showFrame(0);
   }
-}
-
-interface Section {
-  name: string;
-  startFrame: number;
-  endFrame: number;
-}
-
-interface Manifest {
-  sections: Section[];
-  frameCount: number;
 }
 
 interface TimelineSection {
