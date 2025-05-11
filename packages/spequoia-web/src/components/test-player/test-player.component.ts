@@ -94,7 +94,17 @@ export class TestPlayerComponent implements OnInit {
 
   play() {
     if (this.$playing()) return;
+
+    if (this.playInterval) {
+      clearInterval(this.playInterval);
+    }
+
+    if (this.$currentFrame() >= this.allFrames.length - 1) {
+      this.showFrame(0);
+    }
+
     this.$playing.set(true);
+
     this.playInterval = window.setInterval(() => {
       if (this.$currentFrame() < this.allFrames.length - 1) {
         this.showFrame(this.$currentFrame() + 1);
