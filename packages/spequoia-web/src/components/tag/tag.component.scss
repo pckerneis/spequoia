@@ -1,0 +1,40 @@
+.tag {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  border: 1px solid var(--main-border-color);
+  background: var(--tag-bg);
+  color: var(--tag-text-color);
+  font-size: 0.8rem;
+  margin-right: 0.5rem;
+
+  &.clickable {
+    cursor: pointer;
+  }
+
+  &:before {
+    content: "#";
+    font-weight: bold;
+    margin-right: 0.1rem;
+  }
+
+  .delete-tag-button {
+    appearance: none;
+    border: none;
+    background: var(--tag-bg);
+    font-size: 0.8rem;
+    margin-right: 0;
+    padding: 0;
+    cursor: pointer;
+    color: var(--text-600);
+
+    &:hover {
+      color: var(--text-800);
+    }
+
+    &:before {
+      content: "×";
+      font-weight: bold;
+    }
+  }
+}

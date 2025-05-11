@@ -25,19 +25,3 @@ h3 {
   }
 }
 
-.tag {
-  display: inline-block;
-  padding: 0.2rem 0.5rem;
-  border-radius: 5px;
-  border: 1px solid var(--main-border-color);
-  background: var(--tag-bg);
-  color: var(--tag-text-color);
-  font-size: 0.8rem;
-  margin-right: 0.5rem;
-
-  &:before {
-    content: "#";
-    font-weight: bold;
-    margin-right: 0.1rem;
-  }
-}

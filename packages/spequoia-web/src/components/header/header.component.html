@@ -2,6 +2,14 @@
   <h1><a [routerLink]="'/'">{{ document.title }}</a></h1>
 </div>
 
+<span class="filters">
+    <ul>
+      @for (tag of documentService.tagFilter(); track tag) {
+        <app-tag [tagName]="tag" [deletable]="true" (onDelete)="removeTagFilter($event)" />
+      }
+    </ul>
+</span>
+
 <div>
   <input type="search" placeholder="Search..." />
 </div>

@@ -18,6 +18,25 @@
     }
   }
 
+  .filters {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+
+    ul {
+      list-style: none;
+      padding-inline-start: 0;
+      margin-block-start: 0;
+      margin-block-end: 0;
+      display: flex;
+
+      li {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
   input[type="search"] {
     width: 100%;
     padding: 0.5rem;

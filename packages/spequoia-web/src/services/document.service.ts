@@ -1,7 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import {
   ParsedDocument,
-  ParsedExample,
 } from 'spequoia-core/dist/model/parsed-document.model';
 import {
   ExampleWithManifest,
@@ -18,14 +17,18 @@ import {map, Observable, of, tap} from 'rxjs';
   providedIn: 'root',
 })
 export class DocumentService {
+  initialDocument = signal<ProcessedDocument | null>(null);
   document = signal<ProcessedDocument | null>(null);
+  tagFilter = signal<string[]>([]);
 
   private readonly manifestByExampleId = new Map<string, Manifest>();
 
   constructor(private readonly http: HttpClient) {}
 
   public setDocument(parsedDocument: ParsedDocument): void {
-    this.document.set(this.processDocument(parsedDocument));
+    const processedDocument = this.processDocument(parsedDocument);
+    this.initialDocument.set(processedDocument);
+    this.document.set(processedDocument);
   }
 
   private processDocument(parsedDocument: ParsedDocument): ProcessedDocument {
@@ -71,6 +74,7 @@ export class DocumentService {
                 level: node.level,
                 text: node.firstChild.literal,
                 id: generateUniqueId(node.firstChild.literal),
+                isFeature: false,
               };
               headings.push(heading);
               attrs.push(['id', heading.id]);
@@ -92,6 +96,7 @@ export class DocumentService {
       id: 'features',
       text: 'Features',
       level: 1,
+      isFeature: false,
     });
 
     const processedFeatures = [];
@@ -102,6 +107,7 @@ export class DocumentService {
         id: featureAnchorId,
         text: feature.name,
         level: 2,
+        isFeature: true,
       };
 
       headings.push(featureHeading);
@@ -119,6 +125,7 @@ export class DocumentService {
         id: 'views',
         text: 'Views',
         level: 1,
+        isFeature: false,
       });
 
       for (const view of parsedDocument.views ?? []) {
@@ -127,6 +134,7 @@ export class DocumentService {
           id: viewAnchorId,
           text: view.name,
           level: 2,
+          isFeature: false,
         };
 
         headings.push(viewHeading);
@@ -182,6 +190,49 @@ export class DocumentService {
       .pipe(tap((manifest) => {
         this.manifestByExampleId.set(exampleId, manifest);
       }));
+  }
+
+  public setTagFilter(tagName: string): void {
+    this.tagFilter.set([tagName]);
+    this.applyFilters();
+  }
+
+  public removeTagFilter(tagName: string): void {
+    const currentTags = this.tagFilter();
+    const newTags = currentTags.filter((tag) => tag !== tagName);
+    this.tagFilter.set(newTags);
+    this.applyFilters();
+  }
+
+  private applyFilters(): void {
+    const document = this.initialDocument();
+    if (!document) {
+      return;
+    }
+
+    const appliedTags = this.tagFilter();
+
+    if (appliedTags.length === 0) {
+      this.document.set(document);
+      return;
+    }
+
+    const filteredFeatures = document.processedFeatures.filter((feature) =>
+      feature.tags?.some((tag) => appliedTags.includes(tag))
+    );
+
+    this.document.set({
+      ...document,
+      processedFeatures: filteredFeatures,
+      headings: document.headings.filter((heading) => {
+        if (!heading.isFeature) {
+          return true;
+        }
+
+        const feature = filteredFeatures.find((f) => f.anchorId === heading.id);
+        return !!feature;
+      })
+    });
   }
 }
 
