@@ -77,7 +77,7 @@
         transition: background-color 0.2s;
 
         &:hover {
-          background-color: var(--hover-bg-color);
+          background-color: var(--background-50);
         }
 
         &:not(:last-child) {

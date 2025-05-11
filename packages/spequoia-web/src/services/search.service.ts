@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import MiniSearch from 'minisearch';
-import {ProcessedDocument, ProcessedFeature} from '../models/processed-document.model';
+import {
+  ProcessedDocument,
+  ProcessedFeature,
+} from '../models/processed-document.model';
 import * as commonmark from 'commonmark';
 
 const MAX_RESULT_COUNT = 5;
@@ -41,13 +44,15 @@ export class SearchService {
     if (!this.miniSearch) {
       throw new Error('Document not indexed');
     }
-    return this.miniSearch.search(query, {
-      boost: {
-        title: 2,
-      },
-      fuzzy: 0.1,
-      prefix: query.length > 2,
-    }).slice(0, MAX_RESULT_COUNT);
+    return this.miniSearch
+      .search(query, {
+        boost: {
+          title: 2,
+        },
+        fuzzy: 0.1,
+        prefix: query.length > 2,
+      })
+      .slice(0, MAX_RESULT_COUNT);
   }
 }
 

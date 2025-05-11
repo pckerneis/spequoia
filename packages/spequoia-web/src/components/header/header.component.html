@@ -22,7 +22,13 @@
 </span>
 
 <div class="search-container">
-  <input type="search" placeholder="Search..." (input)="handleInput($event)" />
+  <input
+    type="search"
+    placeholder="Search..."
+    (input)="handleInput($event)"
+    (click)="handleInputClick($event)"
+    #searchInput
+  />
   @if (searchResults().length > 0) {
     <div class="search-results">
       @for (result of searchResults(); track result) {

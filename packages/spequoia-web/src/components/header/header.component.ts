@@ -1,4 +1,11 @@
-import { Component, Input, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  ViewChild,
+  signal,
+} from '@angular/core';
 import { ProcessedDocument } from '../../models/processed-document.model';
 import { Router, RouterLink } from '@angular/router';
 import { TagComponent } from '../tag/tag.component';
@@ -17,13 +24,26 @@ export class HeaderComponent {
   @Input()
   document!: ProcessedDocument;
 
+  @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
+
   readonly searchResults = signal<HighlightedSearchResult[]>([]);
 
   constructor(
     readonly documentService: DocumentService,
     readonly searchService: SearchService,
     readonly router: Router,
+    private elementRef: ElementRef,
   ) {}
+
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: MouseEvent) {
+    const clickedInside = this.elementRef.nativeElement
+      .querySelector('.search-container')
+      ?.contains(event.target as Node);
+    if (!clickedInside) {
+      this.searchResults.set([]);
+    }
+  }
 
   toggleTag(tagName: string) {
     this.documentService.toggleTagFilter(tagName);
@@ -35,10 +55,18 @@ export class HeaderComponent {
 
   public handleInput($event: Event): void {
     const input = $event.target as HTMLInputElement;
-    const results = this.searchService.search(input.value);
+    this.performSearch(input.value);
+  }
 
-    console.log('Search results:', results);
+  public handleInputClick($event: Event): void {
+    const input = $event.target as HTMLInputElement;
+    if (input.value.trim()) {
+      this.performSearch(input.value);
+    }
+  }
 
+  private performSearch(query: string): void {
+    const results = this.searchService.search(query);
     this.searchResults.set(
       results
         .map((result) => {
