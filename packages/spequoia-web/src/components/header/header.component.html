@@ -25,13 +25,16 @@
 </span>
 
 <div class="search-container">
-  <input
-    type="search"
-    placeholder="Search..."
-    (input)="handleInput($event)"
-    (click)="handleInputClick($event)"
-    #searchInput
-  />
+  <div class="search-wrapper">
+    <input
+      type="search"
+      placeholder="Search..."
+      (input)="handleInput($event)"
+      (click)="handleInputClick($event)"
+      #searchInput
+    />
+    <span class="material-icons search-icon">search</span>
+  </div>
   @if (searchResults().length > 0) {
     <div class="search-results">
       @for (result of searchResults(); track result) {

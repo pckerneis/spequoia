@@ -161,6 +161,12 @@ export function parseRawSteps(
               case "not to have text":
                 resolvedTarget.node.text = "";
                 break;
+              case "not to be checked":
+                resolvedTarget.node.checked = false;
+                break;
+              case "to be checked":
+                resolvedTarget.node.checked = true;
+                break;
             }
           } else {
             if (!parsedStep.errors.includes("Target not found")) {

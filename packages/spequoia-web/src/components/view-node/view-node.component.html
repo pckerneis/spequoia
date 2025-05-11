@@ -11,6 +11,10 @@
       <div class="mouse" [class.clicked]="viewNode.clicked"></div>
     }
 
+    @if (viewNode.checked) {
+      <div class="checkmark"></div>
+    }
+
     @if (viewNode.text) {
       <div class="text">
         <span [class.typing]="viewNode.typing">

@@ -77,6 +77,20 @@ label,
   animation: clicked 0.5s ease-in-out;
 }
 
+.checkmark {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  &:after {
+    content: '✔';
+    font-size: 1em;
+  }
+}
+
 @keyframes clicked {
   0% {
     outline-offset: 0;

@@ -110,6 +110,7 @@ export interface ParsedViewNode {
   hidden?: boolean;
   placeholder?: string;
   typing?: boolean;
+  checked?: boolean;
 }
 
 export interface ParsedAction {
