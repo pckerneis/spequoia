@@ -18,9 +18,11 @@ li {
   cursor: pointer;
   font-size: 0.8rem;
   border-left: 4px solid transparent;
+  background-color: var(--player-step-bg-color);
 
   &.composite {
-    background-color: var(--composite-player-step-bg-color) !important;
+    background-color: var(--composite-player-step-bg-color);
+    cursor: default;
 
     & > b {
       margin-left: 1rem;

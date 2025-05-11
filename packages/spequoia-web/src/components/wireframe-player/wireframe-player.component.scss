@@ -1,7 +1,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: var(--background-50);
   border: 1px solid var(--main-border-color);
   overflow: hidden;
 }
