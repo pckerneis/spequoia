@@ -15,7 +15,7 @@
     }
   </ul>
   <app-tag-dropdown
-    [availableTags]="availableTags()"
+    [availableTags]="documentService.availableTags()"
     [selectedTags]="documentService.tagFilter()"
     (tagToggled)="toggleTag($event)"
   />

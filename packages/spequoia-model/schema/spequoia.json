@@ -53,6 +53,13 @@
           },
           "type": "array"
         },
+        "tags": {
+          "description": "A list of tags that can be used to categorize features.",
+          "items": {
+            "$ref": "#/definitions/SpequoiaTag"
+          },
+          "type": "array"
+        },
         "title": {
           "description": "Name of the described system.",
           "type": "string"
@@ -170,6 +177,24 @@
       },
       "required": [
         "name"
+      ],
+      "type": "object"
+    },
+    "SpequoiaTag": {
+      "description": "A tag is a label that can be associated with features.",
+      "properties": {
+        "color": {
+          "description": "A CSS color for the tag.",
+          "type": "string"
+        },
+        "name": {
+          "description": "The name of the tag.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "color"
       ],
       "type": "object"
     },

@@ -32,5 +32,6 @@ export function parseRawDocument(
     executors: rawDocument.executors ?? {},
     defaultExecutor: rawDocument.defaultExecutor,
     actions: [], // TODO
+    tags: rawDocument.tags,
   };
 }

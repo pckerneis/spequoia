@@ -18,6 +18,7 @@ export class DocumentService {
   initialDocument = signal<ProcessedDocument | null>(null);
   document = signal<ProcessedDocument | null>(null);
   tagFilter = signal<string[]>([]);
+  availableTags = signal<string[]>([]);
 
   private readonly manifestByExampleId = new Map<string, Manifest>();
 
@@ -27,6 +28,14 @@ export class DocumentService {
     const processedDocument = this.processDocument(parsedDocument);
     this.initialDocument.set(processedDocument);
     this.document.set(processedDocument);
+
+    if (processedDocument) {
+      const allTags = processedDocument.features
+        .flatMap((feature) => feature.tags || [])
+        .filter((tag, index, self) => self.indexOf(tag) === index)
+        .sort();
+      this.availableTags.set(allTags);
+    }
   }
 
   private processDocument(parsedDocument: ParsedDocument): ProcessedDocument {
@@ -248,5 +257,9 @@ export class DocumentService {
     }
 
     this.applyFilters();
+  }
+
+  public getTagColor(tagName: string): string | undefined {
+    return this.document()?.tags?.find((tag) => tag.name === tagName)?.color;
   }
 }

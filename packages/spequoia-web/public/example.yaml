@@ -18,6 +18,12 @@ description: |
 
   These sections are used to generate wireframes, test cases, and documentation.
 
+tags:
+  - name: ui
+    color: rgb(245 164 105)
+  - name: layout
+    color: "#4c48e7"
+
 executors:
   default:
     kind: spequoia-playwright

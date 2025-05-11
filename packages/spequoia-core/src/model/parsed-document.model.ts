@@ -1,4 +1,4 @@
-import { SpequoiaExecutor } from "@spequoia/model";
+import { SpequoiaExecutor, SpequoiaTag } from "@spequoia/model";
 
 export interface ParsedDocument {
   title: string;
@@ -8,6 +8,7 @@ export interface ParsedDocument {
   executors: Record<string, SpequoiaExecutor>;
   defaultExecutor?: string;
   actions: ParsedAction[];
+  tags?: SpequoiaTag[];
 }
 
 export interface ParsedFeature {

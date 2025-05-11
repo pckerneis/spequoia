@@ -2,6 +2,8 @@
   class="tag"
   [class.deletable]="deletable"
   [class.clickable]="clickable"
+  [style.background]="color()"
+  [style.color]="textColor()"
   (click)="handleClick()"
 >
   {{ tagName }}
@@ -10,6 +12,7 @@
     <button
       type="button"
       class="delete-tag-button"
+      [style.color]="textColor()"
       (click)="deleteTag()"
       aria-label="Delete tag"
     ></button>

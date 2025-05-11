@@ -1,4 +1,4 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ProcessedDocument } from '../../models/processed-document.model';
 import { RouterLink } from '@angular/router';
 import { TagComponent } from '../tag/tag.component';
@@ -16,20 +16,6 @@ export class HeaderComponent {
   document!: ProcessedDocument;
 
   constructor(readonly documentService: DocumentService) {}
-
-  availableTags = signal<string[]>([]);
-
-  ngOnInit() {
-    // Get unique tags from all features
-    const doc = this.documentService.document();
-    if (doc) {
-      const allTags = doc.features
-        .flatMap((feature) => feature.tags || [])
-        .filter((tag, index, self) => self.indexOf(tag) === index)
-        .sort();
-      this.availableTags.set(allTags);
-    }
-  }
 
   toggleTag(tagName: string) {
     this.documentService.toggleTagFilter(tagName);

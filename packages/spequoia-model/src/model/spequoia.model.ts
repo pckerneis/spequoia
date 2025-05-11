@@ -43,6 +43,11 @@ export interface SpequoiaDocument {
    * A dictionary of actions that can be used in any example of the document.
    */
   actions?: Record<string, SpequoiaAction>;
+
+  /**
+   * A list of tags that can be used to categorize features.
+   */
+  tags?: SpequoiaTag[];
 }
 
 /**
@@ -181,4 +186,19 @@ export interface SpequoiaAction {
    * List of steps to execute the action.
    */
   steps: string[];
+}
+
+/**
+ * A tag is a label that can be associated with features.
+ */
+export interface SpequoiaTag {
+  /**
+   * The name of the tag.
+   */
+  name: string;
+
+  /**
+   * A CSS color for the tag.
+   */
+  color: string;
 }
