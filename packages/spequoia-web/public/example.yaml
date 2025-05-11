@@ -224,7 +224,7 @@ features:
 
       When a link is clicked, only the tasks that match the filter are displayed in the task list.
 
-      The active_filter is visually indicated by a different style.
+      The active filter is visually indicated by a different style.
 
     examples:
       - id: EX-007

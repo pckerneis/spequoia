@@ -34,11 +34,23 @@ export class HeaderComponent {
 
     console.log('Search results:', results);
 
-    this.searchResults.set(results.map(result => ({
-      id: result.id,
-      title: result['name'],
-      matchingDescription: result['description'] ? this.getMatchingSnippet(result['description'], input.value) : undefined
-    })));
+    this.searchResults.set(results.map(result => {
+      const match = result.match;
+
+      return Object.entries(match).map((entry) => {
+        const [matchedTerm, locations] = entry;
+
+        return locations.map(location => {
+          const highlightedTitle = location === 'name' ? this.getMatchingSnippet(result['name'], matchedTerm) : result['name'];
+          const highlightedDescription = location === 'description' ? this.getMatchingSnippet(result['description'], matchedTerm) : result['description'];
+          return {
+            id: result.id,
+            title: highlightedTitle,
+            matchingDescription: highlightedDescription,
+          };
+        }).flat();
+      }).flat()
+    }).flat());
   }
 
   public onResultClick(result: { id: string; title: string; matchingDescription?: string }): void {
@@ -48,6 +60,7 @@ export class HeaderComponent {
   }
 
   private getMatchingSnippet(description: string, query: string): string {
+    if (!description) return '';
     if (!query) return description.slice(0, 100) + '...';
 
     const index = description.toLowerCase().indexOf(query.toLowerCase());
@@ -60,7 +73,7 @@ export class HeaderComponent {
     const beforeMatch = description.slice(start, index);
     const match = description.slice(index, index + query.length);
     const afterMatch = description.slice(index + query.length, end);
-    
+
     return prefix + beforeMatch + `<span class="highlight">${match}</span>` + afterMatch + suffix;
   }
 }

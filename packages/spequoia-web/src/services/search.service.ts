@@ -42,7 +42,13 @@ export class SearchService {
     if (!this.miniSearch) {
       throw new Error('Document not indexed');
     }
-    return this.miniSearch.search(query);
+    return this.miniSearch.search(query, {
+      boost: {
+        title: 2
+      },
+      fuzzy: 0.2,
+      prefix: true,
+    });
   }
 }
 
