@@ -1,36 +1,33 @@
 import { Injectable } from '@angular/core';
 import MiniSearch from 'minisearch';
-import {ProcessedDocument} from '../models/processed-document.model';
+import { ProcessedDocument } from '../models/processed-document.model';
 import * as commonmark from 'commonmark';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchService {
-
   private miniSearch: MiniSearch | null = null;
 
-  constructor() { }
+  constructor() {}
 
   public indexDocument(document: ProcessedDocument) {
-
-    const normalizedFeatures = document.features.map((feature) => ({
+    const normalizedFeatures = document.processedFeatures.map((feature) => ({
       ...feature,
-      tags: feature.tags?.map(tag => tag.toLowerCase()) || [],
       description: textify(feature.description),
     }));
 
     const miniSearch = new MiniSearch({
-      fields: ['name', 'description', 'tags', 'examples'],
-      storeFields: ['id', 'name', 'description', 'tags', 'examples'],
+      fields: ['name', 'description'],
+      storeFields: ['id', 'name', 'description', 'anchorId'],
       searchOptions: {
         boost: {
           title: 2,
           description: 1,
           tags: 0.5,
-          examples: 0.5
-        }
-      }
+          examples: 0.5,
+        },
+      },
     });
 
     miniSearch.addAll(normalizedFeatures);
@@ -44,7 +41,7 @@ export class SearchService {
     }
     return this.miniSearch.search(query, {
       boost: {
-        title: 2
+        title: 2,
       },
       fuzzy: 0.2,
       prefix: true,

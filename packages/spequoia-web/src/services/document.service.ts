@@ -3,14 +3,15 @@ import { ParsedDocument } from 'spequoia-core/dist/model/parsed-document.model';
 import {
   ExampleWithManifest,
   ProcessedDocument,
+  ProcessedFeature,
   ProcessedView,
 } from '../models/processed-document.model';
 import { Heading } from '../models/heading.model';
 import * as commonmark from 'commonmark';
 import { HttpClient } from '@angular/common/http';
 import { Manifest } from '../models/manifest.model';
-import { map, Observable, of, tap } from 'rxjs';
-import {SearchService} from './search.service';
+import { map, Observable, of, Subject, tap } from 'rxjs';
+import { SearchService } from './search.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,8 +23,14 @@ export class DocumentService {
   availableTags = signal<string[]>([]);
 
   private readonly manifestByExampleId = new Map<string, Manifest>();
+  private readonly _externalScrollRequested$ = new Subject<void>();
+  public readonly externalScrollRequested$ =
+    this._externalScrollRequested$.asObservable();
 
-  constructor(private readonly http: HttpClient, private readonly searchService: SearchService) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly searchService: SearchService,
+  ) {}
 
   public setDocument(parsedDocument: ParsedDocument): void {
     const processedDocument = this.processDocument(parsedDocument);
@@ -109,7 +116,7 @@ export class DocumentService {
       isFeature: false,
     });
 
-    const processedFeatures = [];
+    const processedFeatures: ProcessedFeature[] = [];
 
     for (const feature of parsedDocument.features) {
       const featureAnchorId = generateUniqueId(feature.name);
@@ -264,5 +271,9 @@ export class DocumentService {
 
   public getTagColor(tagName: string): string | undefined {
     return this.document()?.tags?.find((tag) => tag.name === tagName)?.color;
+  }
+
+  public requestExternalScroll() {
+    this._externalScrollRequested$.next();
   }
 }

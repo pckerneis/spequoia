@@ -33,7 +33,11 @@ export class DocumentPageComponent implements AfterViewInit, OnDestroy {
     public readonly documentService: DocumentService,
     private readonly domSanitizer: DomSanitizer,
     private readonly ngZone: NgZone,
-  ) {}
+  ) {
+    documentService.externalScrollRequested$.subscribe(() => {
+      this.scrollToHashHeading();
+    });
+  }
 
   activeHeadingId = signal('');
 

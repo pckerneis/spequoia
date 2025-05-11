@@ -27,9 +27,12 @@
     <div class="search-results">
       @for (result of searchResults(); track result.id) {
         <div class="search-result" (click)="onResultClick(result)">
-          <div class="result-title" [innerHTML]="result.title"></div>
-          @if (result.matchingDescription) {
-            <div class="result-description" [innerHTML]="result.matchingDescription"></div>
+          <div class="result-title" [innerHTML]="result.name"></div>
+          @if (result.description) {
+            <div
+              class="result-description"
+              [innerHTML]="result.description"
+            ></div>
           }
         </div>
       }
