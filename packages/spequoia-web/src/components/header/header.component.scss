@@ -41,10 +41,66 @@
     }
   }
 
-  input[type="search"] {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid var(--main-border-color);
-    border-radius: 5px;
+  .search-container {
+    position: relative;
+
+    input[type="search"] {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid var(--main-border-color);
+      border-radius: 5px;
+      outline: none;
+      transition: border-color 0.2s;
+
+      &:focus {
+        border-color: var(--accent-color);
+      }
+    }
+
+    .search-results {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 400px;
+      background: var(--background);
+      border: 1px solid var(--main-border-color);
+      border-radius: 5px;
+      margin-top: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      max-height: 300px;
+      overflow-y: auto;
+      z-index: 1000;
+
+      .search-result {
+        padding: 8px 12px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: var(--hover-bg-color);
+        }
+
+        &:not(:last-child) {
+          border-bottom: 1px solid var(--main-border-color);
+        }
+
+        .result-title {
+          font-weight: 500;
+          margin-bottom: 4px;
+          color: var(--title-color);
+        }
+
+        .result-description {
+          font-size: 0.9em;
+          color: var(--text-color);
+        }
+      }
+    }
   }
+}
+
+::ng-deep .highlight {
+  background-color: yellow;
+  padding: 0 2px;
+  border-radius: 2px;
 }
