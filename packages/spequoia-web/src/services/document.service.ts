@@ -1,7 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import {
-  ParsedDocument,
-} from 'spequoia-core/dist/model/parsed-document.model';
+import { ParsedDocument } from 'spequoia-core/dist/model/parsed-document.model';
 import {
   ExampleWithManifest,
   ProcessedDocument,
@@ -9,9 +7,9 @@ import {
 } from '../models/processed-document.model';
 import { Heading } from '../models/heading.model';
 import * as commonmark from 'commonmark';
-import {HttpClient} from '@angular/common/http';
-import {Manifest} from '../models/manifest.model';
-import {map, Observable, of, tap} from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Manifest } from '../models/manifest.model';
+import { map, Observable, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -155,7 +153,9 @@ export class DocumentService {
     };
   }
 
-  public getExample(exampleId: any): Observable<ExampleWithManifest | undefined> {
+  public getExample(
+    exampleId: any,
+  ): Observable<ExampleWithManifest | undefined> {
     const document = this.document();
 
     if (!document) {
@@ -171,7 +171,7 @@ export class DocumentService {
               ...example,
               manifest,
             };
-          })
+          }),
         );
       }
     }
@@ -179,7 +179,9 @@ export class DocumentService {
     return of(undefined);
   }
 
-  private findCorrespondingManifest(exampleId: string): Observable<Manifest | null> {
+  private findCorrespondingManifest(
+    exampleId: string,
+  ): Observable<Manifest | null> {
     const manifest = this.manifestByExampleId.get(exampleId);
     if (manifest) {
       return of(manifest);
@@ -187,9 +189,11 @@ export class DocumentService {
 
     return this.http
       .get<Manifest>(`player-data/${exampleId}/screenshot-manifest.json`)
-      .pipe(tap((manifest) => {
-        this.manifestByExampleId.set(exampleId, manifest);
-      }));
+      .pipe(
+        tap((manifest) => {
+          this.manifestByExampleId.set(exampleId, manifest);
+        }),
+      );
   }
 
   public setTagFilter(tagName: string): void {
@@ -218,7 +222,7 @@ export class DocumentService {
     }
 
     const filteredFeatures = document.processedFeatures.filter((feature) =>
-      feature.tags?.some((tag) => appliedTags.includes(tag))
+      feature.tags?.some((tag) => appliedTags.includes(tag)),
     );
 
     this.document.set({
@@ -231,14 +235,14 @@ export class DocumentService {
 
         const feature = filteredFeatures.find((f) => f.anchorId === heading.id);
         return !!feature;
-      })
+      }),
     });
   }
 
   public toggleTagFilter(tagName: string): void {
     const currentTags = this.tagFilter();
     if (currentTags.includes(tagName)) {
-      this.tagFilter.set(currentTags.filter(t => t !== tagName));
+      this.tagFilter.set(currentTags.filter((t) => t !== tagName));
     } else {
       this.tagFilter.set([...currentTags, tagName]);
     }
@@ -246,4 +250,3 @@ export class DocumentService {
     this.applyFilters();
   }
 }
-

@@ -1,4 +1,9 @@
-<li class="tag" [class.deletable]="deletable" [class.clickable]="clickable" (click)="handleClick()">
+<li
+  class="tag"
+  [class.deletable]="deletable"
+  [class.clickable]="clickable"
+  (click)="handleClick()"
+>
   {{ tagName }}
 
   @if (deletable) {
@@ -6,7 +11,7 @@
       type="button"
       class="delete-tag-button"
       (click)="deleteTag()"
-      aria-label="Delete tag">
-    </button>
+      aria-label="Delete tag"
+    ></button>
   }
 </li>

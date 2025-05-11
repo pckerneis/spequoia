@@ -6,10 +6,9 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { ParsedExample } from 'spequoia-core/dist';
 import { HttpClient } from '@angular/common/http';
-import {ExampleWithManifest} from '../../models/processed-document.model';
-import {Section} from '../../models/manifest.model';
+import { ExampleWithManifest } from '../../models/processed-document.model';
+import { Section } from '../../models/manifest.model';
 
 const FRAME_DURATION = 100;
 

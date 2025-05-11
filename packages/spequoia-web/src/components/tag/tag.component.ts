@@ -1,10 +1,10 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-tag',
   imports: [],
   templateUrl: './tag.component.html',
-  styleUrl: './tag.component.scss'
+  styleUrl: './tag.component.scss',
 })
 export class TagComponent {
   @Input() tagName!: string;

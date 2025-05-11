@@ -1,4 +1,8 @@
-<button (click)="toggleDropdown()" [class.active]="isOpen" [class.empty]="!selectedTags.length">
+<button
+  (click)="toggleDropdown()"
+  [class.active]="isOpen"
+  [class.empty]="!selectedTags.length"
+>
   <span class="material-icons" title="Filters">filter_list</span>
 </button>
 
@@ -7,8 +11,12 @@
     <div class="tag-list">
       @for (tag of availableTags; track tag) {
         <div class="tag-item" (click)="toggleTag(tag)">
-          <span class="material-icons check-icon" [class.selected]="isSelected(tag)">check</span>
-          <app-tag [tagName]="tag"/>
+          <span
+            class="material-icons check-icon"
+            [class.selected]="isSelected(tag)"
+            >check</span
+          >
+          <app-tag [tagName]="tag" />
         </div>
       }
     </div>

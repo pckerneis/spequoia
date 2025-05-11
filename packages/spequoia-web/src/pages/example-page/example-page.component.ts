@@ -4,13 +4,17 @@ import { ParsedExample } from 'spequoia-core/dist/model/parsed-document.model';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MarkdownPipe } from '../../pipes/markdown.pipe';
 import { WireframePlayerComponent } from '../../components/wireframe-player/wireframe-player.component';
-import { HttpClient } from '@angular/common/http';
-import {HeaderComponent} from '../../components/header/header.component';
-import {map, switchMap} from 'rxjs';
+import { HeaderComponent } from '../../components/header/header.component';
+import { map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-example-page',
-  imports: [MarkdownPipe, WireframePlayerComponent, RouterLink, HeaderComponent],
+  imports: [
+    MarkdownPipe,
+    WireframePlayerComponent,
+    RouterLink,
+    HeaderComponent,
+  ],
   templateUrl: './example-page.component.html',
   styleUrl: './example-page.component.scss',
 })
@@ -31,14 +35,16 @@ export class ExamplePageComponent {
     public readonly documentService: DocumentService,
     private readonly activatedRoute: ActivatedRoute,
   ) {
-    this.activatedRoute.params.pipe(
-      map((params) => params['exampleId']),
-      switchMap(exampleId => this.documentService.getExample(exampleId))
-    ).subscribe((example) => {
-      if (example) {
-        this.example = example;
-        this.hasTestResults.set(example.manifest != null);
-      }
-    });
+    this.activatedRoute.params
+      .pipe(
+        map((params) => params['exampleId']),
+        switchMap((exampleId) => this.documentService.getExample(exampleId)),
+      )
+      .subscribe((example) => {
+        if (example) {
+          this.example = example;
+          this.hasTestResults.set(example.manifest != null);
+        }
+      });
   }
 }

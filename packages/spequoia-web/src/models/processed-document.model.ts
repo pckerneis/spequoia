@@ -1,10 +1,11 @@
 import {
-  ParsedDocument, ParsedExample,
+  ParsedDocument,
+  ParsedExample,
   ParsedFeature,
   ParsedViewNode,
 } from 'spequoia-core/dist/model/parsed-document.model';
 import { Heading } from './heading.model';
-import {Manifest} from './manifest.model';
+import { Manifest } from './manifest.model';
 
 export interface ProcessedDocument extends ParsedDocument {
   processedDescription?: string;

@@ -1,4 +1,11 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TagComponent } from '../tag/tag.component';
 
@@ -7,7 +14,7 @@ import { TagComponent } from '../tag/tag.component';
   standalone: true,
   imports: [CommonModule, TagComponent],
   templateUrl: './tag-dropdown.component.html',
-  styleUrl: './tag-dropdown.component.scss'
+  styleUrl: './tag-dropdown.component.scss',
 })
 export class TagDropdownComponent {
   @Input() availableTags: string[] = [];

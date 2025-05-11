@@ -11,7 +11,11 @@
       <span>Tags:</span>
       <ul>
         @for (tag of feature.tags; track tag) {
-          <app-tag [tagName]="tag" [clickable]="true" (onClick)="handleTagClicked($event)" />
+          <app-tag
+            [tagName]="tag"
+            [clickable]="true"
+            (onClick)="handleTagClicked($event)"
+          />
         }
       </ul>
     </label>
