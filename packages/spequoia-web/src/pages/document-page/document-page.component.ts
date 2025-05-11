@@ -14,11 +14,12 @@ import { FeaturePanelComponent } from '../../components/feature-panel/feature-pa
 import { ViewPanelComponent } from '../../components/view-panel/view-panel.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DocumentService } from '../../services/document.service';
+import {HeaderComponent} from '../../components/header/header.component';
 
 @Component({
   selector: 'app-document-page',
   standalone: true,
-  imports: [FeaturePanelComponent, ViewPanelComponent],
+  imports: [FeaturePanelComponent, ViewPanelComponent, HeaderComponent],
   templateUrl: './document-page.component.html',
   styleUrls: ['./document-page.component.scss'],
 })

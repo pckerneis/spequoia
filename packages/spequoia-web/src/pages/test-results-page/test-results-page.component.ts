@@ -4,10 +4,11 @@ import { ParsedExample } from 'spequoia-core/dist';
 import { DocumentService } from '../../services/document.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MarkdownPipe } from '../../pipes/markdown.pipe';
+import {HeaderComponent} from '../../components/header/header.component';
 
 @Component({
   selector: 'app-test-results-page',
-  imports: [TestPlayerComponent, RouterLink, MarkdownPipe],
+  imports: [TestPlayerComponent, RouterLink, MarkdownPipe, HeaderComponent],
   templateUrl: './test-results-page.component.html',
   styleUrl: './test-results-page.component.scss',
 })

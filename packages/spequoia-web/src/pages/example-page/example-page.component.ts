@@ -5,10 +5,11 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MarkdownPipe } from '../../pipes/markdown.pipe';
 import { WireframePlayerComponent } from '../../components/wireframe-player/wireframe-player.component';
 import { HttpClient } from '@angular/common/http';
+import {HeaderComponent} from '../../components/header/header.component';
 
 @Component({
   selector: 'app-example-page',
-  imports: [MarkdownPipe, WireframePlayerComponent, RouterLink],
+  imports: [MarkdownPipe, WireframePlayerComponent, RouterLink, HeaderComponent],
   templateUrl: './example-page.component.html',
   styleUrl: './example-page.component.scss',
 })
