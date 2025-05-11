@@ -10,9 +10,9 @@ export interface SpequoiaDocument {
   title: string;
 
   /**
-   * Version of the document.
+   * Version of the specification.
    */
-  version?: string;
+  version: string;
 
   /**
    * Markdown description of the system.

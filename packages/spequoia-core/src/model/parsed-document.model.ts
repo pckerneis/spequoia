@@ -2,6 +2,7 @@ import { SpequoiaExecutor, SpequoiaTag } from "@spequoia/model";
 
 export interface ParsedDocument {
   title: string;
+  version: string;
   description?: string;
   features: ParsedFeature[];
   views: ParsedViewNode[];

@@ -1,6 +1,9 @@
 <div>
   <h1>
-    <a [routerLink]="'/'">{{ document.title }}</a>
+    <a [routerLink]="'/'">
+      {{ document.title }}
+      <small class="version">{{ document.version }}</small>
+    </a>
   </h1>
 </div>
 

@@ -13,8 +13,14 @@
     color: var(--title-color);
 
     a {
+      display: flex;
       text-decoration: none;
       color: inherit;
+
+      .version {
+        margin-left: 0.5rem;
+        margin-top: 0.1rem;
+      }
     }
   }
 

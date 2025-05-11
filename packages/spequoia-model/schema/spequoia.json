@@ -65,7 +65,7 @@
           "type": "string"
         },
         "version": {
-          "description": "Version of the document.",
+          "description": "Version of the specification.",
           "type": "string"
         },
         "views": {
@@ -78,6 +78,7 @@
       },
       "required": [
         "title",
+        "version",
         "features"
       ],
       "type": "object"
