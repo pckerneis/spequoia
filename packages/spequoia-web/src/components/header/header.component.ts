@@ -81,8 +81,12 @@ export class HeaderComponent {
 
   public onResultClick(result: HighlightedSearchResult): void {
     this.searchResults.set([]);
-    this.router.navigate(['/'], { fragment: result.anchorId }).then(() => {
-      this.documentService.requestExternalScroll();
+    this.documentService.clearTagFilters();
+
+    setTimeout(() => {
+      this.router.navigate(['/'], { fragment: result.anchorId }).then(() => {
+        this.documentService.requestExternalScroll();
+      });
     });
   }
 

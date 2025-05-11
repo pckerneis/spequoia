@@ -276,4 +276,9 @@ export class DocumentService {
   public requestExternalScroll() {
     this._externalScrollRequested$.next();
   }
+
+  public clearTagFilters(): void {
+    this.tagFilter.set([]);
+    this.applyFilters();
+  }
 }
