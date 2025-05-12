@@ -242,6 +242,7 @@ features:
           - expect task_row(2) to be visible
           - expect task_row(2) label to have text "Completed task"
           - click task_row(2) done_checkbox
+          - expect task_row(2) done_checkbox to be checked
           - expect input to have text ""
           - click active_filter
           - expect task_row(1) to be visible
