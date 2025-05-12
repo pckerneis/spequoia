@@ -15,11 +15,17 @@ import { ViewPanelComponent } from '../../components/view-panel/view-panel.compo
 import { DomSanitizer } from '@angular/platform-browser';
 import { DocumentService } from '../../services/document.service';
 import { HeaderComponent } from '../../components/header/header.component';
+import { YamlModalComponent } from '../../components/yaml-modal/yaml-modal.component';
 
 @Component({
   selector: 'app-document-page',
   standalone: true,
-  imports: [FeaturePanelComponent, ViewPanelComponent, HeaderComponent],
+  imports: [
+    FeaturePanelComponent,
+    ViewPanelComponent,
+    HeaderComponent,
+    YamlModalComponent,
+  ],
   templateUrl: './document-page.component.html',
   styleUrls: ['./document-page.component.scss'],
 })
@@ -29,6 +35,9 @@ export class DocumentPageComponent implements AfterViewInit, OnDestroy {
 
   private scrollSubscription?: Subscription;
 
+  public yamlContent = signal<string>('');
+  public showModal = signal(false);
+
   constructor(
     public readonly documentService: DocumentService,
     private readonly domSanitizer: DomSanitizer,
@@ -37,6 +46,16 @@ export class DocumentPageComponent implements AfterViewInit, OnDestroy {
     documentService.externalScrollRequested$.subscribe(() => {
       this.scrollToHashHeading();
     });
+
+    // Fetch YAML content
+    fetch('/example.yaml')
+      .then((response) => response.text())
+      .then((content) => {
+        this.yamlContent.set(content);
+      })
+      .catch((error) => {
+        console.error('Error fetching YAML content:', error);
+      });
   }
 
   activeHeadingId = signal('');
@@ -179,5 +198,9 @@ export class DocumentPageComponent implements AfterViewInit, OnDestroy {
     if (this.scrollSubscription) {
       this.scrollSubscription.unsubscribe();
     }
+  }
+
+  public showYamlModal(): void {
+    this.showModal.set(true);
   }
 }
