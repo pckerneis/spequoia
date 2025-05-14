@@ -41,6 +41,7 @@ export class WireframePlayerComponent implements AfterViewInit {
 
   $viewTransform = signal('translateX(0px) scale(1)');
   $viewHeight = computed(() => (this.layout === 'large' ? 500 : 320));
+  $overlayPosition = signal<OverlayPosition | null>(null);
 
   constructor(public readonly wireframePlayerService: WireframePlayerService) {}
 
@@ -49,7 +50,10 @@ export class WireframePlayerComponent implements AfterViewInit {
       this.wireframePlayerService.initialise(this.example);
 
       this.wireframePlayerService.stepChanged$.subscribe(() => {
-        setTimeout(() => this.updateTransform(), 0);
+        setTimeout(() => {
+          this.updateTransform();
+          this.updateOverlay();
+        }, 0);
       });
     }
 
@@ -93,4 +97,30 @@ export class WireframePlayerComponent implements AfterViewInit {
 
     this.$viewTransform.set(`scale(${scale})`);
   }
+
+  private updateOverlay() {
+    const overlay = this.wireframePlayerService.currentOverlay();
+
+    if (overlay) {
+      const el = document.querySelector(`[data-uuid="${overlay.targetUuid}"]`);
+
+      if (el) {
+        const bounds = el.getBoundingClientRect();
+        const containerBounds = this.viewContainer?.nativeElement.getBoundingClientRect();
+        this.$overlayPosition.set({
+          x: bounds.left + bounds.width / 2 - containerBounds.left,
+          y: bounds.bottom + 5 - containerBounds.top,
+        });
+      }
+    }
+  }
+
+  public handleOverlayButtonClicked(): void {
+    this.wireframePlayerService.playFromNextStep();
+  }
+}
+
+interface OverlayPosition {
+  x: number;
+  y: number;
 }

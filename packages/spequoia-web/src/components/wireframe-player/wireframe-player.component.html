@@ -23,6 +23,20 @@
           </div>
         }
       </div>
+
+      @if (wireframePlayerService.currentOverlay(); as overlay) {
+        @if ($overlayPosition(); as pos) {
+          <div class="overlay">
+            <div class="overlay-box" [style.left]="pos.x + 'px'" [style.top]="pos.y + 'px'">
+              {{ overlay.text }}
+
+              <div>
+                <button (click)="handleOverlayButtonClicked()">→</button>
+              </div>
+            </div>
+          </div>
+        }
+      }
     </div>
 
     <div class="before-after" [class.hidden]="wireframePlayerService.playing()">

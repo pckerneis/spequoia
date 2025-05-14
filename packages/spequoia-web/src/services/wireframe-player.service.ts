@@ -1,21 +1,16 @@
-import { computed, Injectable, signal } from '@angular/core';
+import {computed, Injectable, signal} from '@angular/core';
 import {
   ParsedExample,
+  ParsedOverlay,
   ParsedStep,
   ParsedViewNode,
 } from 'spequoia-core/dist/model/parsed-document.model';
-import { Subject } from 'rxjs';
+import {Subject} from 'rxjs';
 
 @Injectable()
 export class WireframePlayerService {
   readonly showBefore = signal<boolean>(false);
   readonly currentView = computed<ParsedViewNode | undefined>(() => {
-    const example = this.example();
-
-    if (!example || !example.steps || example.steps.length === 0) {
-      return undefined;
-    }
-
     const step = this.currentStep();
 
     if (!step) {
@@ -23,6 +18,10 @@ export class WireframePlayerService {
     }
 
     return this.showBefore() ? step.computedViewBefore : step.computedViewAfter;
+  });
+
+  readonly currentOverlay = computed<ParsedOverlay | undefined>(() => {
+    return this.currentStep()?.overlay;
   });
 
   readonly flattenSteps = computed(() => {
@@ -98,6 +97,10 @@ export class WireframePlayerService {
     if (example && example.steps) {
       if (this.currentStepIndex() < this.flattenSteps().length - 1) {
         this.currentStepIndex.update((step) => step + 1);
+
+        if (this.currentStep()?.overlay) {
+          this.stop();
+        }
       }
     }
 
@@ -191,5 +194,9 @@ export class WireframePlayerService {
 
   public setShowBefore(showBefore: boolean): void {
     this.showBefore.set(showBefore);
+  }
+
+  public playFromNextStep(): void {
+    this.togglePlayState();
   }
 }

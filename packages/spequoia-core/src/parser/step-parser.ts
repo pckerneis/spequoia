@@ -4,10 +4,10 @@ import {
   ParsedViewNode,
 } from "../model/parsed-document.model";
 import { resolveTarget } from "./target-resolver";
-import { SpequoiaAction } from "spequoia-model/dist";
+import {SpequoiaAction, SpequoiaExampleOverlay} from 'spequoia-model/dist';
 
 export function parseRawSteps(
-  steps: string[] | undefined,
+  steps: (string | SpequoiaExampleOverlay)[] | undefined,
   views: ParsedViewNode[],
   actions: Record<string, SpequoiaAction> = {},
 ): ParsedStep[] {
@@ -21,8 +21,18 @@ export function parseRawSteps(
   let currentTargetName: string | undefined;
   let mergedViews: ParsedViewNode[] = [];
   let currentViewTemplate: ParsedViewNode | undefined;
+  let currentOverlay: SpequoiaExampleOverlay | undefined;
 
   for (const rawStep of steps) {
+    if (typeof rawStep === "object" && rawStep.kind === "hotspot") {
+      currentOverlay = rawStep;
+      continue;
+    }
+
+    if (typeof rawStep !== "string") {
+      throw new Error(`Invalid step type: ${typeof rawStep}`);
+    }
+
     const foundAction = actions[rawStep];
     const stepsToProcess: string[] = [];
 
@@ -177,6 +187,23 @@ export function parseRawSteps(
       }
 
       parsedStep.computedViewAfter = currentView;
+
+      if (currentOverlay) {
+        const resolvedTarget = resolveTarget(
+            currentView,
+            currentOverlay.target,
+            currentViewTemplate,
+        );
+
+        if (resolvedTarget) {
+          parsedStep.overlay = {
+            ...currentOverlay,
+            targetUuid: resolvedTarget.node.uuid,
+          };
+        }
+
+        currentOverlay = undefined;
+      }
     }
 
     if (foundAction) {

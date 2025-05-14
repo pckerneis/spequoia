@@ -102,13 +102,25 @@ export interface SpequoiaExample {
   /**
    * A list of steps to execute the example.
    */
-  steps?: string[];
+  steps?: (SpequoiaExampleOverlay | string)[];
 
   /**
    * A list of executors to be used for the example.
    */
   executors?: string[];
 }
+
+interface BaseSpequoiaExampleOverlay {
+  kind: string;
+}
+
+export interface HotSpotOverlay extends BaseSpequoiaExampleOverlay {
+  kind: "hotspot";
+  target: string;
+  text: string;
+}
+
+export type SpequoiaExampleOverlay = HotSpotOverlay;
 
 /**
  * Represents a node in a view, which can be either a string selector

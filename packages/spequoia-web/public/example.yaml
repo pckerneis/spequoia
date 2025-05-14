@@ -8,6 +8,8 @@ description: |
   It's based on the [TodoMVC](https://todomvc.com/) project, which provides a
   consistent way to implement a simple TODO app using various JavaScript frameworks.
 
+  ![TodoMVC](/player-data/EX-007/32.png "TodoMVC")
+
   The goal of this document is to show how to use **Spequoia** to specify the
   behavior of a web application. It includes the following sections:
   - **Views**: The user interface of the application, including the layout and
@@ -139,7 +141,17 @@ features:
         name: Create a new task
         steps:
           - visit_main_page
-          - add_first_task
+          - kind: hotspot
+            text: Click here and type a task name.
+            target: input
+          - click input
+          - type "New task"
+          - press key "Enter"
+          - kind: hotspot
+            text: Your new task is added here.
+            target: task_row(1)
+          - expect task_row(1) to be visible
+          - expect label to have text "New task"
 
   - name: Mark tasks as done
     tags: [ui, state]
@@ -157,6 +169,9 @@ features:
         steps:
           - visit_main_page
           - add_first_task
+          - kind: hotspot
+            text: Click the checkbox to mark the task as done.
+            target: task_row(1) done_checkbox
           - click done_checkbox
           - expect done_checkbox to be checked
           - expect todo_count to have text "0 items left"
@@ -166,9 +181,15 @@ features:
         steps:
           - visit_main_page
           - add_first_task
+          - kind: hotspot
+            text: Click the checkbox to mark the task as done.
+            target: task_row(1) done_checkbox
           - click done_checkbox
           - expect done_checkbox to be checked
           - expect todo_count to have text "0 items left"
+          - kind: hotspot
+            text: Click again to unmark the task as done.
+            target: task_row(1) done_checkbox
           - click done_checkbox
           - expect done_checkbox not to be checked
           - expect todo_count to have text "1 items left"

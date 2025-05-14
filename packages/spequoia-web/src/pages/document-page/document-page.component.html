@@ -36,7 +36,7 @@
           </div>
 
           @if (safeProcessedDescription(); as descr) {
-            <p [innerHTML]="descr"></p>
+            <div class="description" [innerHTML]="descr"></div>
           }
 
           <h2 id="features">Features</h2>
@@ -57,6 +57,8 @@
               <app-view-panel [view]="view" />
             }
           }
+
+          <div class="bottom-spacer"></div>
         </main>
       </div>
     </div>

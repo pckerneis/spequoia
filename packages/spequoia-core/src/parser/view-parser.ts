@@ -19,6 +19,7 @@ function parseViewNode(
 ): ParsedViewNode {
   if (typeof rawNode === "string") {
     return {
+      uuid: crypto.randomUUID(),
       name,
       selector: rawNode,
     };
@@ -45,6 +46,7 @@ function parseViewNode(
     }
 
     return {
+      uuid: crypto.randomUUID(),
       name,
       selector,
       direction,
@@ -58,5 +60,8 @@ function parseViewNode(
     };
   }
 
-  return { name };
+  return {
+    uuid: crypto.randomUUID(),
+    name
+  };
 }

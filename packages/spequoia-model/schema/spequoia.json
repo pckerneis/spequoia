@@ -2,6 +2,26 @@
   "$ref": "#/definitions/SpequoiaDocument",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
+    "HotSpotOverlay": {
+      "properties": {
+        "kind": {
+          "const": "hotspot",
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "target",
+        "text"
+      ],
+      "type": "object"
+    },
     "SpequoiaAction": {
       "properties": {
         "description": {
@@ -108,7 +128,14 @@
         "steps": {
           "description": "A list of steps to execute the example.",
           "items": {
-            "type": "string"
+            "anyOf": [
+              {
+                "$ref": "#/definitions/SpequoiaExampleOverlay"
+              },
+              {
+                "type": "string"
+              }
+            ]
           },
           "type": "array"
         }
@@ -117,6 +144,9 @@
         "id"
       ],
       "type": "object"
+    },
+    "SpequoiaExampleOverlay": {
+      "$ref": "#/definitions/HotSpotOverlay"
     },
     "SpequoiaExecutor": {
       "description": "An executor is a tool or library that can be used to execute the steps.",

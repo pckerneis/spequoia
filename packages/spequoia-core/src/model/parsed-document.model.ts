@@ -1,4 +1,4 @@
-import { SpequoiaExecutor, SpequoiaTag } from "@spequoia/model";
+import {SpequoiaExampleOverlay, SpequoiaExecutor, SpequoiaTag} from '@spequoia/model';
 
 export interface ParsedDocument {
   title: string;
@@ -38,6 +38,11 @@ export interface ParsedStep {
   composite?: boolean;
   steps?: ParsedStep[];
   errors: string[];
+  overlay?: ParsedOverlay;
+}
+
+export interface ParsedOverlay extends SpequoiaExampleOverlay {
+  targetUuid: string;
 }
 
 export type ParsedStepFragmentType = "text" | "variable" | "quoted" | "keyword";
@@ -98,6 +103,7 @@ export interface ParsedStepFragment {
 }
 
 export interface ParsedViewNode {
+  uuid: string;
   name: string;
   selector?: string;
   route?: string;

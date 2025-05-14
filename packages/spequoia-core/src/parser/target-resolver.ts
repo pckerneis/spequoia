@@ -83,6 +83,7 @@ export function resolveTargetInNode(
         const newNode = JSON.parse(JSON.stringify(child));
         newNode.selector = applyParameters(child.selector, targetName);
         newNode.name = targetName;
+        newNode.uuid = crypto.randomUUID();
 
         if (currentNode.children) {
           currentNode.children.push(newNode);

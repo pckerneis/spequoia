@@ -48,6 +48,10 @@ nav {
   overflow: auto;
 }
 
+.bottom-spacer {
+  height: 5rem;
+}
+
 main {
   .view-yaml-button {
     background: none;
@@ -78,4 +82,13 @@ main {
   padding: 0.2rem;
   text-decoration: none;
   margin-left: 0.5rem;
+}
+
+::ng-deep .description {
+  img {
+    max-width: 100%;
+    height: auto;
+
+    box-shadow: 0 0 30px 2px rgba(0, 0, 0, 0.1);
+  }
 }
