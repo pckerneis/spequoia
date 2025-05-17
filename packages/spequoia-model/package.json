@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "clean": "rimraf schema",
-    "build": "npx ts-json-schema-generator --path src/model/spequoia.model.ts --type SpequoiaDocument --additional-properties --out schema/spequoia.json && tsc",
-    "tsdoc": "tsdoc --src=src/model/* --types --noemoji --dest=../website/schema.md"
+    "generate-schema": "npx ts-json-schema-generator --path src/model/spequoia.model.ts --type SpequoiaDocument --additional-properties --out schema/spequoia.json && tsc",
+    "tsdoc": "tsdoc --src=src/model/* --types --noemoji --dest=../website/schema.md",
+    "deploy-schema": "node deploy-schema.js",
+    "build": "npm run generate-schema && npm run tsdoc && npm run deploy-schema"
   },
   "author": "pckerneis",
   "license": "MIT",

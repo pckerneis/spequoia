@@ -162,7 +162,6 @@ or a complex node object with nested structure.
 ## Raw schema
 
 <!-- RAW_SCHEMA_START -->
-
 ```json
 {
   "$ref": "#/definitions/SpequoiaDocument",
