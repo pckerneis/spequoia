@@ -4,6 +4,7 @@ import {defineConfig} from 'vitepress';
 export default defineConfig({
   title: 'Spequoia',
   description: 'A specification format for web applications',
+  base: '/spequoia/',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: '/logo.svg',
