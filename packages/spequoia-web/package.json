@@ -6,7 +6,7 @@
     "start": "ng serve",
     "clean": "rimraf ../website/public/example-todomvc",
     "ng:build": "ng build",
-    "move-to-website": "npx cpx dist/browser/** ../website/public/example-todomvc/",
+    "move-to-website": "npx cpx \"dist/browser/**\" \"../website/public/example-todomvc/\"",
     "build": "npm run clean && npm run ng:build && npm run move-to-website",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
