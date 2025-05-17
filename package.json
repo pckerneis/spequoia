@@ -10,7 +10,8 @@
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "test": "vitest run --coverage",
-    "dev": "vitest watch"
+    "dev": "vitest watch",
+    "docs:build": "npm run docs:build --workspaces --if-present"
   },
   "author": "pckerneis",
   "license": "MIT",
