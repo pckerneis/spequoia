@@ -4,8 +4,8 @@
   "description": "Spequoia is a spec-as-code toolkit that transforms readable specifications into documentation, wireframe previews, automated tests, and interactive demos.",
   "type": "module",
   "scripts": {
-    "clean": "npm run clean --workspaces",
-    "build": "npm run build --workspaces",
+    "clean": "npm run clean --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
     "lint": "eslint packages/**/*.ts",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit --skipLibCheck",
