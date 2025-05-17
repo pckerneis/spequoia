@@ -11,16 +11,17 @@ export default defineConfig({
     nav: [
       {text: 'Home', link: '/'},
       {text: 'Guide', link: '/guide'},
-      {text: 'Schema', link: '/schema'}
+      {text: 'Example', link: '/example'},
+      {text: 'Schema', link: '/schema'},
     ],
 
     sidebar: [
       {
         text: 'Introduction',
         items: [
-          {text: 'Why Spequoia', link: '/guide'},
-          {text: 'Schema', link: '/schema'},
+          {text: 'What is Spequoia', link: '/guide'},
           {text: 'Example', link: '/example'},
+          {text: 'Schema', link: '/schema'},
         ],
       }
     ],
