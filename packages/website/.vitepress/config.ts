@@ -20,6 +20,7 @@ export default defineConfig({
         items: [
           {text: 'Why Spequoia', link: '/guide'},
           {text: 'Schema', link: '/schema'},
+          {text: 'Example', link: '/example'},
         ],
       }
     ],
