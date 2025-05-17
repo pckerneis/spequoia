@@ -1,0 +1,5 @@
+main img {
+    box-shadow: 0 0 2rem 0 rgb(0, 0, 0, 0.1);
+    justify-self: center;
+    margin: 2rem 0;
+}

@@ -1,0 +1,26 @@
+{
+  "name": "spequoia-website",
+  "version": "0.0.0",
+  "description": "The website for Spequoia",
+  "private": true,
+  "type": "module",
+  "keywords": [
+    "documentation",
+    "testing",
+    "literate",
+    "bdd",
+    "tdd",
+    "e2e"
+  ],
+  "scripts": {
+    "docs:dev": "vitepress dev .",
+    "docs:build": "vitepress build .",
+    "docs:preview": "vitepress preview .",
+    "prepublishOnly": "npm run docs:build"
+  },
+  "devDependencies": {
+    "prettier": "^3.1.1",
+    "vitepress": "^1.0.0-rc.33",
+    "vue": "^3.4.0"
+  }
+}

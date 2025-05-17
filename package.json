@@ -18,7 +18,8 @@
     "packages/spequoia-model",
     "packages/spequoia-core",
     "packages/spequoia-web",
-    "packages/spequoia-playwright"
+    "packages/spequoia-playwright",
+    "packages/website"
   ],
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.31.0",

@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf schema",
     "build": "npx ts-json-schema-generator --path src/model/spequoia.model.ts --type SpequoiaDocument --additional-properties --out schema/spequoia.json && tsc",
-    "tsdoc": "tsdoc --src=src/model/* --types --noemoji"
+    "tsdoc": "tsdoc --src=src/model/* --types --noemoji --dest=../website/schema.md"
   },
   "author": "pckerneis",
   "license": "MIT",
