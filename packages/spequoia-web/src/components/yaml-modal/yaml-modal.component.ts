@@ -132,7 +132,7 @@ export class YamlModalComponent implements AfterViewInit, OnChanges {
 
   public showRaw(): void {
     const a = document.createElement('a');
-    a.href = '/example.yaml';
+    a.href = 'example.yaml';
     a.target = '_blank';
     a.click();
   }

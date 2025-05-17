@@ -48,7 +48,7 @@ export class DocumentPageComponent implements AfterViewInit, OnDestroy {
     });
 
     // Fetch YAML content
-    fetch('/example.yaml')
+    fetch('example.yaml')
       .then((response) => response.text())
       .then((content) => {
         this.yamlContent.set(content);
