@@ -21,7 +21,7 @@ Spequoia's wireframe generator allows you to create animated wireframes that can
 application's user interface before it is built. You can use these animated wireframes to gather feedback from
 stakeholders and make design decisions before writing any code.
 
-![Wireframe example](./wireframe-player.gif)
+![Wireframe example](/wireframe-player.gif)
 
 ### Development
 
@@ -37,7 +37,7 @@ generate end-to-end tests from your specifications and run them against your app
 
 This ensures that your application behaves as expected and that your specifications are up to date.
 
-![Test player example](./test-player.gif)
+![Test player example](/test-player.gif)
 
 ### Documentation
 
@@ -47,4 +47,4 @@ use this documentation to communicate your application's features and behavior t
 Example user interactions covered by end-to-end tests are automatically included in the documentation, allowing you to
 quickly generate interactive demos of your application that are always up to date.
 
-![Documentation example](./spequoia-web.gif)
+![Documentation example](/spequoia-web.gif)
