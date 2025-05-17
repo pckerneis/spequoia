@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/spequoia-web",
+            "outputPath": "dist",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -39,6 +39,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/spequoia/example-todomvc/",
               "budgets": [
                 {
                   "type": "initial",

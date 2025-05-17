@@ -8,7 +8,7 @@ description: |
   It's based on the [TodoMVC](https://todomvc.com/) project, which provides a
   consistent way to implement a simple TODO app using various JavaScript frameworks.
 
-  ![TodoMVC](/player-data/EX-007/32.png "TodoMVC")
+  ![TodoMVC](player-data/EX-007/32.png "TodoMVC")
 
   The goal of this document is to show how to use **Spequoia** to specify the
   behavior of a web application. It includes the following sections:

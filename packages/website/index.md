@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "Spequoia"
   text: Evergreen specs
-  tagline: A specification format for UX design, testing, documentation and codegen
+  tagline: A specification format for web applications bridging the gap between design, development, and testing.
   image:
     src: /animation.svg
     alt: Spequoia logo

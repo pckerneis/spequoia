@@ -7,6 +7,10 @@ developers, and testers to collaborate.
 
 It is also machine-readable, allowing for automatic generation of documentation, wireframes, and end-to-end tests.
 
+The goal of Spequoia is to provide a single source of truth for your application that can be used throughout the
+software development lifecycle. This reduces the duplication of knowledge and facilitates the synchronization between
+your specifications, your code and your documentation.
+
 ## Spequoia and the software development lifecycle
 
 Spequoia is designed to be used throughout the software development lifecycle, from design to regression testing.
