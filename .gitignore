@@ -5,3 +5,4 @@
 **/tsconfig.tsbuildinfo
 packages/website/public/example-todomvc/**
 packages/spequoia-playwright/player-data/**
+**/.vscode/**
