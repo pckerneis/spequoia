@@ -1,12 +1,12 @@
 import { Page, test } from "@playwright/test";
 import {
-  ClickAction,
+  ClickAction, ParsedOverlay,
   ParsedStep,
   ParsedViewNode,
   parseSpec,
   PressKeyAction,
   TypeAction,
-} from "spequoia-core/dist";
+} from 'spequoia-core/dist';
 import path from "path";
 import fs from "fs";
 
@@ -16,12 +16,26 @@ interface ScreenshotSection {
   endFrame?: number;
 }
 
+interface BoundingBox {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+interface OverlayRendering {
+  targetBounds: BoundingBox;
+  overlay: ParsedOverlay;
+}
+
 const SCREENSHOT_DIRECTORY = "player-data";
 
 let startTime = 0;
 
 let frameCounter = 0;
 const sections: ScreenshotSection[] = [];
+let currentOverlay: OverlayRendering | null = null;
+const overlays: (OverlayRendering | null)[] = [];
 
 function beginSection(name: string) {
   if (sections.length === 0 && frameCounter > 0) {
@@ -53,6 +67,7 @@ function saveManifest(exampleId: string) {
       sections: sectionsWithEndFrames,
       frameCount: frameCounter,
       startTime: startTime,
+      overlays,
     },
     null,
     2,
@@ -82,6 +97,9 @@ async function screenshot(page: Page, exampleId: string) {
   await page.screenshot({
     path: path.join(SCREENSHOT_DIRECTORY, exampleId, `${frameCounter++}.png`),
   });
+
+  overlays.push(currentOverlay);
+  currentOverlay = null;
 }
 
 async function slowType(page: Page, text: string, exampleId: string) {
@@ -103,6 +121,8 @@ description: |
   It's based on the [TodoMVC](https://todomvc.com/) project, which provides a
   consistent way to implement a simple TODO app using various JavaScript frameworks.
 
+  ![TodoMVC](player-data/EX-007/32.png "TodoMVC")
+
   The goal of this document is to show how to use **Spequoia** to specify the
   behavior of a web application. It includes the following sections:
   - **Views**: The user interface of the application, including the layout and
@@ -112,6 +132,12 @@ description: |
       behavior and the steps to reproduce it.
 
   These sections are used to generate wireframes, test cases, and documentation.
+
+tags:
+  - name: ui
+    color: rgb(245 164 105)
+  - name: layout
+    color: rgb(170 150 245)
 
 executors:
   default:
@@ -199,15 +225,8 @@ features:
     tags: [ui, layout]
     examples:
       - id: EX-001
-        name: The web app shows a header with the app title "todos", a text input, and an empty task list
-        description: |
-          The app title is prominently displayed in the header, making the purpose
-          of the application immediately clear to users.
-
-          The input field is always visible, allowing users to quickly add tasks. The input placeholder
-          is "What needs to be done?" to guide users on what to enter.
-
-          The task list is empty at the start, indicating that no tasks have been added yet.
+        name: Initial state
+        description: Check the initial state of the app.
         steps:
           - visit_main_page
           - expect title to have text "todos"
@@ -217,6 +236,7 @@ features:
           - expect footer not to be visible
 
   - name: Create new tasks
+    tags: [ui, state]
     description: |
       The text input allows to add new tasks by typing the task name and hitting \`Enter\`.
 
@@ -225,11 +245,23 @@ features:
     examples:
       - id: EX-002
         name: Create a new task
+        description: Create a new task by typing in the input field and hitting \`Enter\`.
         steps:
           - visit_main_page
-          - add_first_task
+          - kind: hotspot
+            text: Click here and type a task name.
+            target: input
+          - click input
+          - type "New task"
+          - press key "Enter"
+          - kind: hotspot
+            text: Your new task is added here.
+            target: task_row(1)
+          - expect task_row(1) to be visible
+          - expect label to have text "New task"
 
   - name: Mark tasks as done
+    tags: [ui, state]
     description: |
       The user can mark tasks as done by clicking the checkbox next to the task name.
 
@@ -240,28 +272,40 @@ features:
 
     examples:
       - id: EX-003
+        description: Mark a task as done by clicking the checkbox.
         name: Mark a task as done
         steps:
           - visit_main_page
           - add_first_task
+          - kind: hotspot
+            text: Click the checkbox to mark the task as done.
+            target: task_row(1) done_checkbox
           - click done_checkbox
           - expect done_checkbox to be checked
           - expect todo_count to have text "0 items left"
           - expect clear_completed_button to be visible
       - id: EX-004
         name: Unmark a task as done
+        description: Unmark a task as done by clicking the checkbox twice.
         steps:
           - visit_main_page
           - add_first_task
+          - kind: hotspot
+            text: Click the checkbox to mark the task as done.
+            target: task_row(1) done_checkbox
           - click done_checkbox
           - expect done_checkbox to be checked
           - expect todo_count to have text "0 items left"
+          - kind: hotspot
+            text: Click again to unmark the task as done.
+            target: task_row(1) done_checkbox
           - click done_checkbox
           - expect done_checkbox not to be checked
           - expect todo_count to have text "1 items left"
           - expect clear_completed_button to be hidden
 
   - name: Clear completed tasks
+    tags: [ui, state]
     description: |
       The user can clear completed tasks by clicking the "Clear completed" button.
 
@@ -272,6 +316,7 @@ features:
     examples:
       - id: EX-005
         name: Clear completed tasks
+        description: Clear completed tasks by clicking the "Clear completed" button.
         steps:
           - visit_main_page
           - add_first_task
@@ -284,6 +329,7 @@ features:
           - expect footer not to be visible
 
   - name: Delete tasks
+    tags: [ui, state]
     description: |
       The user can delete tasks by clicking the "Delete" button next to the task name.
 
@@ -293,26 +339,29 @@ features:
 
     examples:
       - id: EX-006
+        description: Click the "Delete" button and check task is removed from the list.
         name: Delete a task
         steps:
           - visit_main_page
           - add_first_task
           - hover over task_row(1)
           - expect task_row(1) delete_button to be visible
-          - click delete_button
+          - click task_row(1) delete_button
           - expect todo_list to be empty
 
   - name: Filter tasks
+    tags: [ui]
     description: |
       The user can filter tasks by clicking the "All", "Active", or "Completed" links in the footer.
 
       When a link is clicked, only the tasks that match the filter are displayed in the task list.
 
-      The active_filter is visually indicated by a different style.
+      The active filter is visually indicated by a different style.
 
     examples:
       - id: EX-007
         name: Filter tasks
+        description: Checks the behavior of "All", "Active", or "Completed" links in the footer.
         steps:
           - visit_main_page
           - click input
@@ -326,6 +375,7 @@ features:
           - expect task_row(2) to be visible
           - expect task_row(2) label to have text "Completed task"
           - click task_row(2) done_checkbox
+          - expect task_row(2) done_checkbox to be checked
           - expect input to have text ""
           - click active_filter
           - expect task_row(1) to be visible
@@ -338,6 +388,7 @@ features:
           - expect task_row(2) to be visible
 
   - name: Edit tasks
+    tags: [ui, state]
     description: |
       The user can edit tasks by double-clicking the task name.
 
@@ -349,24 +400,25 @@ features:
     examples:
       - id: EX-008
         name: Edit a task
+        description: Double-click a task to edit it.
         steps:
           - visit_main_page
           - add_first_task
-          - double-click task_row(1)
-          - press key "ControlOrMeta+A"
+          - double-click task_row(1) label
           - type "Edited task"
           - press key "Enter"
           - expect label to have text "Edited task"
       - id: EX-009
         name: Cancel editing a task
+        description: Cancel editing a task by pressing \`Esc\`.
         steps:
           - visit_main_page
           - add_first_task
-          - double-click task_row(1)
-          - press key "ControlOrMeta+A"
+          - double-click task_row(1) label
           - type "Edited task"
           - press key "Escape"
           - expect label to have text "New task"
+
 `;
 
 const parseResult = parseSpec(document);
@@ -456,11 +508,70 @@ function resolveNode(
   return null;
 }
 
+function findByUuid(targetUuid: string, computedViewBefore: ParsedViewNode | undefined): ParsedViewNode {
+  if (!computedViewBefore) {
+    throw new Error(`Computed view before is undefined`);
+  }
+
+  const found = findByUuidRecursive(targetUuid, computedViewBefore);
+
+  if (!found) {
+    throw new Error(`Node with UUID ${targetUuid} not found`);
+  }
+
+  return found;
+}
+
+function findByUuidRecursive(
+  targetUuid: string,
+  node: ParsedViewNode | undefined,
+): ParsedViewNode | null {
+  if (!node) {
+    return null;
+  }
+
+  if (node.uuid === targetUuid) {
+    return node;
+  }
+
+  for (const child of node.children || []) {
+    const found = findByUuidRecursive(targetUuid, child);
+    if (found) {
+      return found;
+    }
+  }
+
+  return null;
+}
+
 async function runStep(step: ParsedStep, page: Page, exampleId: string) {
   const action = step.action;
 
   if (!action) {
     return;
+  }
+
+  if (step.overlay) {
+    const overlay = step.overlay;
+    const overlaySelector = findByUuid(
+        overlay.targetUuid,
+        step.computedViewBefore,
+    );
+
+    if (!overlaySelector?.selector) {
+      throw new Error(`Overlay selector for ${overlay.targetUuid} not found`);
+    }
+
+    const boundingBox = await page.locator(overlaySelector.selector).boundingBox();
+
+    if (!boundingBox) {
+      throw new Error(`Bounding box for ${overlay.targetUuid} not found`);
+    }
+
+    currentOverlay = {
+      targetBounds: boundingBox,
+      overlay: overlay,
+    };
   }
 
   const { type } = action;

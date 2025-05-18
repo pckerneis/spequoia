@@ -6,21 +6,47 @@
       "endFrame": 1
     },
     {
-      "name": "add_first_task - click input",
+      "name": "click input",
       "startFrame": 1,
       "endFrame": 2
     },
     {
-      "name": "add_first_task - type \"New task\"",
+      "name": "type \"New task\"",
       "startFrame": 2,
       "endFrame": 10
     },
     {
-      "name": "add_first_task - press key \"Enter\"",
+      "name": "press key \"Enter\"",
       "startFrame": 10,
       "endFrame": 11
     }
   ],
   "frameCount": 11,
-  "startTime": 1746956959232
+  "startTime": 1747565500624,
+  "overlays": [
+    null,
+    {
+      "targetBounds": {
+        "x": 174,
+        "y": 130,
+        "width": 550,
+        "height": 65
+      },
+      "overlay": {
+        "kind": "hotspot",
+        "text": "Click here and type a task name.",
+        "target": "input",
+        "targetUuid": "4934b81d-00e1-4830-b3d4-2dd07f4a480f"
+      }
+    },
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
 }

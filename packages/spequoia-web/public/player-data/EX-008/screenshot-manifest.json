@@ -21,26 +21,86 @@
       "endFrame": 11
     },
     {
-      "name": "double-click task_row(1)",
+      "name": "double-click task_row(1) label",
       "startFrame": 11,
       "endFrame": 12
     },
     {
-      "name": "press key \"ControlOrMeta+A\"",
-      "startFrame": 12,
-      "endFrame": 13
-    },
-    {
       "name": "type \"Edited task\"",
-      "startFrame": 13,
-      "endFrame": 24
+      "startFrame": 12,
+      "endFrame": 23
     },
     {
       "name": "press key \"Enter\"",
-      "startFrame": 24,
-      "endFrame": 25
+      "startFrame": 23,
+      "endFrame": 24
     }
   ],
-  "frameCount": 25,
-  "startTime": 1746956964797
+  "frameCount": 24,
+  "startTime": 1747565506124,
+  "overlays": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    {
+      "targetBounds": {
+        "x": 174,
+        "y": 205.390625,
+        "width": 40,
+        "height": 40
+      },
+      "overlay": {
+        "kind": "hotspot",
+        "text": "Click the checkbox to mark the task as done.",
+        "target": "task_row(1) done_checkbox",
+        "targetUuid": "7c8f93a8-1700-48db-9cfe-8e51f386f571"
+      }
+    },
+    {
+      "targetBounds": {
+        "x": 174,
+        "y": 205.390625,
+        "width": 40,
+        "height": 40
+      },
+      "overlay": {
+        "kind": "hotspot",
+        "text": "Click again to unmark the task as done.",
+        "target": "task_row(1) done_checkbox",
+        "targetUuid": "7c8f93a8-1700-48db-9cfe-8e51f386f571"
+      }
+    },
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
 }

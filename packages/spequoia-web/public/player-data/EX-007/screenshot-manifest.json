@@ -52,5 +52,65 @@
     }
   ],
   "frameCount": 33,
-  "startTime": 1746956964527
+  "startTime": 1747565504826,
+  "overlays": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    {
+      "targetBounds": {
+        "x": 174,
+        "y": 205.390625,
+        "width": 40,
+        "height": 40
+      },
+      "overlay": {
+        "kind": "hotspot",
+        "text": "Click the checkbox to mark the task as done.",
+        "target": "task_row(1) done_checkbox",
+        "targetUuid": "1dcf8cda-8d85-4898-b918-145af5002174"
+      }
+    },
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
 }

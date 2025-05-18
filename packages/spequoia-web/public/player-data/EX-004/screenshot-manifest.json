@@ -32,5 +32,46 @@
     }
   ],
   "frameCount": 13,
-  "startTime": 1746956959233
+  "startTime": 1747565500499,
+  "overlays": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    {
+      "targetBounds": {
+        "x": 174,
+        "y": 205.390625,
+        "width": 40,
+        "height": 40
+      },
+      "overlay": {
+        "kind": "hotspot",
+        "text": "Click the checkbox to mark the task as done.",
+        "target": "task_row(1) done_checkbox",
+        "targetUuid": "7c8f93a8-1700-48db-9cfe-8e51f386f571"
+      }
+    },
+    {
+      "targetBounds": {
+        "x": 174,
+        "y": 205.390625,
+        "width": 40,
+        "height": 40
+      },
+      "overlay": {
+        "kind": "hotspot",
+        "text": "Click again to unmark the task as done.",
+        "target": "task_row(1) done_checkbox",
+        "targetUuid": "7c8f93a8-1700-48db-9cfe-8e51f386f571"
+      }
+    }
+  ]
 }

@@ -8,7 +8,8 @@ import {
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ExampleWithManifest } from '../../models/processed-document.model';
-import { Section } from '../../models/manifest.model';
+import {OverlayRendering, Section} from '../../models/manifest.model';
+import {ParsedOverlay} from 'spequoia-core/dist';
 
 const FRAME_DURATION = 100;
 
@@ -43,8 +44,33 @@ export class TestPlayerComponent implements OnInit {
   $previewSectionName = signal('');
   $isDragging = signal(false);
 
+  $currentOverlay = computed(() => {
+    const frame = this.$currentFrame();
+    return this.overlays[frame + 1] || null;
+  });
+  $targetBox = computed(() => {
+    const overlay = this.$currentOverlay();
+    if (overlay) {
+      return overlay.targetBounds;
+    }
+    return null;
+  });
+  $overlayPosition = computed(() => {
+    const bounds = this.$targetBox();
+
+    if (bounds) {
+      return {
+          x: bounds.x + bounds.width / 2,
+          y: bounds.y + bounds.height + 5,
+      };
+    }
+
+    return null;
+  })
+
   private sections: Section[] = [];
   private allFrames: number[] = [];
+  private overlays: OverlayRendering[] = [];
   private playInterval?: number;
   private preloadedImages: Map<number, HTMLImageElement> = new Map();
 
@@ -57,6 +83,7 @@ export class TestPlayerComponent implements OnInit {
     if (this.example?.manifest) {
       const manifest = this.example.manifest;
       this.sections = manifest.sections;
+      this.overlays = manifest.overlays;
 
       this.allFrames = [];
       for (let i = 0; i < manifest.frameCount; i++) {
@@ -105,6 +132,11 @@ export class TestPlayerComponent implements OnInit {
     this.playInterval = window.setInterval(() => {
       if (this.$currentFrame() < this.allFrames.length - 1) {
         this.showFrame(this.$currentFrame() + 1);
+
+        const overlay = this.$currentOverlay();
+        if (overlay) {
+          this.pause();
+        }
       } else {
         this.pause();
       }
@@ -317,6 +349,10 @@ export class TestPlayerComponent implements OnInit {
     }
 
     this.showFrame(0);
+  }
+
+  public handleOverlayButtonClicked(): void {
+    this.play();
   }
 }
 

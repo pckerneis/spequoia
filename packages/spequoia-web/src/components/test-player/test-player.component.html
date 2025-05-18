@@ -1,5 +1,22 @@
 <div class="viewer">
-  <img class="screenshot" [src]="screenshotSrc()" alt="Screenshot" />
+  <div class="view-container">
+    <img class="screenshot" [src]="screenshotSrc()" alt="Screenshot" />
+
+    @if ($currentOverlay(); as overlay) {
+      <div class="overlay">
+        @if ($overlayPosition(); as pos) {
+          <div class="overlay-box" [style.left]="pos.x + 'px'" [style.top]="pos.y + 'px'">
+            {{ overlay.overlay.text }}
+
+            <div>
+              <button (click)="handleOverlayButtonClicked()">→</button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
   <div class="transport-controls">
     <div
       class="timeline"
