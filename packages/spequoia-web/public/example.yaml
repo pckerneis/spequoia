@@ -24,7 +24,7 @@ tags:
   - name: ui
     color: rgb(245 164 105)
   - name: layout
-    color: "#4c48e7"
+    color: rgb(170 150 245)
 
 executors:
   default:
@@ -113,14 +113,7 @@ features:
     examples:
       - id: EX-001
         name: Initial state
-        description: |
-          The app title is prominently displayed in the header, making the purpose
-          of the application immediately clear to users.
-
-          The input field is always visible, allowing users to quickly add tasks. The input placeholder
-          is "What needs to be done?" to guide users on what to enter.
-
-          The task list is empty at the start, indicating that no tasks have been added yet.
+        description: Check the initial state of the app.
         steps:
           - visit_main_page
           - expect title to have text "todos"
@@ -139,6 +132,7 @@ features:
     examples:
       - id: EX-002
         name: Create a new task
+        description: Create a new task by typing in the input field and hitting `Enter`.
         steps:
           - visit_main_page
           - kind: hotspot
@@ -165,6 +159,7 @@ features:
 
     examples:
       - id: EX-003
+        description: Mark a task as done by clicking the checkbox.
         name: Mark a task as done
         steps:
           - visit_main_page
@@ -178,6 +173,7 @@ features:
           - expect clear_completed_button to be visible
       - id: EX-004
         name: Unmark a task as done
+        description: Unmark a task as done by clicking the checkbox twice.
         steps:
           - visit_main_page
           - add_first_task
@@ -207,6 +203,7 @@ features:
     examples:
       - id: EX-005
         name: Clear completed tasks
+        description: Clear completed tasks by clicking the "Clear completed" button.
         steps:
           - visit_main_page
           - add_first_task
@@ -229,6 +226,7 @@ features:
 
     examples:
       - id: EX-006
+        description: Click the "Delete" button and check task is removed from the list.
         name: Delete a task
         steps:
           - visit_main_page
@@ -250,6 +248,7 @@ features:
     examples:
       - id: EX-007
         name: Filter tasks
+        description: Checks the behavior of "All", "Active", or "Completed" links in the footer.
         steps:
           - visit_main_page
           - click input
@@ -288,6 +287,7 @@ features:
     examples:
       - id: EX-008
         name: Edit a task
+        description: Double-click a task to edit it.
         steps:
           - visit_main_page
           - add_first_task
@@ -297,6 +297,7 @@ features:
           - expect label to have text "Edited task"
       - id: EX-009
         name: Cancel editing a task
+        description: Cancel editing a task by pressing `Esc`.
         steps:
           - visit_main_page
           - add_first_task
