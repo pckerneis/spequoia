@@ -46,6 +46,7 @@ export class TestPlayerComponent implements OnInit {
   private sections: Section[] = [];
   private allFrames: number[] = [];
   private playInterval?: number;
+  private preloadedImages: Map<number, HTMLImageElement> = new Map();
 
   constructor(
     public readonly http: HttpClient,
@@ -61,6 +62,8 @@ export class TestPlayerComponent implements OnInit {
       for (let i = 0; i < manifest.frameCount; i++) {
         this.allFrames.push(i);
       }
+
+      this.preloadImages();
 
       // Map each frame to the closest previous step index
       this.$sectionByFrame.set(
@@ -273,11 +276,25 @@ export class TestPlayerComponent implements OnInit {
     this.$sections.set(timelineSections);
   }
 
-  showFrame(frameIdx: number) {
-    if (frameIdx < 0 || frameIdx >= this.allFrames.length) return;
-    this.$currentFrame.set(frameIdx);
-    this.screenshotSrc.set(`player-data/${this.example.id}/${frameIdx}.png`);
-    this.updateTimeline();
+  private preloadImages(): void {
+    this.allFrames.forEach(frame => {
+      const img = new Image();
+      img.src = `player-data/${this.example.id}/${frame}.png`;
+      img.onload = () => {
+        this.preloadedImages.set(frame, img);
+      };
+    });
+  }
+
+  private showFrame(frame: number): void {
+    if (frame < 0 || frame >= this.allFrames.length) return;
+    this.$currentFrame.set(frame);
+    // Use preloaded image if available, otherwise fall back to direct URL
+    const preloadedImage = this.preloadedImages.get(frame);
+    this.screenshotSrc.set(preloadedImage?.src || `player-data/${this.example.id}/${frame}.png`);
+    this.$indicatorLeft.set(
+      `${(frame / (this.allFrames.length - 1)) * 100}%`,
+    );
   }
 
   next() {
