@@ -1,6 +1,6 @@
 @if (feature) {
   <h3 [id]="feature.anchorId">
-    @if (feature.id) {
+    @if (feature.id && feature.id != feature.name) {
       <b>{{ feature.id }} - </b>
     }
     <span>{{ feature.name }}</span>
