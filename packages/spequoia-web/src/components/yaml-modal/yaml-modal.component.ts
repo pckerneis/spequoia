@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-yaml-modal',
@@ -25,7 +25,7 @@ export class YamlModalComponent {
   }
 
   public download(): void {
-    const blob = new Blob([this.content], {type: 'text/yaml'});
+    const blob = new Blob([this.content], { type: 'text/yaml' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;

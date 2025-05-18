@@ -8,8 +8,7 @@ import {
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ExampleWithManifest } from '../../models/processed-document.model';
-import {OverlayRendering, Section} from '../../models/manifest.model';
-import {ParsedOverlay} from 'spequoia-core/dist';
+import { OverlayRendering, Section } from '../../models/manifest.model';
 
 const FRAME_DURATION = 100;
 
@@ -60,13 +59,13 @@ export class TestPlayerComponent implements OnInit {
 
     if (bounds) {
       return {
-          x: bounds.x + bounds.width / 2,
-          y: bounds.y + bounds.height + 5,
+        x: bounds.x + bounds.width / 2,
+        y: bounds.y + bounds.height + 5,
       };
     }
 
     return null;
-  })
+  });
 
   private sections: Section[] = [];
   private allFrames: number[] = [];
@@ -309,7 +308,7 @@ export class TestPlayerComponent implements OnInit {
   }
 
   private preloadImages(): void {
-    this.allFrames.forEach(frame => {
+    this.allFrames.forEach((frame) => {
       const img = new Image();
       img.src = `player-data/${this.example.id}/${frame}.png`;
       img.onload = () => {
@@ -323,10 +322,10 @@ export class TestPlayerComponent implements OnInit {
     this.$currentFrame.set(frame);
     // Use preloaded image if available, otherwise fall back to direct URL
     const preloadedImage = this.preloadedImages.get(frame);
-    this.screenshotSrc.set(preloadedImage?.src || `player-data/${this.example.id}/${frame}.png`);
-    this.$indicatorLeft.set(
-      `${(frame / (this.allFrames.length - 1)) * 100}%`,
+    this.screenshotSrc.set(
+      preloadedImage?.src || `player-data/${this.example.id}/${frame}.png`,
     );
+    this.$indicatorLeft.set(`${(frame / (this.allFrames.length - 1)) * 100}%`);
   }
 
   next() {

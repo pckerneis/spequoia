@@ -1,4 +1,4 @@
-import {ParsedOverlay} from 'spequoia-core/dist';
+import { ParsedOverlay } from 'spequoia-core/dist';
 
 export interface Section {
   name: string;

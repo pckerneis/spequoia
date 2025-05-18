@@ -1,11 +1,11 @@
-import {computed, Injectable, signal} from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import {
   ParsedExample,
   ParsedOverlay,
   ParsedStep,
   ParsedViewNode,
 } from 'spequoia-core/dist/model/parsed-document.model';
-import {Subject} from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class WireframePlayerService {

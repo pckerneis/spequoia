@@ -5,7 +5,11 @@
     @if ($currentOverlay(); as overlay) {
       <div class="overlay">
         @if ($overlayPosition(); as pos) {
-          <div class="overlay-box" [style.left]="pos.x + 'px'" [style.top]="pos.y + 'px'">
+          <div
+            class="overlay-box"
+            [style.left]="pos.x + 'px'"
+            [style.top]="pos.y + 'px'"
+          >
             {{ overlay.overlay.text }}
 
             <div>

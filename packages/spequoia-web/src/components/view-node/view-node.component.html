@@ -1,5 +1,9 @@
 @if (!viewNode.hidden) {
-  <fieldset class="container" [class.target]="$active()" [attr.data-uuid]="viewNode.uuid">
+  <fieldset
+    class="container"
+    [class.target]="$active()"
+    [attr.data-uuid]="viewNode.uuid"
+  >
     <legend>
       <label>{{ viewNode.name }}</label>
       @if (showSelector && viewNode.selector) {

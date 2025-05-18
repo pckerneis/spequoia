@@ -60,9 +60,9 @@ for the TodoMVC application to see Spequoia in action.
 
 - **Single source of truth**: Spequoia centralizes requirements in one place—easier to track than scattered tickets or
   docs, especially in fast-moving Agile teams.
-- **Align teams**: Designers, developers, and testers share a common language, improving collaboration and reducing 
+- **Align teams**: Designers, developers, and testers share a common language, improving collaboration and reducing
   miscommunication.
-- **Build with confidence**:  Define behavior once and generate end-to-end tests from the same source, so everyone knows
+- **Build with confidence**: Define behavior once and generate end-to-end tests from the same source, so everyone knows
   what's implemented is what's intended.
 - **Save time**: Generate docs, mockups, and tests from the same source, reducing manual work and keeping everything in sync.
 - **Prevent drift**: Version-controlled specs stay aligned with your codebase over time.
@@ -73,6 +73,7 @@ for the TodoMVC application to see Spequoia in action.
 
 While Spequoia comes with built-in tools, it's designed to be extensible through its well-documented schema. Third-party
 developers can create additional tooling to enhance or customize Spequoia's capabilities:
+
 - Alternative test runners (e.g., Selenium, Cypress, TestCafe)
 - Custom documentation generators
 - Different mockup rendering engines
@@ -95,7 +96,7 @@ views:
   counter:
     count_display:
       $selector: .counter-value
-      $text: '0'
+      $text: "0"
     buttons:
       $direction: row
       decrement:

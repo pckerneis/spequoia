@@ -4,7 +4,7 @@ import {
   ParsedViewNode,
 } from "../model/parsed-document.model";
 import { resolveTarget } from "./target-resolver";
-import {SpequoiaAction, SpequoiaExampleOverlay} from 'spequoia-model/dist';
+import { SpequoiaAction, SpequoiaExampleOverlay } from "spequoia-model/dist";
 
 export function parseRawSteps(
   steps: (string | SpequoiaExampleOverlay)[] | undefined,
@@ -190,9 +190,9 @@ export function parseRawSteps(
 
       if (currentOverlay) {
         const resolvedTarget = resolveTarget(
-            currentView,
-            currentOverlay.target,
-            currentViewTemplate,
+          currentView,
+          currentOverlay.target,
+          currentViewTemplate,
         );
 
         if (resolvedTarget) {

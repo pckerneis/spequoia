@@ -1,12 +1,13 @@
 import { Page, test } from "@playwright/test";
 import {
-  ClickAction, ParsedOverlay,
+  ClickAction,
+  ParsedOverlay,
   ParsedStep,
   ParsedViewNode,
   parseSpec,
   PressKeyAction,
   TypeAction,
-} from 'spequoia-core/dist';
+} from "spequoia-core/dist";
 import path from "path";
 import fs from "fs";
 
@@ -508,7 +509,10 @@ function resolveNode(
   return null;
 }
 
-function findByUuid(targetUuid: string, computedViewBefore: ParsedViewNode | undefined): ParsedViewNode {
+function findByUuid(
+  targetUuid: string,
+  computedViewBefore: ParsedViewNode | undefined,
+): ParsedViewNode {
   if (!computedViewBefore) {
     throw new Error(`Computed view before is undefined`);
   }
@@ -554,15 +558,17 @@ async function runStep(step: ParsedStep, page: Page, exampleId: string) {
   if (step.overlay) {
     const overlay = step.overlay;
     const overlaySelector = findByUuid(
-        overlay.targetUuid,
-        step.computedViewBefore,
+      overlay.targetUuid,
+      step.computedViewBefore,
     );
 
     if (!overlaySelector?.selector) {
       throw new Error(`Overlay selector for ${overlay.targetUuid} not found`);
     }
 
-    const boundingBox = await page.locator(overlaySelector.selector).boundingBox();
+    const boundingBox = await page
+      .locator(overlaySelector.selector)
+      .boundingBox();
 
     if (!boundingBox) {
       throw new Error(`Bounding box for ${overlay.targetUuid} not found`);

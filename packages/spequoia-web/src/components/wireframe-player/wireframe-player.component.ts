@@ -106,7 +106,8 @@ export class WireframePlayerComponent implements AfterViewInit {
 
       if (el) {
         const bounds = el.getBoundingClientRect();
-        const containerBounds = this.viewContainer?.nativeElement.getBoundingClientRect();
+        const containerBounds =
+          this.viewContainer?.nativeElement.getBoundingClientRect();
         this.$overlayPosition.set({
           x: bounds.left + bounds.width / 2 - containerBounds.left,
           y: bounds.bottom + 5 - containerBounds.top,

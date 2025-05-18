@@ -9,23 +9,27 @@ A specification format for web applications bridging the gap between design, dev
 ## Features
 
 ### 🎨 Design-First Approach
+
 - Human-readable specifications using Markdown syntax
 - Interactive wireframe generation for early UI visualization
 - Stakeholder-friendly documentation
 
 ### 🔄 Development Integration
+
 - Single source of truth for application behavior
 - Seamless repository integration
 - Reduced knowledge duplication
 - Synchronized specifications and code
 
 ### ✅ Testing Made Easy
+
 - Automated end-to-end test generation
 - Example-driven test cases
 - Built-in test runner
 - Behavior verification against specifications
 
 ### 📖 Documentation Generation
+
 - Automatic documentation from specifications
 - Interactive demos
 - Always up-to-date documentation

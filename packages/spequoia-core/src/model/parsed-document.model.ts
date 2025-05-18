@@ -1,4 +1,8 @@
-import {SpequoiaExampleOverlay, SpequoiaExecutor, SpequoiaTag} from '@spequoia/model';
+import {
+  SpequoiaExampleOverlay,
+  SpequoiaExecutor,
+  SpequoiaTag,
+} from "@spequoia/model";
 
 export interface ParsedDocument {
   title: string;

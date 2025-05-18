@@ -62,6 +62,6 @@ function parseViewNode(
 
   return {
     uuid: crypto.randomUUID(),
-    name
+    name,
   };
 }
