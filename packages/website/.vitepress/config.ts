@@ -25,6 +25,6 @@ export default defineConfig({
         ]
       }
     ],
-    socialLinks: [{ icon: "github", link: "https://github.com/pckerneis/spequoia" }]
+    socialLinks: [{ icon: "github", link: "https://github.com/spequoia/spequoia" }]
   }
 });

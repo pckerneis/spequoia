@@ -53,7 +53,7 @@ quickly generate interactive demos of your application that are always up to dat
 
 ![Documentation example](/spequoia-web.gif)
 
-Take a look at the [example Spequoia web documentation](https://pckerneis.github.io/spequoia/example-todomvc/index.html)
+Take a look at the [example Spequoia web documentation](https://spequoia.github.io/spequoia/example-todomvc/index.html)
 for the TodoMVC application to see Spequoia in action.
 
 ## Benefits of using Spequoia
@@ -146,4 +146,4 @@ This specification gets rendered like this:
 
 ![Counter example](/counter-example.png)
 
-A more complete example can be found in the [TodoMVC Spequoia web documentation](https://pckerneis.github.io/spequoia/example-todomvc/index.html).
+A more complete example can be found in the [TodoMVC Spequoia web documentation](https://spequoia.github.io/spequoia/example-todomvc/index.html).

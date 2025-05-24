@@ -15,7 +15,7 @@ hero:
       link: /guide
     - theme: alt
       text: View on GitHub
-      link: https://github.com/pckerneis/spequoia
+      link: https://github.com/spequoia/spequoia
 
 features:
   - title: ✨ Human and machine-friendly
