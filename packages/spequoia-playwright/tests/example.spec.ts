@@ -11,6 +11,7 @@ import {
 import path from 'path';
 import fs from 'fs';
 
+// TODO deduplicate
 interface ScreenshotSection {
   name: string;
   startFrame: number;
@@ -27,6 +28,7 @@ interface BoundingBox {
 interface OverlayRendering {
   targetBounds: BoundingBox;
   overlay: ParsedOverlay;
+  viewportWidth: number;
 }
 
 const SCREENSHOT_DIRECTORY = "player-data";
@@ -590,6 +592,7 @@ async function runStep(step: ParsedStep, page: Page, exampleId: string) {
     currentOverlayByExampleId[exampleId] = {
       targetBounds: boundingBox,
       overlay: overlay,
+      viewportWidth: page.viewportSize()?.width || 0,
     };
   }
 

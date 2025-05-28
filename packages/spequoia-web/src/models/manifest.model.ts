@@ -23,4 +23,5 @@ export interface BoundingBox {
 export interface OverlayRendering {
   targetBounds: BoundingBox;
   overlay: ParsedOverlay;
+  viewportWidth: number;
 }

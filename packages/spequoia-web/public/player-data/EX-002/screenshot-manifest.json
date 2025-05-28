@@ -22,7 +22,7 @@
     }
   ],
   "frameCount": 11,
-  "startTime": 1748459708221,
+  "startTime": 1748460448751,
   "overlays": [
     null,
     {
@@ -36,8 +36,9 @@
         "kind": "hotspot",
         "text": "Click here and type a task name.",
         "target": "input",
-        "targetUuid": "5a3b5fa3-6e64-4434-94d5-e7f2bc1fba78"
-      }
+        "targetUuid": "0facb5b9-be11-4aed-a614-a5efdc23a698"
+      },
+      "viewportWidth": 898
     },
     null,
     null,

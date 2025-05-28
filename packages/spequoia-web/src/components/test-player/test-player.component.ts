@@ -4,7 +4,7 @@ import {
   ElementRef,
   Input,
   OnInit,
-  signal,
+  signal, ViewChild,
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ExampleWithManifest } from '../../models/processed-document.model';
@@ -24,6 +24,9 @@ const FRAME_DURATION = 100;
 export class TestPlayerComponent implements OnInit {
   @Input()
   example!: ExampleWithManifest;
+
+  @ViewChild('viewContainer')
+  viewContainer!: ElementRef;
 
   screenshotSrc = signal('');
 
@@ -50,20 +53,23 @@ export class TestPlayerComponent implements OnInit {
     const frame = this.$currentFrame();
     return this.overlays[frame + 1] || null;
   });
-  $targetBox = computed(() => {
-    const overlay = this.$currentOverlay();
-    if (overlay) {
-      return overlay.targetBounds;
-    }
-    return null;
-  });
+
   $overlayPosition = computed(() => {
-    const bounds = this.$targetBox();
+    const overlay = this.$currentOverlay();
+
+    if (!overlay) {
+      return null;
+    }
+
+    const bounds = overlay.targetBounds;
+    const originalViewportWidth = overlay.viewportWidth;
+    const actualViewportWidth = this.viewContainer.nativeElement.clientWidth;
+    const scaleFactor = actualViewportWidth / originalViewportWidth;
 
     if (bounds) {
       return {
-        x: bounds.x + bounds.width / 2,
-        y: bounds.y + bounds.height + 5,
+        x: (bounds.x + bounds.width / 2) * scaleFactor,
+        y: (bounds.y + bounds.height) * scaleFactor + 5,
       };
     }
 

@@ -52,7 +52,7 @@
     }
   ],
   "frameCount": 33,
-  "startTime": 1748459712476,
+  "startTime": 1748460453315,
   "overlays": [
     null,
     null,
@@ -95,8 +95,9 @@
         "kind": "hotspot",
         "text": "Click the \"Active\" filter to show only **active** tasks.",
         "target": "active_filter",
-        "targetUuid": "f678eba6-bdf4-480c-a58e-16aeb8c9df7e"
-      }
+        "targetUuid": "83ed2cff-004d-42b3-aa45-e7ab6a9d109b"
+      },
+      "viewportWidth": 898
     },
     {
       "targetBounds": {
@@ -109,8 +110,9 @@
         "kind": "hotspot",
         "text": "Click the \"Completed\" filter to show only **completed** tasks.",
         "target": "completed_filter",
-        "targetUuid": "cf683a12-8a3b-4c1b-9667-4a6efe0883b1"
-      }
+        "targetUuid": "41818dc0-176f-44c0-8f2a-533e36fc8d02"
+      },
+      "viewportWidth": 898
     },
     {
       "targetBounds": {
@@ -123,8 +125,9 @@
         "kind": "hotspot",
         "text": "You can click the \"All\" filter to show all tasks again.",
         "target": "all_filter",
-        "targetUuid": "b69fa3dd-0940-4bd3-8abd-b9598ada9767"
-      }
+        "targetUuid": "b5da0371-ca9a-4dc8-b5ba-41298caff9c6"
+      },
+      "viewportWidth": 898
     }
   ]
 }
