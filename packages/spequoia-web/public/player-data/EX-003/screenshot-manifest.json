@@ -27,7 +27,7 @@
     }
   ],
   "frameCount": 12,
-  "startTime": 1747565500587,
+  "startTime": 1748459708271,
   "overlays": [
     null,
     null,
@@ -51,7 +51,7 @@
         "kind": "hotspot",
         "text": "Click the checkbox to mark the task as done.",
         "target": "task_row(1) done_checkbox",
-        "targetUuid": "1dcf8cda-8d85-4898-b918-145af5002174"
+        "targetUuid": "63488d36-7eca-4482-8448-f89e8ceccf5b"
       }
     }
   ]

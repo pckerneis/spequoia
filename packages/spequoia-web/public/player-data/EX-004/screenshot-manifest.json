@@ -32,7 +32,7 @@
     }
   ],
   "frameCount": 13,
-  "startTime": 1747565500499,
+  "startTime": 1748459708267,
   "overlays": [
     null,
     null,
@@ -56,7 +56,7 @@
         "kind": "hotspot",
         "text": "Click the checkbox to mark the task as done.",
         "target": "task_row(1) done_checkbox",
-        "targetUuid": "7c8f93a8-1700-48db-9cfe-8e51f386f571"
+        "targetUuid": "5d6553bc-ec92-4e46-abc6-afa1b8e0d8a1"
       }
     },
     {
@@ -70,7 +70,7 @@
         "kind": "hotspot",
         "text": "Click again to unmark the task as done.",
         "target": "task_row(1) done_checkbox",
-        "targetUuid": "7c8f93a8-1700-48db-9cfe-8e51f386f571"
+        "targetUuid": "5d6553bc-ec92-4e46-abc6-afa1b8e0d8a1"
       }
     }
   ]

@@ -52,8 +52,27 @@
     }
   ],
   "frameCount": 33,
-  "startTime": 1747565504826,
+  "startTime": 1748459712476,
   "overlays": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
     null,
     null,
     null,
@@ -67,50 +86,45 @@
     null,
     {
       "targetBounds": {
-        "x": 174,
-        "y": 205.390625,
-        "width": 40,
-        "height": 40
+        "x": 392.625,
+        "y": 322.59375,
+        "width": 56.859375,
+        "height": 25
       },
       "overlay": {
         "kind": "hotspot",
-        "text": "Click the checkbox to mark the task as done.",
-        "target": "task_row(1) done_checkbox",
-        "targetUuid": "1dcf8cda-8d85-4898-b918-145af5002174"
+        "text": "Click the \"Active\" filter to show only **active** tasks.",
+        "target": "active_filter",
+        "targetUuid": "f678eba6-bdf4-480c-a58e-16aeb8c9df7e"
       }
     },
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
+    {
+      "targetBounds": {
+        "x": 459.65625,
+        "y": 262.796875,
+        "width": 88.546875,
+        "height": 25
+      },
+      "overlay": {
+        "kind": "hotspot",
+        "text": "Click the \"Completed\" filter to show only **completed** tasks.",
+        "target": "completed_filter",
+        "targetUuid": "cf683a12-8a3b-4c1b-9667-4a6efe0883b1"
+      }
+    },
+    {
+      "targetBounds": {
+        "x": 349.78125,
+        "y": 262.796875,
+        "width": 32.671875,
+        "height": 25
+      },
+      "overlay": {
+        "kind": "hotspot",
+        "text": "You can click the \"All\" filter to show all tasks again.",
+        "target": "all_filter",
+        "targetUuid": "b69fa3dd-0940-4bd3-8abd-b9598ada9767"
+      }
+    }
   ]
 }

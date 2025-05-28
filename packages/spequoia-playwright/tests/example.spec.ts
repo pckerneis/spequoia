@@ -1,4 +1,4 @@
-import { Page, test } from "@playwright/test";
+import {Page, test} from '@playwright/test';
 import {
   ClickAction,
   ParsedOverlay,
@@ -7,9 +7,9 @@ import {
   parseSpec,
   PressKeyAction,
   TypeAction,
-} from "spequoia-core/dist";
-import path from "path";
-import fs from "fs";
+} from 'spequoia-core/dist';
+import path from 'path';
+import fs from 'fs';
 
 interface ScreenshotSection {
   name: string;
@@ -35,8 +35,8 @@ let startTime = 0;
 
 let frameCounter = 0;
 const sections: ScreenshotSection[] = [];
-let currentOverlay: OverlayRendering | null = null;
-const overlays: (OverlayRendering | null)[] = [];
+const currentOverlayByExampleId: Record<string, OverlayRendering | null> = {};
+const overlaysByExampleId: Record<string, (OverlayRendering | null)[]> = {};
 
 function beginSection(name: string) {
   if (sections.length === 0 && frameCounter > 0) {
@@ -62,6 +62,8 @@ function saveManifest(exampleId: string) {
       };
     })
     .filter((section) => section.endFrame - section.startFrame > 0);
+
+  const overlays = overlaysByExampleId[exampleId] || [];
 
   const json = JSON.stringify(
     {
@@ -99,8 +101,11 @@ async function screenshot(page: Page, exampleId: string) {
     path: path.join(SCREENSHOT_DIRECTORY, exampleId, `${frameCounter++}.png`),
   });
 
+  const overlays = overlaysByExampleId[exampleId] || [];
+  const currentOverlay = currentOverlayByExampleId[exampleId];
   overlays.push(currentOverlay);
-  currentOverlay = null;
+  overlaysByExampleId[exampleId] = overlays;
+  currentOverlayByExampleId[exampleId] = null;
 }
 
 async function slowType(page: Page, text: string, exampleId: string) {
@@ -582,7 +587,7 @@ async function runStep(step: ParsedStep, page: Page, exampleId: string) {
       throw new Error(`Bounding box for ${overlay.targetUuid} not found`);
     }
 
-    currentOverlay = {
+    currentOverlayByExampleId[exampleId] = {
       targetBounds: boundingBox,
       overlay: overlay,
     };
