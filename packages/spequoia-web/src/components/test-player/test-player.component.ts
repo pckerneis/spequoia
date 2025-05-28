@@ -9,12 +9,15 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { ExampleWithManifest } from '../../models/processed-document.model';
 import { OverlayRendering, Section } from '../../models/manifest.model';
+import {MarkdownPipe} from '../../pipes/markdown.pipe';
 
 const FRAME_DURATION = 100;
 
 @Component({
   selector: 'app-test-player',
-  imports: [],
+  imports: [
+    MarkdownPipe
+  ],
   templateUrl: './test-player.component.html',
   styleUrl: './test-player.component.scss',
 })
@@ -325,7 +328,7 @@ export class TestPlayerComponent implements OnInit {
     this.screenshotSrc.set(
       preloadedImage?.src || `player-data/${this.example.id}/${frame}.png`,
     );
-    this.$indicatorLeft.set(`${(frame / (this.allFrames.length - 1)) * 100}%`);
+    this.renderTimeline();
   }
 
   next() {
