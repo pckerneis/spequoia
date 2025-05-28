@@ -10,9 +10,7 @@
             [style.left]="pos.x + 'px'"
             [style.top]="pos.y + 'px'"
           >
-            <div
-            [innerHTML]="overlay.overlay.text | markdown"
-            ></div>
+            <div [innerHTML]="overlay.overlay.text | markdown"></div>
             <div>
               <button (click)="handleOverlayButtonClicked()">→</button>
             </div>

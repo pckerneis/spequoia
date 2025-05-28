@@ -1,4 +1,4 @@
-import {Page, test} from '@playwright/test';
+import { Page, test } from "@playwright/test";
 import {
   ClickAction,
   ParsedOverlay,
@@ -7,9 +7,9 @@ import {
   parseSpec,
   PressKeyAction,
   TypeAction,
-} from 'spequoia-core/dist';
-import path from 'path';
-import fs from 'fs';
+} from "spequoia-core/dist";
+import path from "path";
+import fs from "fs";
 
 // TODO deduplicate
 interface ScreenshotSection {
