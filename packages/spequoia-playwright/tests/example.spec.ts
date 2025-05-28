@@ -378,12 +378,21 @@ features:
           - click task_row(2) done_checkbox
           - expect task_row(2) done_checkbox to be checked
           - expect input to have text ""
+          - kind: hotspot
+            text: Click the "Active" filter to show only **active** tasks.
+            target: active_filter
           - click active_filter
           - expect task_row(1) to be visible
           - expect task_row(2) to be hidden
+          - kind: hotspot
+            text: Click the "Completed" filter to show only **completed** tasks.
+            target: completed_filter
           - click completed_filter
           - expect task_row(1) to be hidden
           - expect task_row(2) to be visible
+          - kind: hotspot
+            text: You can click the "All" filter to show all tasks again.
+            target: all_filter
           - click all_filter
           - expect task_row(1) to be visible
           - expect task_row(2) to be visible
@@ -419,7 +428,6 @@ features:
           - type "Edited task"
           - press key "Escape"
           - expect label to have text "New task"
-
 `;
 
 const parseResult = parseSpec(document);
