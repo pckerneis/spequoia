@@ -13,10 +13,10 @@
 }
 
 .step-list {
-  min-width: 300px;
   width: 300px;
   display: flex;
   flex-direction: column;
+  flex-shrink: 1;
 }
 
 ul {
@@ -36,6 +36,7 @@ ul {
   overflow: hidden;
   display: flex;
   position: relative;
+  min-width: 60%;
 
   .view-container-viewport {
     flex: 1;

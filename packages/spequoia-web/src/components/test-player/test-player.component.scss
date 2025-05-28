@@ -166,6 +166,10 @@
 .view-container {
   position: relative;
   align-self: center;
+
+  img {
+    max-width: 100%;
+  }
 }
 
 .overlay-box {
