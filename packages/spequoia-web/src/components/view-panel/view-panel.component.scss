@@ -8,3 +8,8 @@ h3 {
   margin-top: 0.6rem;
   margin-bottom: 0.8rem;
 }
+
+app-view-node {
+  max-width: 100%;
+  overflow: auto;
+}
