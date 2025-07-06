@@ -15,21 +15,19 @@
       <div class="mouse" [class.clicked]="viewNode.clicked"></div>
     }
 
-    @if (viewNode.checked) {
-      <div class="checkmark"></div>
-    }
-
-    @if (viewNode.text) {
-      <div class="text">
+    <div [classList]="$roleClass()" [class.checked]="viewNode.checked">
+      @if (viewNode.text) {
+        <div class="text">
         <span [class.typing]="viewNode.typing">
           {{ $text() }}
         </span>
-      </div>
-    } @else if (viewNode.placeholder) {
-      <div class="text placeholder">
-        <span>{{ viewNode.placeholder }}</span>
-      </div>
-    }
+        </div>
+      } @else if (viewNode.placeholder) {
+        <div class="text placeholder">
+          <span>{{ viewNode.placeholder }}</span>
+        </div>
+      }
+    </div>
 
     <div [ngClass]="cssClass">
       @for (child of viewNode.children; track $index) {

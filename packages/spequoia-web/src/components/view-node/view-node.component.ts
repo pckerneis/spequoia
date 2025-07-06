@@ -43,6 +43,16 @@ export class ViewNodeComponent implements AfterViewInit {
       .includes(this.viewNode.name);
   });
 
+  $roleClass = computed(() => {
+    const role = this.viewNode.role;
+
+    if (role) {
+      return 'role-' + role;
+    }
+
+    return '';
+  })
+
   constructor(
     @Optional()
     private readonly wireframePlayerService?: WireframePlayerService,
@@ -82,7 +92,7 @@ export class ViewNodeComponent implements AfterViewInit {
   }
 
   get cssClass(): string {
-    if (this.viewNode?.direction === 'row') {
+    if (this.viewNode?.role === 'row') {
       return 'row';
     } else {
       return 'column';

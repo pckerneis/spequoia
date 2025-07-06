@@ -14,11 +14,12 @@ import { WireframePlayerService } from '../../services/wireframe-player.service'
 import { ParsedExample } from 'spequoia-core/dist/model/parsed-document.model';
 import { ViewNodeComponent } from '../view-node/view-node.component';
 import { WireframePlayerStepComponent } from '../wireframe-player-step/wireframe-player-step.component';
+import {MarkdownPipe} from '../../pipes/markdown.pipe';
 
 @Component({
   selector: 'app-wireframe-player',
   providers: [WireframePlayerService],
-  imports: [ViewNodeComponent, WireframePlayerStepComponent],
+  imports: [ViewNodeComponent, WireframePlayerStepComponent, MarkdownPipe],
   templateUrl: './wireframe-player.component.html',
   styleUrl: './wireframe-player.component.scss',
 })

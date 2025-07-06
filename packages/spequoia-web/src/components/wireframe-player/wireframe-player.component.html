@@ -32,8 +32,7 @@
               [style.left]="pos.x + 'px'"
               [style.top]="pos.y + 'px'"
             >
-              {{ overlay.text }}
-
+              <div [innerHTML]="overlay.text | markdown"></div>
               <div>
                 <button (click)="handleOverlayButtonClicked()">→</button>
               </div>

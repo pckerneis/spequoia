@@ -111,8 +111,8 @@ export interface ParsedViewNode {
   name: string;
   selector?: string;
   route?: string;
-  direction?: string;
   text?: string;
+  role?: string;
   children?: ParsedViewNode[];
   target?: boolean;
   hovered?: boolean;

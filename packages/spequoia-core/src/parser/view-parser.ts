@@ -25,20 +25,20 @@ function parseViewNode(
     };
   } else if (typeof rawNode === "object") {
     const selector = rawNode["$selector"];
-    const direction = rawNode["$direction"];
     const text = rawNode["$text"];
     const route = rawNode["$url"];
+    const role = rawNode["$role"];
 
     if (selector && typeof selector !== "string") {
       throw new Error(`Invalid selector for node ${name}: ${selector}`);
     }
 
-    if (direction && typeof direction !== "string") {
-      throw new Error(`Invalid direction for node ${name}: ${direction}`);
-    }
-
     if (text && typeof text !== "string") {
       throw new Error(`Invalid text for node ${name}: ${text}`);
+    }
+
+    if (role && typeof role !== "string") {
+      throw new Error(`Invalid role for node ${name}: ${role}`);
     }
 
     if (route && typeof route !== "string") {
@@ -49,8 +49,8 @@ function parseViewNode(
       uuid: crypto.randomUUID(),
       name,
       selector,
-      direction,
       text,
+      role,
       route,
       children: Object.entries(rawNode)
         .filter(([key]) => !key.startsWith("$"))
