@@ -25,20 +25,20 @@
       </div>
 
       @if (wireframePlayerService.currentOverlay(); as overlay) {
-        @if ($overlayPosition(); as pos) {
-          <div class="overlay">
-            <div
-              class="overlay-box"
-              [style.left]="pos.x + 'px'"
-              [style.top]="pos.y + 'px'"
-            >
-              <div [innerHTML]="overlay.text | markdown"></div>
-              <div>
-                <button (click)="handleOverlayButtonClicked()">→</button>
-              </div>
+        @let pos = $overlayPosition();
+        <div class="overlay">
+          <div
+            class="overlay-box"
+            #overlayBox
+            [style.left]="pos.x + 'px'"
+            [style.top]="pos.y + 'px'"
+          >
+            <div [innerHTML]="overlay.text | markdown"></div>
+            <div>
+              <button (click)="handleOverlayButtonClicked()">→</button>
             </div>
           </div>
-        }
+        </div>
       }
     </div>
 
