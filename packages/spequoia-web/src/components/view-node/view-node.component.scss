@@ -15,7 +15,7 @@
     border-color: tomato;
   }
 
-  border: 3px solid #95908c;
+  border: 2px solid #aeacac;
   border-bottom-left-radius: 100px 2px;
   border-bottom-right-radius: 2px 100px;
   border-top-left-radius: 2px 100px;
@@ -77,20 +77,6 @@ label,
   animation: clicked 0.5s ease-in-out;
 }
 
-.checkmark {
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  &:after {
-    content: "✔";
-    font-size: 1em;
-  }
-}
-
 @keyframes clicked {
   0% {
     outline-offset: 0;
@@ -118,4 +104,65 @@ label,
   50% {
     opacity: 0;
   }
+}
+
+.role-button {
+  border: 2px solid #858585;
+  background: #f3f3f3;
+  box-shadow: 0 2px 0 1px #636363;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.role-input {
+  border: 2px solid #858585;
+  box-shadow: 0 1px 2px 0 #c5c5c5 inset;
+  background: #f3f3f3;
+  border-radius: 5px;
+  padding: 0.2rem;
+  display: flex;
+  flex-grow: 1;
+  min-height: 2em;
+  min-width: 8em;
+}
+
+.role-checkbox::before {
+  content: "";
+  border: 2px solid #858585;
+  box-shadow: 0 1px 2px 0 #c5c5c5 inset;
+  background: #f3f3f3;
+  padding: 0.2rem;
+  display: flex;
+  flex-grow: 1;
+  width: 1.2rem;
+  height: 1.2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.role-checkbox.checked::before {
+  content: "✔";
+}
+
+.role-radio-button {
+  padding: 0.2rem;
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+
+  &::before {
+    content: "";
+    border: 2px solid #858585;
+    box-shadow: 0 1px 2px 0 #c5c5c5 inset;
+    background: #f3f3f3;
+    width: 0.8em;
+    height: 0.8em;
+    border-radius: 50%;
+  }
+}
+
+.role-heading1 .text {
+  font-weight: bold;
+  font-size: 1.4rem;
 }

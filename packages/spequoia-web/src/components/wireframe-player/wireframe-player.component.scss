@@ -37,6 +37,7 @@ ul {
   display: flex;
   position: relative;
   min-width: 60%;
+  z-index: 1;
 
   .view-container-viewport {
     flex: 1;
@@ -130,6 +131,7 @@ ul {
 }
 
 .overlay-box {
+  z-index: 1000;
   position: absolute;
   width: 250px;
   border: 1px solid var(--accent-500);
